@@ -267,6 +267,14 @@ function fontyourface_admin_add_form(&$form_state, $module_name, $group_path, $f
 
     $view = $module_name . '_fontyourface_view';
 
+    $font_in_use = new stdClass;
+    $font_in_use->name = $font['font name'];
+    $font_in_use->group_name = $font['group'];
+    $font_in_use->provider = $font['module'];
+    
+    $css_function = $font_in_use->provider . '_fontyourface_css';
+    $font_css = $css_function($font_in_use);
+
     $form = array(
       'module' => array(
         '#type' => 'hidden',
@@ -288,6 +296,9 @@ function fontyourface_admin_add_form(&$form_state, $module_name, $group_path, $f
         '#title' => t('CSS selector'),
         '#default_value' => 'body',
         '#description' => t('Use commas to separate multiple selectors, just like you would in CSS. Leave blank to handle application of the font in your theme.'),
+      ),
+      'font-family' => array(
+        '#value' => '<div>To apply in your own CSS, use:</div><div><code>font-family: ' . check_plain($font_css['font-family']) . ';</code></div>',
       ),
       'submit' => array(
         '#type' => 'submit',
@@ -338,6 +349,9 @@ function fontyourface_admin_edit_form(&$form_state, $fid) {
   $font->fid = $fid;
   $font = fontyourface_get_font($font);
 
+  $css_function = $font->provider . '_fontyourface_css';
+  $font_css = $css_function($font);
+
   $form = array(
     'fid' => array(
       '#type' => 'hidden',
@@ -351,6 +365,9 @@ function fontyourface_admin_edit_form(&$form_state, $fid) {
       '#title' => t('CSS selector'),
       '#default_value' => $font->css,
       '#description' => t('Use commas to separate multiple selectors, just like you would in CSS. Leave blank to handle application of the font in your theme.'),
+    ),
+    'font-family' => array(
+      '#value' => '<div>To apply in your own CSS, use:</div><div><code>font-family: ' . check_plain($font_css['font-family']) . ';</code></div>',
     ),
     'buttons' => array(
       'submit' => array(
