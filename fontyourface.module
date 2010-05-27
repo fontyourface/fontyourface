@@ -251,6 +251,8 @@ function fontyourface_admin_add_page() {
  */
 function fontyourface_admin_add_form(&$form_state, $module_name, $group_path, $font_path) {
 
+  drupal_add_js(drupal_get_path('module', 'fontyourface') . '/js/add_form.js');
+
   $font = fontyourface_get_font_from_path($module_name, $group_path, $font_path);
 
   if (!$font) {
@@ -267,14 +269,6 @@ function fontyourface_admin_add_form(&$form_state, $module_name, $group_path, $f
 
     $view = $module_name . '_fontyourface_view';
 
-    $font_in_use = new stdClass;
-    $font_in_use->name = $font['font name'];
-    $font_in_use->group_name = $font['group'];
-    $font_in_use->provider = $font['module'];
-    
-    $css_function = $font_in_use->provider . '_fontyourface_css';
-    $font_css = $css_function($font_in_use);
-
     $form = array(
       'module' => array(
         '#type' => 'hidden',
@@ -288,8 +282,17 @@ function fontyourface_admin_add_form(&$form_state, $module_name, $group_path, $f
         '#type' => 'hidden',
         '#value' => $font['group'],
       ),
+      'font_title' => array(
+        '#value' => '<h2>' . check_plain($font['font name']) . '</h2>',
+      ),
+      'sample_text' => array(
+        '#type' => 'textfield',
+        '#title' => t('Sample text'),
+        '#default_value' => variable_get('fontyourface_sample_text', 'The quick brown fox jumps over the lazy dog'),
+        '#size' => 60,
+      ),
       'font_view' => array(
-        '#value' => '<h2>' . check_plain($font['font name']) . '</h2>' . $view($font['font'], 'The quick brown fox jumps over the lazy dog'),
+        '#value' => '<div class="fontyourface-view">' . $view($font['font'], variable_get('fontyourface_sample_text', 'The quick brown fox jumps over the lazy dog')) . '</div>',
       ),
       'css' => array(
         '#type' => 'textarea',
@@ -297,12 +300,15 @@ function fontyourface_admin_add_form(&$form_state, $module_name, $group_path, $f
         '#default_value' => 'body',
         '#description' => t('Use commas to separate multiple selectors, just like you would in CSS. Leave blank to handle application of the font in your theme.'),
       ),
-      'font-family' => array(
-        '#value' => '<div>To apply in your own CSS, use:</div><div><code>font-family: ' . check_plain($font_css['font-family']) . ';</code></div>',
-      ),
-      'submit' => array(
-        '#type' => 'submit',
-        '#value' => 'Add font',
+      'buttons' => array(
+        'submit' => array(
+          '#type' => 'submit',
+          '#value' => t('Add font'),
+        ),
+        'cancel' => array(
+          '#type' => 'submit',
+          '#value' => t('Cancel'),
+        ),
       ),
     );
 
@@ -313,7 +319,7 @@ function fontyourface_admin_add_form(&$form_state, $module_name, $group_path, $f
 
     $form = array(
       'not_found' => array(
-        '#value' => 'Font not found',
+        '#value' => t('Font not found'),
       ),
     );
 
@@ -328,14 +334,21 @@ function fontyourface_admin_add_form(&$form_state, $module_name, $group_path, $f
  */
 function fontyourface_admin_add_form_submit($form, &$form_state) {
 
-  $font = new stdClass;
-  $font->provider = $form['module']['#value'];
-  $font->group_name = $form['group']['#value'];
-  $font->name = $form['font']['#value'];
-  $font->css = $form['css']['#value'];
+  variable_set('fontyourface_sample_text', $form['sample_text']['#value']);
 
-  drupal_write_record('fontyourface', $font);
-  drupal_set_message('Added font <i>' . $font->name .'</i>.');
+  if ($form['#post']['op'] == 'Add font') {
+
+    $font = new stdClass;
+    $font->provider = $form['module']['#value'];
+    $font->group_name = $form['group']['#value'];
+    $font->name = $form['font']['#value'];
+    $font->css = $form['css']['#value'];
+  
+    drupal_write_record('fontyourface', $font);
+    drupal_set_message('Added font <i>' . $font->name .'</i>.');
+
+  } // if
+
   drupal_goto('admin/build/themes/fontyourface');
 
 } // fontyourface_admin_add_form_submit
@@ -348,9 +361,6 @@ function fontyourface_admin_edit_form(&$form_state, $fid) {
   $font = new stdClass;
   $font->fid = $fid;
   $font = fontyourface_get_font($font);
-
-  $css_function = $font->provider . '_fontyourface_css';
-  $font_css = $css_function($font);
 
   $form = array(
     'fid' => array(
@@ -366,17 +376,14 @@ function fontyourface_admin_edit_form(&$form_state, $fid) {
       '#default_value' => $font->css,
       '#description' => t('Use commas to separate multiple selectors, just like you would in CSS. Leave blank to handle application of the font in your theme.'),
     ),
-    'font-family' => array(
-      '#value' => '<div>To apply in your own CSS, use:</div><div><code>font-family: ' . check_plain($font_css['font-family']) . ';</code></div>',
-    ),
     'buttons' => array(
       'submit' => array(
         '#type' => 'submit',
-        '#value' => 'Edit font',
+        '#value' => t('Edit font'),
       ),
       'delete' => array(
         '#type' => 'submit',
-        '#value' => 'Disable',
+        '#value' => t('Disable'),
       ),
     )
   );
