@@ -230,15 +230,17 @@ function fontyourface_admin_add_page() {
 
   } // foreach
 
-  $header = array(t('Name'), t('Add'), t('Provider'), t('Group'));
+  $header = array(t('Name'), t('Sample'), t('Provider'), t('Group'));
+
+  usort($fonts, 'fontyourface_by_font_name');
 
   foreach ($fonts as $font) {
 
     $preview = $font['module'] . '_fontyourface_preview';
 
-    $view_link = l($preview($font['font']), 'admin/build/themes/fontyourface/add/' . $font['module'] . '/' . $font['group path'] . '/' . $font['font']['path'], array('html' => TRUE));
+    $view_link = l($font['font name'], 'admin/build/themes/fontyourface/add/' . $font['module'] . '/' . $font['group path'] . '/' . $font['font']['path']);
 
-    $rows[] = array(check_plain($font['font name']), $view_link, l($font['provider'], $font['provider url']), check_plain($font['group']));
+    $rows[] = array($view_link, $preview($font['font']), l($font['provider'], $font['provider url']), check_plain($font['group']));
 
   } // foreach
 
@@ -293,6 +295,32 @@ function fontyourface_admin_add_form(&$form_state, $module_name, $group_path, $f
       'font_title' => array(
         '#value' => '<h2>' . check_plain($font['font name']) . '</h2>',
       ),
+    );
+    
+    $license_function = $font_in_use->provider . '_fontyourface_license';
+    
+    if (function_exists($license_function)) {
+
+      $license = $license_function($font_in_use);
+
+      if ($license) {
+
+        if ($license['url']) {
+          $license_markup = l($license['name'], $license['url'], array('attributes' => array('rel' => 'license')));
+        } // if
+        else {
+          $license_markup = check_plain($license['name']);
+        } // else
+
+        $form['license'] = array(
+          '#value' => '<div class="license">' . t('License: ') . $license_markup . '</div>',
+        );
+
+      } // if
+
+    } // if
+
+    $form += array(
       'sample_text' => array(
         '#type' => 'textfield',
         '#title' => t('Sample text'),
@@ -356,8 +384,18 @@ function fontyourface_admin_add_form_submit($form, &$form_state) {
     $font->css = $form['css']['#value'];
   
     drupal_write_record('fontyourface', $font);
-    drupal_set_message('Added font <i>' . $font->name .'</i>.');
+    $enabled = TRUE;
 
+    $enable_function = $font->provider . '_fontyourface_enable';
+
+    if (function_exists($enable_function)) {
+      $enabled = $enable_function($font);
+    } // if
+
+  } // if
+
+  if ($enabled) {
+    drupal_set_message('Added font <i>' . $font->name .'</i>.'); 
   } // if
 
   drupal_goto('admin/build/themes/fontyourface');
@@ -374,7 +412,10 @@ function fontyourface_admin_edit_form(&$form_state, $fid) {
   $font = fontyourface_get_font($font);
 
   $css_function = $font->provider . '_fontyourface_css';
-  $font_css = $css_function($font);
+  
+  if (function_exists($css_function)) {
+    $font_css = $css_function($font);
+  } // if
 
   $form = array(
     'fid' => array(
@@ -390,9 +431,19 @@ function fontyourface_admin_edit_form(&$form_state, $fid) {
       '#default_value' => $font->css,
       '#description' => t('Use commas to separate multiple selectors, just like you would in CSS. Leave blank to handle application of the font in your theme.'),
     ),
-    'font-family' => array(
-      '#value' => '<div>' . t('To apply in your own CSS, use:') . '</div><div><code>font-family: ' . check_plain($font_css['font-family']) . ';</code></div>',
-    ),
+  );
+  
+  if ($font_css) {
+  
+    $form += array(
+      'font-family' => array(
+        '#value' => '<div>' . t('To apply in your own CSS, use:') . '</div><div><code>font-family: ' . check_plain($font_css['font-family']) . ';</code></div>',
+      ),
+    );
+    
+  } // if
+    
+  $form += array(
     'buttons' => array(
       'submit' => array(
         '#type' => 'submit',
@@ -527,3 +578,10 @@ function fontyourface_available_fonts() {
   return $available_fonts;
 
 } // fontyourface_available_fonts
+
+function fontyourface_by_font_name($a, $b) {
+
+  if ($a['font name'] == $b['font name']) return 0;
+  return ($a['font name'] > $b['font name']) ? 1 : -1;
+
+} // fontyourface_by_name

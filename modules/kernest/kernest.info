@@ -1,0 +1,6 @@
+; $Id$
+name = KERNEST
+description = @font-your-face provider with KERNEST fonts.
+dependencies[] = fontyourface
+package = @font-your-face
+core = 6.x
