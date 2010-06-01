@@ -123,7 +123,7 @@ function fontsquirrel_fontyourface_view($font, $text) {
  */
 function fontsquirrel_preprocess_page(&$vars) {
 
-  if (!empty($vars['fontyourface'])) {
+  if (!empty($vars['fontyourface']) && $_GET['q'] != 'admin/build/themes/fontyourface/add') {
 
     $paths = array();
     $fonts = fontsquirrel_list();
@@ -162,8 +162,6 @@ function fontsquirrel_fontyourface_css($used_font) {
 
   $list = fontsquirrel_list();
   $font = $list[$used_font->group_name]['fonts'][$used_font->name];
-
-  dsm($font);
 
   $css['font-family'] = "'" . $font['family'] . "'";
 

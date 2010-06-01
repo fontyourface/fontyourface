@@ -1,6 +1,8 @@
 <?php
 // $Id$
 
+define('FONTYOURFACE_ADD_PAGE_COUNT', 20);
+
 /**
  * Implements hook_perm().
  */
@@ -90,6 +92,10 @@ function fontyourface_preprocess_page(&$vars) {
         } // foreach
 
       } // foreach
+
+      usort($fonts, 'fontyourface_by_font_name');
+
+      $fonts = array_slice($fonts, intval($_GET['page']) * FONTYOURFACE_ADD_PAGE_COUNT, FONTYOURFACE_ADD_PAGE_COUNT);
 
     } // if
     elseif (strpos($_GET['q'], 'admin/build/themes/fontyourface/add/') === 0) {
@@ -200,6 +206,11 @@ function fontyourface_admin_page() {
  */
 function fontyourface_admin_add_page() {
 
+  global $pager_page_array, $pager_total;
+
+  $page = isset($_GET['page']) ? $_GET['page'] : '';
+  $pager_page_array = explode(',', $page);
+  
   $available_fonts = fontyourface_available_fonts();
   $fonts = array();
   $fonts_by_module = array();
@@ -234,7 +245,11 @@ function fontyourface_admin_add_page() {
 
   usort($fonts, 'fontyourface_by_font_name');
 
-  foreach ($fonts as $font) {
+  $pager_total[] = ceil(count($fonts)/FONTYOURFACE_ADD_PAGE_COUNT);
+
+  $page_fonts = array_slice($fonts, intval($_GET['page']) * FONTYOURFACE_ADD_PAGE_COUNT, FONTYOURFACE_ADD_PAGE_COUNT);
+
+  foreach ($page_fonts as $font) {
 
     $preview = $font['module'] . '_fontyourface_preview';
 
@@ -244,7 +259,7 @@ function fontyourface_admin_add_page() {
 
   } // foreach
 
-  return '<h1>Add font</h1><div>Click a font name to view details and add the font.</div>' . theme('table', $header, $rows, array('id' => 'font-your-face-options'));
+  return '<h1>Add font</h1><div>Click a font name to view details and add the font.</div>' . theme('table', $header, $rows, array('id' => 'font-your-face-options')) . theme('pager', NULL, FONTYOURFACE_ADD_PAGE_COUNT);
 
 } // fontyourface_admin_add_page
 
@@ -580,6 +595,13 @@ function fontyourface_available_fonts() {
 } // fontyourface_available_fonts
 
 function fontyourface_by_font_name($a, $b) {
+
+  if (is_object($a)) {
+
+    if ($a->name == $b->name) return 0;
+    return ($a->name > $b->name) ? 1 : -1;
+
+  } // if
 
   if ($a['font name'] == $b['font name']) return 0;
   return ($a['font name'] > $b['font name']) ? 1 : -1;
