@@ -12,8 +12,19 @@
 function kernest_install() {
 
   drupal_install_schema('kernest');
+  fontyourface_weight_above('kernest');
 
 } // kernest_install
+
+/**
+ * Implements hook_uninstall().
+ */
+function kernest_uninstall() {
+
+  drupal_uninstall_schema('kernest');
+  variable_del('kernest_last_api_update');
+
+} // kernest_uninstall
 
 /**
  * Implements hook_schema.

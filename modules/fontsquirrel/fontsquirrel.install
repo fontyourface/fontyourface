@@ -12,8 +12,19 @@
 function fontsquirrel_install() {
 
   drupal_install_schema('fontsquirrel');
+  fontyourface_weight_above('fontsquirrel');
 
 } // fontsquirrel_install
+
+/**
+ * Implements hook_uninstall().
+ */
+function fontsquirrel_uninstall() {
+
+  drupal_uninstall_schema('fontsquirrel');
+  variable_del('fontsquirrel_last_api_update');
+
+} // fontsquirrel_uninstall
 
 /**
  * Implements hook_schema.
@@ -67,6 +78,13 @@ function fontsquirrel_schema() {
         'description' => 'The classification.',
       ),
       'filename' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'The font file.',
+      ),
+      'font_family' => array(
         'type' => 'varchar',
         'length' => 255,
         'not null' => TRUE,

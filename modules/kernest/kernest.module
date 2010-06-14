@@ -2,6 +2,34 @@
 // $Id$
 
 /**
+ * Implements hook_menu()
+ */
+function kernest_menu() {
+
+  $items = array();
+  
+  $items['admin/build/themes/fontyourface/kernest/import'] = array(
+    'title' => 'KERNEST Import',
+    'page callback' => 'kernest_import',
+    'access arguments' => array('administer @font-your-face'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+
+} // fontsquirrel_menu
+
+/**
+ * Callback for import.
+ */
+function kernest_import() {
+
+  kernest_cron();
+  drupal_goto($_GET['destination']);
+
+} // kernest_import
+
+/**
  * Implements hook_cron().
  */
 function kernest_cron() {
@@ -16,54 +44,58 @@ function kernest_cron() {
 
     if ($api_result->code == '200') {
 
-      $decoded = json_decode($api_result->data);
+      $decoded = json_decode(str_replace("\n", ' ', $api_result->data));
 
-      foreach ($decoded->fonts as $font) {
-
-        $select_results = db_query("SELECT * FROM {kernest} g WHERE name = '%s'", $font->name);
-
-        if ($select_result = db_fetch_object($select_results)) {
-
-          $changed = FALSE;
-
-          if ($select_result->url != $font->url) {
-            $select_result->url = $font->url;
-            $changed = TRUE;
+      if (is_array($decoded->fonts)) {
+  
+        foreach ($decoded->fonts as $font) {
+  
+          $select_results = db_query("SELECT * FROM {kernest} g WHERE name = '%s'", $font->name);
+  
+          if ($select_result = db_fetch_object($select_results)) {
+  
+            $changed = FALSE;
+  
+            if ($select_result->url != $font->url) {
+              $select_result->url = $font->url;
+              $changed = TRUE;
+            } // if
+            if ($select_result->css != $font->{'recommended css'}) {
+              $select_result->css = $font->{'recommended css'};
+              $changed = TRUE;
+            } // if
+            if ($select_result->foundry != $font->foundry) {
+              $select_result->foundry = $font->foundry;
+              $changed = TRUE;
+            } // if
+            if ($select_result->license != $font->license->name) {
+              $select_result->license = $font->license->name;
+              $changed = TRUE;
+            } // if
+            if ($select_result->license_url != $font->license->url) {
+              $select_result->license_url = $font->license->url;
+              $changed = TRUE;
+            } // if
+  
+            if ($changed) {
+              drupal_write_record('kernest', $select_result, 'fid');
+            } // if
+  
           } // if
-          if ($select_result->css != $font->{'recommended css'}) {
-            $select_result->css = $font->{'recommended css'};
-            $changed = TRUE;
-          } // if
-          if ($select_result->foundry != $font->foundry) {
-            $select_result->foundry = $font->foundry;
-            $changed = TRUE;
-          } // if
-          if ($select_result->license != $font->license->name) {
-            $select_result->license = $font->license->name;
-            $changed = TRUE;
-          } // if
-          if ($select_result->license_url != $font->license->url) {
-            $select_result->license_url = $font->license->url;
-            $changed = TRUE;
-          } // if
+          else {
+  
+            $insert_sql = "INSERT INTO {kernest}
+            (name, url, css, foundry, license, license_url)
+            VALUES
+            ('%s', '%s', '%s', '%s', '%s', '%s')";
+  
+            db_query($insert_sql, $font->name, $font->url, $font->{'recommended css'}, $font->foundry, $font->license->name, $font->license->url);
+  
+          } // else
+  
+        } // foreach
 
-          if ($changed) {
-            drupal_write_record('kernest', $select_result, 'fid');
-          } // if
-
-        } // if
-        else {
-
-          $insert_sql = "INSERT INTO {kernest}
-          (name, url, css, foundry, license, license_url)
-          VALUES
-          ('%s', '%s', '%s', '%s', '%s', '%s')";
-
-          db_query($insert_sql, $font->name, $font->url, $font->{'recommended css'}, $font->foundry, $font->license->name, $font->license->url);
-
-        } // else
-
-      } // foreach
+      } // if
 
     } // if
 
@@ -153,7 +185,7 @@ function kernest_fontyourface_css($used_font) {
     'font-family' => '',
   );
 
-  $list = kernest_list();
+  $list = kernest_list(FALSE);
   $font = $list[$used_font->group_name]['fonts'][$used_font->name];
 
   if (preg_match('#font-family:([^;]+)#', $font['css'], $match)) {
@@ -176,11 +208,11 @@ function kernest_fontyourface_license($used_font) {
 
 } // kernest_fontyourface_license
 
-function kernest_list() {
+function kernest_list($show_error = TRUE) {
 
-  static $fonts = false;
+  static $fonts = FALSE;
 
-  if (!$fonts) {
+  if ($fonts === FALSE) {
 
     $fonts = array();
     $font_fid_to_name = array();
@@ -210,6 +242,12 @@ function kernest_list() {
       );
 
     } // while
+
+    if (count($fonts) == 0 && $show_error) {
+
+      drupal_set_message(t('The KERNEST font list has not yet been imported. ') . l('Import now', 'admin/build/themes/fontyourface/kernest/import', array('query' => drupal_get_destination())) . t(' or wait until the next cron run.'));
+    
+    } // if
 
   } // if
 
