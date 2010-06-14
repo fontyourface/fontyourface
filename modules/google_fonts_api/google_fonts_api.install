@@ -1,0 +1,16 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Sets weight above admin.module
+ */
+
+/**
+ * Implements hook_install().
+ */
+function google_fonts_api_install() {
+
+  fontyourface_weight_above('google_fonts_api');
+
+} // google_fonts_api_install
