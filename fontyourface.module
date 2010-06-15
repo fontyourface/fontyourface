@@ -274,9 +274,8 @@ function fontyourface_admin_add_form(&$form_state, $module_name, $group_path, $f
 
   if (!$font) {
 
-    $module_name = arg(6, $_SERVER['REDIRECT_URL']);
-    $group_path = arg(7, $_SERVER['REDIRECT_URL']);
-    $font_path = arg(8, $_SERVER['REDIRECT_URL']);
+    $font_path = str_replace(' ', '+', $font_path);
+    $group_path = str_replace(' ', '+', $group_path);
 
     $font = fontyourface_get_font_from_path($module_name, $group_path, $font_path);
 
