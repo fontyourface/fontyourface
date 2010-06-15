@@ -7,7 +7,7 @@
 function kernest_menu() {
 
   $items = array();
-  
+
   $items['admin/build/themes/fontyourface/kernest/import'] = array(
     'title' => 'KERNEST Import',
     'page callback' => 'kernest_import',
@@ -47,15 +47,15 @@ function kernest_cron() {
       $decoded = json_decode(str_replace("\n", ' ', $api_result->data));
 
       if (is_array($decoded->fonts)) {
-  
+
         foreach ($decoded->fonts as $font) {
-  
+
           $select_results = db_query("SELECT * FROM {kernest} g WHERE name = '%s'", $font->name);
-  
+
           if ($select_result = db_fetch_object($select_results)) {
-  
+
             $changed = FALSE;
-  
+
             if ($select_result->url != $font->url) {
               $select_result->url = $font->url;
               $changed = TRUE;
@@ -76,23 +76,23 @@ function kernest_cron() {
               $select_result->license_url = $font->license->url;
               $changed = TRUE;
             } // if
-  
+
             if ($changed) {
               drupal_write_record('kernest', $select_result, 'fid');
             } // if
-  
+
           } // if
           else {
-  
+
             $insert_sql = "INSERT INTO {kernest}
             (name, url, css, foundry, license, license_url)
             VALUES
             ('%s', '%s', '%s', '%s', '%s', '%s')";
-  
+
             db_query($insert_sql, $font->name, $font->url, $font->{'recommended css'}, $font->foundry, $font->license->name, $font->license->url);
-  
+
           } // else
-  
+
         } // foreach
 
       } // if
@@ -160,7 +160,7 @@ function kernest_preprocess_page(&$vars) {
     $fonts = kernest_list();
 
     foreach ($vars['fontyourface'] as $used_font) {
-    
+
       if ($used_font->provider == 'kernest') {
         $links[] = '<link href="' . $fonts[$used_font->group_name]['fonts'][$used_font->name]['url'] . '.css" rel="stylesheet" type="text/css" />';
       } // if
@@ -236,7 +236,7 @@ function kernest_list($show_error = TRUE) {
         'css' => $result->css,
         'license' => array(
           'name' => $result->license,
-          'url' => $result->license_url 
+          'url' => $result->license_url
         ),
         'url' => $result->url,
       );
@@ -245,8 +245,8 @@ function kernest_list($show_error = TRUE) {
 
     if (count($fonts) == 0 && $show_error) {
 
-      drupal_set_message(t('The KERNEST font list has not yet been imported. ') . l('Import now', 'admin/build/themes/fontyourface/kernest/import', array('query' => drupal_get_destination())) . t(' or wait until the next cron run.'));
-    
+      drupal_set_message(t('The KERNEST font list has not yet been imported. !importlink or wait until the next cron run.'), array('!importlink' => l('Import now', 'admin/build/themes/fontyourface/kernest/import', array('query' => drupal_get_destination()))));
+
     } // if
 
   } // if

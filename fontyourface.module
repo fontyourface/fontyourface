@@ -176,7 +176,7 @@ function fontyourface_admin_page() {
   $rows = array();
 
   if (empty($fonts)) {
-    $rows[] = array(array('data' => t('No fonts added. '), 'colspan' => '3'));
+    $rows[] = array(array('data' => t('No fonts added.'), 'colspan' => '3'));
   } // if
   else {
 
@@ -210,7 +210,7 @@ function fontyourface_admin_add_page() {
 
   $page = isset($_GET['page']) ? $_GET['page'] : '';
   $pager_page_array = explode(',', $page);
-  
+
   $available_fonts = fontyourface_available_fonts();
   $fonts = array();
   $fonts_by_module = array();
@@ -284,12 +284,12 @@ function fontyourface_admin_add_form(&$form_state, $module_name, $group_path, $f
   if ($font) {
 
     $view = $module_name . '_fontyourface_view';
-    
+
     $font_in_use = new stdClass;
     $font_in_use->name = $font['font name'];
     $font_in_use->group_name = $font['group'];
     $font_in_use->provider = $font['module'];
-    
+
     $css_function = $font_in_use->provider . '_fontyourface_css';
     $font_css = $css_function($font_in_use);
 
@@ -310,9 +310,9 @@ function fontyourface_admin_add_form(&$form_state, $module_name, $group_path, $f
         '#value' => '<h2>' . check_plain($font['font name']) . '</h2>',
       ),
     );
-    
+
     $license_function = $font_in_use->provider . '_fontyourface_license';
-    
+
     if (function_exists($license_function)) {
 
       $license = $license_function($font_in_use);
@@ -327,7 +327,7 @@ function fontyourface_admin_add_form(&$form_state, $module_name, $group_path, $f
         } // else
 
         $form['license'] = array(
-          '#value' => '<div class="license">' . t('License: ') . $license_markup . '</div>',
+          '#value' => '<div class="license">' . t('License: !license', array('!license' => $license_markup)) . '</div>',
         );
 
       } // if
@@ -396,7 +396,7 @@ function fontyourface_admin_add_form_submit($form, &$form_state) {
     $font->group_name = $form['group']['#value'];
     $font->name = $form['font']['#value'];
     $font->css = $form['css']['#value'];
-  
+
     drupal_write_record('fontyourface', $font);
     $enabled = TRUE;
 
@@ -409,7 +409,7 @@ function fontyourface_admin_add_form_submit($form, &$form_state) {
   } // if
 
   if ($enabled) {
-    drupal_set_message('Added font <i>' . $font->name .'</i>.'); 
+    drupal_set_message(t('Added font') . ' <i>' . $font->name .'</i>.');
   } // if
 
   drupal_goto('admin/build/themes/fontyourface');
@@ -426,7 +426,7 @@ function fontyourface_admin_edit_form(&$form_state, $fid) {
   $font = fontyourface_get_font($font);
 
   $css_function = $font->provider . '_fontyourface_css';
-  
+
   if (function_exists($css_function)) {
     $font_css = $css_function($font);
   } // if
@@ -446,17 +446,17 @@ function fontyourface_admin_edit_form(&$form_state, $fid) {
       '#description' => t('Use commas to separate multiple selectors, just like you would in CSS. Leave blank to handle application of the font in your theme.'),
     ),
   );
-  
+
   if ($font_css) {
-  
+
     $form += array(
       'font-family' => array(
         '#value' => '<div>' . t('To apply in your own CSS, use:') . '</div><div><code>font-family: ' . check_plain($font_css['font-family']) . ';</code></div>',
       ),
     );
-    
+
   } // if
-    
+
   $form += array(
     'buttons' => array(
       'submit' => array(
@@ -486,7 +486,7 @@ function fontyourface_admin_edit_form_submit($form, &$form_state) {
   if ($form['#post']['op'] == 'Disable') {
 
     fontyourface_delete_font($font);
-    drupal_set_message('Disabled font <i>' . $font->name .'</i>.');
+    drupal_set_message(t('Disabled font') . ' <i>' . $font->name .'</i>.');
     drupal_goto('admin/build/themes/fontyourface');
 
   } // if
@@ -495,7 +495,7 @@ function fontyourface_admin_edit_form_submit($form, &$form_state) {
     $font->css = $form['css']['#value'];
 
     drupal_write_record('fontyourface', $font, 'fid');
-    drupal_set_message('Updated font <i>' . $font->name .'</i>.');
+    drupal_set_message(t('Updated font') . ' <i>' . $font->name .'</i>.');
     drupal_goto('admin/build/themes/fontyourface');
 
   } // else

@@ -56,7 +56,7 @@ function google_fonts_api_preprocess_page(&$vars) {
     $fonts = google_fonts_api_list();
 
     foreach ($vars['fontyourface'] as $used_font) {
-    
+
       if ($used_font->provider == 'google_fonts_api') {
         $paths[] = $fonts[$used_font->group_name]['fonts'][$used_font->name]['path'];
       } // if
