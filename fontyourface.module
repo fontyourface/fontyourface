@@ -274,8 +274,8 @@ function fontyourface_admin_add_form(&$form_state, $module_name, $group_path, $f
 
   if (!$font) {
 
-    $font_path = str_replace(' ', '+', $font_path);
-    $group_path = str_replace(' ', '+', $group_path);
+    $font_path = str_replace(array(' ','!'), array('+', '%21'), $font_path);
+    $group_path = str_replace(array(' ','!'), array('+', '%21'), $group_path);
 
     $font = fontyourface_get_font_from_path($module_name, $group_path, $font_path);
 
@@ -372,7 +372,7 @@ function fontyourface_admin_add_form(&$form_state, $module_name, $group_path, $f
 
     $form = array(
       'not_found' => array(
-        '#value' => t('Font not found'),
+        '#value' => t('Font not found. Looking for: !font', array('!font' => $font_path)),
       ),
     );
 
