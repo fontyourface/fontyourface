@@ -302,7 +302,7 @@ function fontsquirrel_fontyourface_enable($used_font) {
 
             $entry_name = zip_entry_name($entry);
             $data = zip_entry_read($entry, $zip_entry_filesize);
-            file_save_data($data, $destination_dir .'/'. $entry_name);
+            file_save_data($data, $directory_location .'/'. $entry_name);
 
           } // if
 
