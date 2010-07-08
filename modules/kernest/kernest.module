@@ -245,7 +245,7 @@ function kernest_list($show_error = TRUE) {
 
     if (count($fonts) == 0 && $show_error) {
 
-      drupal_set_message(t('The KERNEST font list has not yet been imported. !importlink or wait until the next cron run.'), array('!importlink' => l('Import now', 'admin/build/themes/fontyourface/kernest/import', array('query' => drupal_get_destination()))));
+      drupal_set_message(t('The KERNEST font list has not yet been imported. !importlink or wait until the next cron run.', array('!importlink' => l('Import now', 'admin/build/themes/fontyourface/kernest/import', array('query' => drupal_get_destination())))));
 
     } // if
 
