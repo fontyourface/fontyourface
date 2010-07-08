@@ -12,7 +12,12 @@
 function fontsquirrel_install() {
 
   drupal_install_schema('fontsquirrel');
-  fontyourface_weight_above('fontsquirrel');
+
+  $results = db_query("SELECT weight FROM {system} WHERE name = 'admin'");
+
+  if ($result = db_fetch_object($results)) {
+    db_query("UPDATE {system} SET weight = %d WHERE name = 'admin'", $result->weight + 1);
+  } // if
 
 } // fontsquirrel_install
 

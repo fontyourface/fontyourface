@@ -606,13 +606,3 @@ function fontyourface_by_font_name($a, $b) {
   return ($a['font name'] > $b['font name']) ? 1 : -1;
 
 } // fontyourface_by_name
-
-function fontyourface_weight_above($above, $below = 'admin') {
-
-  $results = db_query("SELECT weight FROM {system} WHERE name = '%s'", $below);
-
-  if ($result = db_fetch_object($results)) {
-    db_query("UPDATE {system} SET weight = %d WHERE name = '%s'", $result->weight + 1, $above);
-  } // if
-
-} // fontyourface_weight_above
