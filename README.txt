@@ -16,3 +16,8 @@ Using @font-your-face:
 - Click the name of a font.
 - Enter a CSS selector for the content you want to use the font (or leave it as "body" to use it everywhere)
 - Click "Add font"
+
+WARNING:
+--------
+
+Internet Explorer has a limit of 32 CSS files, so using @font-your-face on CSS-heavy sites may require turning on CSS aggregation under administer >> site configuration >> performance.
