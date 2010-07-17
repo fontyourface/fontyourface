@@ -2,4 +2,5 @@
 name = @font-your-face
 description = Administrative interface for managing fonts.
 package = @font-your-face
+dependencies[] = views
 core = 6.x
