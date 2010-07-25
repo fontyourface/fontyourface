@@ -16,7 +16,7 @@ function fontsquirrel_install() {
   $results = db_query("SELECT weight FROM {system} WHERE name = 'admin'");
 
   if ($result = db_fetch_object($results)) {
-    db_query("UPDATE {system} SET weight = %d WHERE name = 'admin'", $result->weight + 1);
+    db_query("UPDATE {system} SET weight = %d WHERE name = 'fontsquirrel'", $result->weight + 1);
   } // if
 
 } // fontsquirrel_install
