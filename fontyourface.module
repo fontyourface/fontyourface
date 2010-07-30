@@ -19,6 +19,15 @@ function fontyourface_menu() {
 
   $items = array();
 
+  $items['admin/settings/fontyourface'] = array(
+    'title' => '@font-your-face settings',
+    'description' => 'Manage settings for how font providers work. (Manage site fonts ' . l(t('under themes'), 'admin/build/themes/fontyourface') . '.)',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('fontyourface_settings_form'),
+    'access arguments' => array('administer @font-your-face'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
   $items['admin/build/themes/fontyourface'] = array(
     'title' => '@font-your-face',
     'page callback' => 'fontyourface_admin_page',
@@ -53,6 +62,17 @@ function fontyourface_menu() {
   return $items;
 
 } // fontyourface_menu
+
+/**
+ * Creates settings form.
+ */
+function fontyourface_settings_form() {
+
+  $form = array();
+
+  return system_settings_form($form);
+
+} // fontyourface_settings_form
 
 /**
  * Implements template_preprocess_page().

@@ -1,0 +1,117 @@
+<?php
+// $Id$
+
+/**
+ * Implements hook_form_alter().
+ */
+function typekit_api_form_alter(&$form, &$form_state, $form_id) {
+
+  if ($form_id == 'fontyourface_settings_form') {
+
+    $form['typekit_api'] = array(
+      '#type' => 'fieldset',
+      '#title' => 'Typekit',
+      '#weight' => -1,
+      'typekit_api_token' => array(
+        '#type' => 'textfield',
+        '#title' => t('TypeKit API token'),
+        '#description' => t('Provided at ') . l('Typekit.com/account/tokens', 'https://typekit.com/account/tokens'),
+        '#default_value' => variable_get('typekit_api_token', ''),
+      ),
+    );
+
+  } // if
+
+} // typekit_api_form_alter
+
+/**
+ * Implements hook_fontyourface_info().
+ */
+function typekit_api_fontyourface_info() {
+
+  $info = array(
+    'typekit_api' => array(
+      'name' => 'Typekit',
+      'url' => 'http://typekit.com/',
+      'fonts' => typekit_api_list(),
+    ),
+  );
+
+  return $info;
+
+} // typekit_api_fontyourface_info
+
+/**
+ * Provides a list of fonts for @font-your-face.
+ */
+function typekit_api_list() {
+
+  // This will eventually be a 2-step process, import to DB, then pull from DB
+
+  $kits = typekit_api_get_kits();
+
+  foreach ($kits as $kit) {
+  
+    $kit_info = typekit_api_get_kit($kit->id);
+
+  } // foreach
+    
+  return array();
+
+} // typekit_api_list
+
+/**
+ * Provides base URL.
+ */
+function typekit_api_base_url() {
+
+  return 'https://typekit.com/api/v1/json/';
+
+} // typekit_api_base_url
+
+/**
+ * Provides header with token.
+ */
+function typekit_api_token_headers() {
+
+  return array('X-Typekit-Token' => variable_get('typekit_api_token', ''));
+
+} // typekit_api_token_headers
+
+/**
+ * Gets list of kits from API.
+ */
+function typekit_api_get_kits($limit_to_current_domain = TRUE) {
+
+  $domain_limit = ($limit_to_current_domain) ? '?domains=asdf.com' : ''; // . $_SERVER['HTTP_HOST'] : '';
+
+  $response = drupal_http_request(typekit_api_base_url() . 'kits' . $domain_limit, typekit_api_token_headers());
+
+  if ($response->code == 200) {
+
+    $data = json_decode($response->data);
+    $kits = $data->kits;
+
+  } // if
+
+  return $kits;
+
+} // typekit_api_get_kits
+
+/**
+ * Get a specific kit from API based on ID.
+ */
+function typekit_api_get_kit($kit_id) {
+
+  $response = drupal_http_request(typekit_api_base_url() . 'kits/' . $kit_id, typekit_api_token_headers());
+
+  if ($response->code == 200) {
+
+    $data = json_decode($response->data);
+    $kit = $data->kit;
+
+  } // if
+
+  return $kit;
+
+} // typekit_api_get_kit
