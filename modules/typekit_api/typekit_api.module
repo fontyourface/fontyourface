@@ -1,6 +1,91 @@
 <?php
 // $Id$
 
+define('TYPEKIT_API_BASE_URL', 'https://typekit.com/api/v1/json/');
+
+/**
+ * Implements hook_menu()
+ */
+function typekit_api_menu() {
+
+  $items = array();
+
+  $items['admin/build/themes/fontyourface/typekit/import'] = array(
+    'title' => 'Typekit Import',
+    'page callback' => 'typekit_api_import',
+    'access arguments' => array('administer @font-your-face'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+
+} // typekit_api_menu
+
+/**
+ * Callback for import.
+ */
+function typekit_api_import() {
+
+  typekit_api_cron();
+  drupal_goto($_GET['destination']);
+
+} // typekit_api_import
+
+/**
+ * Implements hook_cron().
+ */
+function typekit_api_cron() {
+
+  $last_updated = variable_get('typekit_api_last_update', 0);
+
+  // if (time() - (60 * 60 * 24) > $last_updated) { // update every 24 hours
+
+    $kits = typekit_api_get_kits();
+
+    foreach ($kits as $kit) {
+    
+      $kit_info = typekit_api_get_kit($kit->id);
+
+      if (typekit_api_kit_matches_domain($kit_info, $_SERVER['HTTP_HOST'])) {
+        
+        // dsm($kit_info);
+        
+        // TODO: Get information on each variant and import into typekit_api_variant table
+      
+      } // if
+
+    } // foreach
+
+    variable_set('typekit_api_last_update', time());
+
+  // } // if
+
+} // typekit_api_cron
+
+/**
+ * Implements template_preprocess_page().
+ */
+function typekit_api_preprocess_page(&$vars) {
+
+  if (!empty($vars['fontyourface'])) {
+
+    $links = array();
+    $fonts = typekit_api_list(FALSE);
+
+    foreach ($vars['fontyourface'] as $used_font) {
+
+      if ($used_font->provider == 'typekit_api') {
+
+        // TODO: add Typekit JS for this font to <head>
+
+      } // if
+
+    } // foreach
+
+  } // if
+
+} // typekit_api_preprocess_page
+
 /**
  * Implements hook_form_alter().
  */
@@ -44,30 +129,21 @@ function typekit_api_fontyourface_info() {
 /**
  * Provides a list of fonts for @font-your-face.
  */
-function typekit_api_list() {
+function typekit_api_list($show_error = TRUE) {
 
-  // This will eventually be a 2-step process, import to DB, then pull from DB
+  $fonts = array();
 
-  $kits = typekit_api_get_kits();
+  // TODO: pull list from typekit_api_variant table
 
-  foreach ($kits as $kit) {
-  
-    $kit_info = typekit_api_get_kit($kit->id);
+  if (count($fonts) == 0 && $show_error) {
 
-  } // foreach
-    
-  return array();
+    drupal_set_message(t('The Typekit font list has not yet been imported. !importlink or wait until the next cron run.', array('!importlink' => l('Import now', 'admin/build/themes/fontyourface/typekit/import', array('query' => drupal_get_destination())))));
+
+  } // if
+
+  return $fonts;
 
 } // typekit_api_list
-
-/**
- * Provides base URL.
- */
-function typekit_api_base_url() {
-
-  return 'https://typekit.com/api/v1/json/';
-
-} // typekit_api_base_url
 
 /**
  * Provides header with token.
@@ -81,11 +157,9 @@ function typekit_api_token_headers() {
 /**
  * Gets list of kits from API.
  */
-function typekit_api_get_kits($limit_to_current_domain = TRUE) {
+function typekit_api_get_kits() {
 
-  $domain_limit = ($limit_to_current_domain) ? '?domains=asdf.com' : ''; // . $_SERVER['HTTP_HOST'] : '';
-
-  $response = drupal_http_request(typekit_api_base_url() . 'kits' . $domain_limit, typekit_api_token_headers());
+  $response = drupal_http_request(TYPEKIT_API_BASE_URL . 'kits', typekit_api_token_headers());
 
   if ($response->code == 200) {
 
@@ -103,7 +177,7 @@ function typekit_api_get_kits($limit_to_current_domain = TRUE) {
  */
 function typekit_api_get_kit($kit_id) {
 
-  $response = drupal_http_request(typekit_api_base_url() . 'kits/' . $kit_id, typekit_api_token_headers());
+  $response = drupal_http_request(TYPEKIT_API_BASE_URL . 'kits/' . $kit_id, typekit_api_token_headers());
 
   if ($response->code == 200) {
 
@@ -115,3 +189,17 @@ function typekit_api_get_kit($kit_id) {
   return $kit;
 
 } // typekit_api_get_kit
+
+function typekit_api_kit_matches_domain($kit, $domain) {
+
+  foreach ($kit->domains as $kit_domain) {
+
+    if ($kit_domain == $domain) {
+      return TRUE;
+    } // if
+
+  } // foreach
+
+  return FALSE;
+
+} // typekit_api_kit_matches_domain

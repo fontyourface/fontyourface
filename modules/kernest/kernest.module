@@ -17,7 +17,7 @@ function kernest_menu() {
 
   return $items;
 
-} // fontsquirrel_menu
+} // kernest_menu
 
 /**
  * Callback for import.
