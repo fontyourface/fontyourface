@@ -366,8 +366,8 @@ function fontyourface_admin_add_form(&$form_state, $module_name, $group_path, $f
       'css' => array(
         '#type' => 'textarea',
         '#title' => t('CSS selector'),
-        '#default_value' => 'body',
-        '#description' => t('Use commas to separate multiple selectors, just like you would in CSS. Leave blank to handle application of the font in your theme.'),
+        '#default_value' => '',
+        '#description' => t('Use commas to separate multiple selectors, just like you would in CSS. Leave blank to handle application of the font in your theme. e.g. "body" or "h1, h2, h3, h4"'),
       ),
       'font-family' => array(
         '#value' => '<div>' . t('To apply in your own CSS, use:') . '</div><div><code>font-family: ' . check_plain($font_css['font-family']) . ';</code></div>',
