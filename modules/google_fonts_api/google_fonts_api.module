@@ -65,7 +65,7 @@ function google_fonts_api_preprocess_page(&$vars) {
 
     if (count($paths) > 0) {
 
-      $vars['styles'] = '<link href="http://fonts.googleapis.com/css?family=' . implode('|', $paths) . '" rel="stylesheet" type="text/css" />' . $vars['styles'];
+      fontyourface_add_css_in_preprocess($vars, 'http://fonts.googleapis.com/css?family=' . implode('|', $paths), TRUE);
 
     } // if
 

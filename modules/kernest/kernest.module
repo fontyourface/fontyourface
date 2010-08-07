@@ -162,14 +162,12 @@ function kernest_preprocess_page(&$vars) {
     foreach ($vars['fontyourface'] as $used_font) {
 
       if ($used_font->provider == 'kernest') {
-        $links[] = '<link href="' . $fonts[$used_font->group_name]['fonts'][$used_font->name]['url'] . '.css" rel="stylesheet" type="text/css" />';
+
+        fontyourface_add_css_in_preprocess($vars, $fonts[$used_font->group_name]['fonts'][$used_font->name]['url'] . '.css', TRUE);
+
       } // if
 
     } // foreach
-
-    if (count($links) > 0) {
-      $vars['styles'] = implode("\n", $links) . $vars['styles'];
-    } // if
 
   } // if
 

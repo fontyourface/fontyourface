@@ -176,8 +176,7 @@ function fontyourface_preprocess_page(&$vars) {
 
   if ($css != '') {
 
-    $vars['css']['all']['theme'][file_directory_path() . '/fontyourface/font.css'] = TRUE;
-    $vars['styles'] = drupal_get_css($vars['css']);
+    fontyourface_add_css_in_preprocess($vars, file_directory_path() . '/fontyourface/font.css');
 
   } // if
 
@@ -613,6 +612,9 @@ function fontyourface_available_fonts() {
 
 } // fontyourface_available_fonts
 
+/**
+ * Provides usort() callback.
+ */
 function fontyourface_by_font_name($a, $b) {
 
   if (is_object($a)) {
@@ -626,3 +628,25 @@ function fontyourface_by_font_name($a, $b) {
   return ($a['font name'] > $b['font name']) ? 1 : -1;
 
 } // fontyourface_by_name
+
+/**
+ * Adds a stylesheet in preprocess
+ */
+function fontyourface_add_css_in_preprocess(&$vars, $css_path, $remote = FALSE) {
+
+  if ($remote) {
+
+    $link = '<link href="' . $css_path . '" rel="stylesheet" type="text/css" />';
+    drupal_set_html_head($link);
+    $vars['head'] = drupal_get_html_head();
+
+  } // if
+  else {
+
+    drupal_add_css($css_path, 'module');
+    $vars['css']['all']['module'][$css_path] = TRUE;
+    $vars['styles'] = drupal_get_css();
+
+  } // else
+
+} // fontyourface_add_css_in_preprocess
