@@ -43,15 +43,15 @@ function typekit_api_cron() {
     $kits = typekit_api_get_kits();
 
     foreach ($kits as $kit) {
-    
+
       $kit_info = typekit_api_get_kit($kit->id);
 
       if (typekit_api_kit_matches_domain($kit_info, $_SERVER['HTTP_HOST'])) {
-        
+
         // dsm($kit_info);
-        
+
         // TODO: Get information on each variant and import into typekit_api_variant table
-      
+
       } // if
 
     } // foreach

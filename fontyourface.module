@@ -262,21 +262,30 @@ function fontyourface_admin_add_page() {
 
   $header = array(t('Name'), t('Sample'), t('Provider'), t('Group'));
 
-  usort($fonts, 'fontyourface_by_font_name');
+  if (count($fonts) > 0) {
 
-  $pager_total[] = ceil(count($fonts)/FONTYOURFACE_ADD_PAGE_COUNT);
+    usort($fonts, 'fontyourface_by_font_name');
 
-  $page_fonts = array_slice($fonts, intval($_GET['page']) * FONTYOURFACE_ADD_PAGE_COUNT, FONTYOURFACE_ADD_PAGE_COUNT);
+    $pager_total[] = ceil(count($fonts)/FONTYOURFACE_ADD_PAGE_COUNT);
 
-  foreach ($page_fonts as $font) {
+    $page_fonts = array_slice($fonts, intval($_GET['page']) * FONTYOURFACE_ADD_PAGE_COUNT, FONTYOURFACE_ADD_PAGE_COUNT);
 
-    $preview = $font['module'] . '_fontyourface_preview';
+    foreach ($page_fonts as $font) {
 
-    $view_link = l($font['font name'], 'admin/build/themes/fontyourface/add/' . $font['module'] . '/' . $font['group path'] . '/' . $font['font']['path']);
+      $preview = $font['module'] . '_fontyourface_preview';
 
-    $rows[] = array($view_link, $preview($font['font']), l($font['provider'], $font['provider url']), check_plain($font['group']));
+      $view_link = l($font['font name'], 'admin/build/themes/fontyourface/add/' . $font['module'] . '/' . $font['group path'] . '/' . $font['font']['path']);
 
-  } // foreach
+      $rows[] = array($view_link, $preview($font['font']), l($font['provider'], $font['provider url']), check_plain($font['group']));
+
+    } // foreach
+
+  } // if
+  else {
+
+    $rows[] = array(array('data' => t('No fonts available. ') . l(t('Enable font providers'), 'admin/build/modules') . ' ' . t('to make  fonts available.'), 'colspan' => '4'));
+
+  } // else
 
   return '<h1>Add font</h1><div>Click a font name to view details and add the font.</div>' . theme('table', $header, $rows, array('id' => 'font-your-face-options')) . theme('pager', NULL, FONTYOURFACE_ADD_PAGE_COUNT);
 
@@ -293,8 +302,8 @@ function fontyourface_admin_add_form(&$form_state, $module_name, $group_path, $f
 
   if (!$font) {
 
-    $font_path = str_replace(array(' ','!'), array('+', '%21'), $font_path);
-    $group_path = str_replace(array(' ','!'), array('+', '%21'), $group_path);
+    $font_path = str_replace(array(' ', '!'), array('+', '%21'), $font_path);
+    $group_path = str_replace(array(' ', '!'), array('+', '%21'), $group_path);
 
     $font = fontyourface_get_font_from_path($module_name, $group_path, $font_path);
 

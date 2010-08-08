@@ -1,4 +1,9 @@
 <?php
 // $Id$
 
+/**
+ * @file
+ * Adds typekit tables for caching API data.
+ */
+
 // TODO: add and remove schema for typekit_api_variant table
