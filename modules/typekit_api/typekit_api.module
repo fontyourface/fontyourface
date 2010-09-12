@@ -297,6 +297,8 @@ function typekit_api_token_headers() {
  */
 function typekit_api_get_kits() {
 
+  $kits = array();
+
   $response = drupal_http_request(TYPEKIT_API_BASE_URL . 'kits', typekit_api_token_headers());
 
   if ($response->code == 200) {

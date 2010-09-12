@@ -138,7 +138,7 @@ function fontsquirrel_fontyourface_preview($font) {
  */
 function fontsquirrel_fontyourface_view($font, $text) {
 
-  $output .= '<div><img src="http://www.fontsquirrel.com/utils/makeFont.php?font=' . $font['id'] . '/' . $font['filename'] . '&width=800&size=14&text=' . urlencode($text) . '" /></div>';
+  $output = '<div><img src="http://www.fontsquirrel.com/utils/makeFont.php?font=' . $font['id'] . '/' . $font['filename'] . '&width=800&size=14&text=' . urlencode($text) . '" /></div>';
 
   $output .= '<div><img src="http://www.fontsquirrel.com/utils/makeSolotypeSample.php?font=' . $font['id'] . '/' . $font['filename'] . '&case=all" /></div>';
 
@@ -359,7 +359,7 @@ function fontsquirrel_list($show_error = TRUE) {
         'path' => $result->path,
         'filename' => $result->filename,
         'family' => $result->font_family,
-        'local' => $result->local,
+        'local' => isset($result->local) ? $result->local : '',
       );
 
     } // while

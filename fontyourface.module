@@ -41,7 +41,7 @@ function fontyourface_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('fontyourface_admin_add_form', 5, 6, 7),
     'access arguments' => array('administer @font-your-face'),
-    'type' => MENU_LOCAL_TASK,
+    'type' => MENU_CALLBACK,
   );
 
   $items['admin/build/themes/fontyourface/add'] = array(
@@ -82,8 +82,9 @@ function fontyourface_preprocess_page(&$vars) {
   $fonts = array();
 
   $destination = dirname($_SERVER['SCRIPT_FILENAME']) . '/' . file_directory_path() . '/fontyourface/font.css';
+  $directory = dirname($destination);
 
-  if (file_check_directory(dirname($destination),  FILE_CREATE_DIRECTORY)) {
+  if (file_check_directory($directory, FILE_CREATE_DIRECTORY)) {
 
     $font_face = '';
     $font_family = '';
@@ -115,7 +116,8 @@ function fontyourface_preprocess_page(&$vars) {
 
       usort($fonts, 'fontyourface_by_font_name');
 
-      $fonts = array_slice($fonts, intval($_GET['page']) * FONTYOURFACE_ADD_PAGE_COUNT, FONTYOURFACE_ADD_PAGE_COUNT);
+      $page = (isset($_GET['page'])) ? intval($_GET['page']) : 0;
+      $fonts = array_slice($fonts, $page * FONTYOURFACE_ADD_PAGE_COUNT, FONTYOURFACE_ADD_PAGE_COUNT);
 
     } // if
     elseif (strpos($_GET['q'], 'admin/build/themes/fontyourface/add/') === 0) {
@@ -268,7 +270,8 @@ function fontyourface_admin_add_page() {
 
     $pager_total[] = ceil(count($fonts)/FONTYOURFACE_ADD_PAGE_COUNT);
 
-    $page_fonts = array_slice($fonts, intval($_GET['page']) * FONTYOURFACE_ADD_PAGE_COUNT, FONTYOURFACE_ADD_PAGE_COUNT);
+    $page = isset($_GET['page']) ? intval($_GET['page']) : 0;
+    $page_fonts = array_slice($fonts, $page * FONTYOURFACE_ADD_PAGE_COUNT, FONTYOURFACE_ADD_PAGE_COUNT);
 
     foreach ($page_fonts as $font) {
 
