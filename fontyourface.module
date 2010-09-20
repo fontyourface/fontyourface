@@ -1,8 +1,6 @@
 <?php
 // $Id$
 
-define('FONTYOURFACE_ADD_PAGE_COUNT', 20);
-
 /**
  * Implements hook_perm().
  */
@@ -53,6 +51,219 @@ function fontyourface_menu() {
   return $items;
 
 } // fontyourface_menu
+
+/**
+ * Implements hook_views_data().
+ */
+function fontyourface_views_data() {
+
+  $data = array();
+
+  $data['fontyourface_font'] = array(
+    'table' => array(
+      'group' => t('Font'),
+      'base' => array(
+        'field' => 'fid',
+        'title' => t('Font'),
+        'help' => t('Fonts from @font-your-face.'),
+      ),
+    ),
+    'join' => array(
+      'fontyourface_tag' => array(
+        'left_table' => 'fontyourface_tag_font',
+        'left_field' => 'fid',
+        'field' => 'fid',
+      ),
+    ),
+    'fid' => array(
+      'title' => t('Font ID'),
+      'help' => t('Unique ID for a font.'),
+      'filter' => array(
+        'handler' => 'views_handler_field_numeric',
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_field_numeric',
+      ),
+    ),
+    'name' => array(
+      'title' => t('Name'),
+      'help' => t('Name of the font.'),
+      'field' => array(
+        'handler' => 'views_handler_field_fontyourface_font',
+        'click sortable' => TRUE,
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+    ),
+    'foundry' => array(
+      'title' => t('Foundry'),
+      'help' => t('Foundry of the font.'),
+      'field' => array(
+        'handler' => 'views_handler_field_fontyourface_foundry',
+        'click sortable' => TRUE,
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+    ),
+    'foundry_url' => array(
+      'title' => t('Foundry URL'),
+      'help' => t('URL of foundry of the font.'),
+      'field' => array(
+        'handler' => 'views_handler_field_fontyourface_foundry',
+        'click sortable' => TRUE,
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+    ),
+    'license' => array(
+      'title' => t('License'),
+      'help' => t('License for using the font.'),
+      'field' => array(
+        'handler' => 'views_handler_field_fontyourface_license',
+        'click sortable' => TRUE,
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+    ),
+    'license_url' => array(
+      'title' => t('License URL'),
+      'help' => t('URL of license for using the font.'),
+      'field' => array(
+        'handler' => 'views_handler_field_fontyourface_license',
+        'click sortable' => TRUE,
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+    ),
+  );
+
+  $data['fontyourface_tag_font'] = array(
+    'table' => array(
+      'group' => t('Font'),
+    ),
+    'join' => array(
+      'fontyourface_font' => array(
+        'left_field' => 'fid',
+        'field' => 'fid',
+      ),
+      'fontyourface_tag' => array(
+        'left_field' => 'tid',
+        'field' => 'tid',
+      ),
+    ),
+    'tid' => array(
+      'title' => t('Font Tag'),
+      'help' => t('Get all tags associated with a font.'),
+      'relationship' => array(
+        'handler' => 'views_handler_relationship',
+        'base' => 'fontyourface_tag',
+        'base field' => 'tid',
+        'label' => t('Font Tag'),
+      ),
+    ),
+    'fid' => array(
+      'title' => t('Font'),
+      'help' => t('Get all fonts associated with a tag.'),
+      'relationship' => array(
+        'handler' => 'views_handler_relationship',
+        'base' => 'fontyourface_font',
+        'base field' => 'fid',
+        'label' => t('Font'),
+      ),
+    ),
+  );
+
+  $data['fontyourface_tag'] = array(
+    'table' => array(
+      'group' => t('Font'),
+    ),
+    'join' => array(
+      'fontyourface_font' => array(
+        'left_table' => 'fontyourface_tag_font',
+        'left_field' => 'tid',
+        'field' => 'tid',
+      ),
+    ),
+    'name' => array(
+      'title' => t('Tag'),
+      'help' => t('A tag attached to a font.'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+    ),
+  );
+
+  return $data;
+
+} // fontyourface_views_data
+
+/**
+ * Implements hook_views_handlers().
+ */
+function fontyourface_views_handlers() {
+  return array(
+    'info' => array(
+      'path' => drupal_get_path('module', 'fontyourface') . '/views',
+    ),
+    'handlers' => array(
+      'views_handler_field_fontyourface_font' => array(
+        'parent' => 'views_handler_field',
+      ),
+      'views_handler_field_fontyourface_license' => array(
+        'parent' => 'views_handler_field',
+      ),
+      'views_handler_field_fontyourface_foundry' => array(
+        'parent' => 'views_handler_field',
+      ),
+    ),
+  );
+
+} // fontyourface_views_handlers
 
 /**
  * Implements template_preprocess_page().

@@ -103,12 +103,26 @@ function fontyourface_schema() {
         'default' => '',
         'description' => 'Foundry for the font.',
       ),
+      'foundry_url' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'URL for foundry for the font.',
+      ),
       'license' => array(
         'type' => 'varchar',
         'length' => 255,
         'not null' => FALSE,
         'default' => '',
         'description' => 'License for the font.',
+      ),
+      'license_url' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'URL for license for the font.',
       ),
       'metadata' => array(
         'type' => 'text',
