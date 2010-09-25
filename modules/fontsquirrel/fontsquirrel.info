@@ -4,3 +4,4 @@ description = @font-your-face provider with Font Squirrel fonts.
 dependencies[] = fontyourface
 package = @font-your-face
 core = 6.x
+php = 5.2.0
