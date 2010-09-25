@@ -229,6 +229,10 @@ function fontyourface_admin_add_page() {
 
   global $pager_page_array, $pager_total;
 
+  $breadcrumb = drupal_get_breadcrumb();
+  $breadcrumb[] = l('@font-your-face', 'admin/build/themes/fontyourface');
+  drupal_set_breadcrumb($breadcrumb);
+
   $page = isset($_GET['page']) ? $_GET['page'] : '';
   $pager_page_array = explode(',', $page);
 
@@ -298,6 +302,11 @@ function fontyourface_admin_add_page() {
  * Add form shows detail and enables a single font.
  */
 function fontyourface_admin_add_form(&$form_state, $module_name, $group_path, $font_path) {
+
+  $breadcrumb = drupal_get_breadcrumb();
+  $breadcrumb[] = l('@font-your-face', 'admin/build/themes/fontyourface');
+  $breadcrumb[] = l('Add', 'admin/build/themes/fontyourface/add');
+  drupal_set_breadcrumb($breadcrumb);
 
   drupal_add_js(drupal_get_path('module', 'fontyourface') . '/js/add_form.js');
 
@@ -451,6 +460,10 @@ function fontyourface_admin_add_form_submit($form, &$form_state) {
  * Edit form changes CSS selector or disables a single font.
  */
 function fontyourface_admin_edit_form(&$form_state, $fid) {
+
+  $breadcrumb = drupal_get_breadcrumb();
+  $breadcrumb[] = l('@font-your-face', 'admin/build/themes/fontyourface');
+  drupal_set_breadcrumb($breadcrumb);
 
   $font = new stdClass;
   $font->fid = $fid;
