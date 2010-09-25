@@ -38,7 +38,7 @@ function typekit_api_cron() {
 
   $last_updated = variable_get('typekit_api_last_update', 0);
 
-  // if (time() - (60 * 60 * 24) > $last_updated) { // update every 24 hours
+  if (time() - (60 * 60 * 24) > $last_updated) { // update every 24 hours
 
     $kits = typekit_api_get_kits();
 
@@ -93,7 +93,7 @@ function typekit_api_cron() {
 
     variable_set('typekit_api_last_update', time());
 
-  // } // if
+  } // if
 
 } // typekit_api_cron
 
@@ -214,7 +214,7 @@ function typekit_api_list($show_error = TRUE) {
 
   if (count($fonts) == 0 && $show_error) {
 
-    drupal_set_message(t('The Typekit font list has not yet been imported. !importlink or wait until the next cron run. Note: make sure your Typekit kits are setup to use on this domain.', array('!importlink' => l(t('Import now'), 'admin/build/themes/fontyourface/typekit/import', array('query' => drupal_get_destination())))));
+    drupal_set_message(t('No Typekit fonts have been imported yet. !importlink or wait until the next cron run. Note: make sure your Typekit kits are setup to use on this domain and include whatever fonts you would like to use.', array('!importlink' => l(t('Import now'), 'admin/build/themes/fontyourface/typekit/import', array('query' => drupal_get_destination())))));
 
   } // if
 
