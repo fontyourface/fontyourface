@@ -2,10 +2,15 @@
 // $Id$
 
 /**
+ * @file
+ * Views handler.
+ */
+
+/**
  * Field handler to provide simple renderer that allows linking to a license.
  */
 class views_handler_field_fontyourface_license extends views_handler_field {
-  
+
   /**
    * Override init function to provide generic option to link to license.
    */

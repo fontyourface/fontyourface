@@ -3,14 +3,14 @@
 
 /**
  * @file
- * Sets weight above admin.module
+ * Removes fonts on disable.
  */
 
 /**
- * Implements hook_install().
+ * Implements hook_disable().
  */
-function google_fonts_api_install() {
+function google_fonts_api_disable() {
 
-  fontyourface_weight_above('google_fonts_api');
+  fontyourface_provider_disable('google_fonts_api');
 
-} // google_fonts_api_install
+} // google_fonts_api_disable

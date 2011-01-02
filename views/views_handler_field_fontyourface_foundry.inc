@@ -2,10 +2,15 @@
 // $Id$
 
 /**
+ * @file
+ * Views handler.
+ */
+
+/**
  * Field handler to provide simple renderer that allows linking to a foundry.
  */
 class views_handler_field_fontyourface_foundry extends views_handler_field {
-  
+
   /**
    * Override init function to provide generic option to link to foundry.
    */
@@ -60,9 +65,9 @@ class views_handler_field_fontyourface_foundry extends views_handler_field {
 
       } // if
       else {
-      
+
         $this->options['alter']['make_link'] = FALSE;
-      
+
       } // else
 
     } // if

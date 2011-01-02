@@ -1,6 +1,6 @@
 ; $Id$
-name = KERNEST
-description = @font-your-face provider with KERNEST fonts.
+name = Typekit API
+description = @font-your-face provider with Typekit.com fonts.
 dependencies[] = fontyourface
 package = @font-your-face
 core = 6.x

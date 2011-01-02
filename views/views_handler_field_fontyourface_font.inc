@@ -2,10 +2,15 @@
 // $Id$
 
 /**
+ * @file
+ * Views handler.
+ */
+
+/**
  * Field handler to provide simple renderer that allows linking to a font.
  */
 class views_handler_field_fontyourface_font extends views_handler_field {
-  
+
   /**
    * Override init function to provide generic option to link to font.
    */
@@ -23,6 +28,7 @@ class views_handler_field_fontyourface_font extends views_handler_field {
 
     $options = parent::option_definition();
     $options['link_to_font'] = array('default' => 0);
+    $options['display_as'] = array('default' => 0);
 
     return $options;
 
@@ -45,6 +51,16 @@ class views_handler_field_fontyourface_font extends views_handler_field {
       '#default_value' => $this->options['link_to_font'],
     );
 
+    $form['display_as'] = array(
+      '#title' => t('Display as'),
+      '#type' => 'radios',
+      '#options' => array(
+        0 => t('Plain text'),
+        'preview' => t('Font preview'),
+      ),
+      '#default_value' => $this->options['display_as'],
+    );
+
   } // options_form
 
   function render($values) {
@@ -52,7 +68,14 @@ class views_handler_field_fontyourface_font extends views_handler_field {
     if ($this->options['link_to_font'] == 'edit') {
 
       $this->options['alter']['make_link'] = TRUE;
-      $this->options['alter']['path'] = 'admin/themes/fontyourface/edit/' . $values->{$this->aliases['fid']};
+      $this->options['alter']['path'] = 'admin/build/themes/fontyourface/edit/' . $values->{$this->aliases['fid']};
+
+    } // if
+
+    if ($this->options['display_as'] == 'preview') {
+
+      $font = fontyourface_get_font($values->fid);
+      return fontyourface_preview($font, $values->{$this->field_alias});
 
     } // if
 
