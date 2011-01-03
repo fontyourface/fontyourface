@@ -78,7 +78,10 @@ class views_handler_field_fontyourface_tag_font_tid extends views_handler_field_
 
         $this->items[$tag->font_fid][$tag->tid]['name'] = check_plain($tag->name);
         $this->items[$tag->font_fid][$tag->tid]['tid'] = $tag->tid;
-        $this->items[$tag->font_fid][$tag->tid]['fid'] = $tag->fid;
+
+        if (isset($tag->fid)) {
+          $this->items[$tag->font_fid][$tag->tid]['fid'] = $tag->fid;
+        } // if
 
         if (!empty($this->options['link_to_tag'])) {
 

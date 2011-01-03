@@ -418,7 +418,7 @@ function fontyourface_settings_form() {
       '#suffix' => '</div>',
       'import' => array(
         '#type' => 'submit',
-        '#value' => 'Import',
+        '#value' => 'Import ' . $provider['name'],
       ),
     );
 
@@ -507,7 +507,7 @@ function fontyourface_admin_page() {
 
   $view = views_get_view('fontyourface_enabled');
   $view->set_display('block_1');
-  $output .= $view->preview();
+  $output = $view->preview();
 
   $output .= '<div>' . l('Browse fonts to enable.', 'admin/build/themes/fontyourface/add') . '</div>';
 
