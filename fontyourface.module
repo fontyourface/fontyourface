@@ -495,8 +495,10 @@ function fontyourface_preprocess_page(&$vars) {
 
     foreach ($enabled_fonts as $font) {
 
-      if ($font->css_family != '' && $font->css_selector != '') {
-        $css .= $font->css_selector . ' { font-family: ' . $font->css_family . '; }' . "\n";
+      $font_css = fontyourface_font_css($font);
+
+      if ($font_css != '' && $font->css_selector != '') {
+        $css .= $font->css_selector . ' { ' . $font_css . ' }' . "\n";
       } // if
 
       $fonts[] = $font;
