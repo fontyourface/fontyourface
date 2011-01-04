@@ -62,7 +62,13 @@ function google_fonts_api_preprocess_page(&$vars) {
 
     if (count($paths) > 0) {
 
-      $vars['styles'] = '<link href="http://fonts.googleapis.com/css?family=' . implode('|', $paths) . '" rel="stylesheet" type="text/css" />' . $vars['styles'];
+      $base = 'http://fonts.googleapis.com/css?family=';
+
+      if ($_SERVER['HTTPS'] == 'on') {
+        $base = 'https://fonts.googleapis.com/css?family=';
+      } // if
+
+      fontyourface_add_css_in_preprocess($vars, $base . implode('|', $paths), TRUE);
 
     } // if
 

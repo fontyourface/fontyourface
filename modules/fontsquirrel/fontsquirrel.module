@@ -61,7 +61,7 @@ function fontsquirrel_preprocess_page(&$vars) {
 
       foreach ($paths as $path) {
 
-        $vars['styles'] = '<link href="' . base_path() . file_directory_path() . '/fontyourface/fontsquirrel/' . $path . '-fontfacekit/stylesheet.css" rel="stylesheet" type="text/css" />' . $vars['styles'];
+        fontyourface_add_css_in_preprocess($vars, base_path() . file_directory_path() . '/fontyourface/fontsquirrel/' . $path . '-fontfacekit/stylesheet.css');
 
       } // foreach
 
