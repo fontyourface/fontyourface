@@ -360,6 +360,35 @@ function fontyourface_views_default_views() {
       'field' => 'provider',
       'relationship' => 'none',
     ),
+    'css_family' => array(
+      'label' => 'font-family',
+      'alter' => array(
+        'alter_text' => 0,
+        'text' => '',
+        'make_link' => 0,
+        'path' => '',
+        'link_class' => '',
+        'alt' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'target' => '',
+        'help' => '',
+        'trim' => 0,
+        'max_length' => '',
+        'word_boundary' => 1,
+        'ellipsis' => 1,
+        'html' => 0,
+        'strip_tags' => 0,
+      ),
+      'empty' => '',
+      'hide_empty' => 0,
+      'empty_zero' => 0,
+      'exclude' => 0,
+      'id' => 'css_family',
+      'table' => 'fontyourface_font',
+      'field' => 'css_family',
+      'relationship' => 'none',
+    ),
     'tid' => array(
       'label' => 'Tags',
       'alter' => array(
@@ -436,8 +465,8 @@ function fontyourface_views_default_views() {
     'order' => 'asc',
     'columns' => array(
       'name' => 'name',
-      'foundry' => 'foundry',
-      'license' => 'license',
+      'provider' => 'provider',
+      'css_family' => 'css_family',
       'tid' => 'tid',
     ),
     'info' => array(
@@ -445,11 +474,11 @@ function fontyourface_views_default_views() {
         'sortable' => 1,
         'separator' => '',
       ),
-      'foundry' => array(
+      'provider' => array(
         'sortable' => 1,
         'separator' => '',
       ),
-      'license' => array(
+      'css_family' => array(
         'sortable' => 1,
         'separator' => '',
       ),
