@@ -90,4 +90,4 @@ function google_fonts_api_fontyourface_import() {
 
   } // foreach
 
-} // google_fonts_api_list
+} // google_fonts_api_fontyourface_import
