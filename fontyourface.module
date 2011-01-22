@@ -92,7 +92,7 @@ function fontyourface_views_pre_render(&$view) {
         $function = $module . '_fontyourface_info';
         $info = $function();
 
-        drupal_set_message(t('@provider currently has no fonts. This is probably because the import has not been run yet. !import to add fonts.', array('@provider' => $info['name'], '!import' => l(t('Run import'), 'admin/config/fontyourface'))), 'error');
+        drupal_set_message(t('@provider currently has no fonts. This is probably because the import has not been run yet. !import to add fonts.', array('@provider' => $info['name'], '!import' => l(t('Run import'), 'admin/config/user-interface/fontyourface'))), 'error');
 
       } // if
 
