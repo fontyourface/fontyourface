@@ -120,7 +120,7 @@ function fontsquirrel_fontyourface_enable($font) {
 
     // Download file .zip file
 
-    if (!file_exists($zip_location)) {
+    if (!file_exists(drupal_realpath($zip_location))) {
 
       $kit_url = 'http://www.fontsquirrel.com/fontfacekit/' . $metadata['path'];
 
@@ -156,9 +156,9 @@ function fontsquirrel_fontyourface_enable($font) {
 
       // Unzip the .zip file
 
-      if (function_exists('zip_open') && $zip = zip_open($zip_location)) {
+      if (function_exists('zip_open') && $zip = zip_open(drupal_realpath($zip_location))) {
 
-        file_prepare_directory($directory_location,   FILE_CREATE_DIRECTORY);
+        file_prepare_directory($directory_location, FILE_CREATE_DIRECTORY);
 
         while ($entry = zip_read($zip)) {
 
@@ -166,7 +166,7 @@ function fontsquirrel_fontyourface_enable($font) {
 
             $entry_name = zip_entry_name($entry);
             $data = zip_entry_read($entry, $zip_entry_filesize);
-            file_save_data($data, $directory_location . '/' . $entry_name);
+            file_save_data($data, $directory_location . '/' . $entry_name, FILE_EXISTS_REPLACE);
 
           } // if
 
