@@ -31,7 +31,7 @@ function fontsquirrel_fontyourface_view($font, $text) {
 
   $metadata = unserialize($font->metadata);
 
-  $output .= '<div><img src="http://www.fontsquirrel.com/utils/makeFont.php?font=' . $metadata['id'] . '/' . $metadata['font_filename'] . '&width=800&size=14&text=' . urlencode($text) . '" /></div>';
+  $output = '<div><img src="http://www.fontsquirrel.com/utils/makeFont.php?font=' . $metadata['id'] . '/' . $metadata['font_filename'] . '&width=800&size=14&text=' . urlencode($text) . '" /></div>';
 
   $output .= '<div><img src="http://www.fontsquirrel.com/utils/makeSolotypeSample.php?font=' . $metadata['id'] . '/' . $metadata['font_filename'] . '&case=all" /></div>';
 

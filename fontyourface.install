@@ -218,10 +218,27 @@ function fontyourface_update_6200() {
 
   // Drop provider tables from old version (may not all be there).
 
-  $ignore = array();
-  db_drop_table($ignore, 'fontsquirrel_group');
-  db_drop_table($ignore, 'kernest');
-  db_drop_table($ignore, 'typekit_api_variant');
+  if (db_table_exists('fontsquirrel_group')) {
+    db_drop_table($return, 'fontsquirrel_group');
+  } // if
+  if (db_table_exists('kernest')) {
+    db_drop_table($return, 'kernest');
+  } // if
+  if (db_table_exists('typekit_api_variant')) {
+    db_drop_table($return, 'typekit_api_variant');
+  } // if
+
+  // Add tables.
+
+  $schema = fontyourface_6200_schema();
+
+  db_create_table($return, 'fontyourface_font', $schema['fontyourface_font']);  
+  db_create_table($return, 'fontyourface_tag', $schema['fontyourface_tag']);  
+  db_create_table($return, 'fontyourface_tag_font', $schema['fontyourface_tag_font']);  
+
+  drupal_get_schema('fontyourface_font', TRUE);
+  drupal_get_schema('fontyourface_tag', TRUE);
+  drupal_get_schema('fontyourface_tag_font', TRUE);
 
   // Import from any used providers.
 
@@ -230,6 +247,8 @@ function fontyourface_update_6200() {
   foreach ($old_fonts as $old_font) {
     $used_providers[$old_font->provider] = TRUE;
   } // foreach
+
+  $used_providers = array_keys($used_providers);
 
   foreach ($used_providers as $used_provider) {
 
@@ -240,14 +259,6 @@ function fontyourface_update_6200() {
     } // if
 
   } // foreach
-
-  // Add tables.
-
-  $schema = fontyourface_6200_schema();
-
-  db_create_table($return, 'fontyourface_font', $schema['fontyourface_font']);  
-  db_create_table($return, 'fontyourface_tag', $schema['fontyourface_tag']);  
-  db_create_table($return, 'fontyourface_tag_font', $schema['fontyourface_tag_font']);  
 
   // Re-enable fonts.
 
