@@ -45,7 +45,7 @@ class FontyourfaceSaveFontTestCase extends DrupalWebTestCase {
     $fids = array();
     $results = db_query('SELECT fid FROM {fontyourface_font}');
 
-    while ($result = db_fetch_object($results)) {
+    while ($result = $results->fetchObject()) {
       $fids[] = $result->fid;
     } // while
 
@@ -81,7 +81,7 @@ class FontyourfaceSaveFontTestCase extends DrupalWebTestCase {
     $fids = array();
     $results = db_query('SELECT fid FROM {fontyourface_font}');
 
-    while ($result = db_fetch_object($results)) {
+    while ($result = $results->fetchObject()) {
       $fids[] = $result->fid;
     } // while
 
