@@ -12,5 +12,6 @@
 function typekit_api_disable() {
 
   fontyourface_provider_disable('typekit_api');
+  variable_del('typekit_api_token');
 
 } // typekit_api_disable

@@ -107,7 +107,7 @@ function kernest_preprocess_page(&$vars) {
 
       if ($used_font->provider == 'kernest') {
         $metaddata = unserialize($used_font->metadata);
-        fontyourface_add_css_in_preprocess($vars, $used_font->url . '.css', TRUE);
+        fontyourface_add_css_in_preprocess($vars, $used_font->url . '.css', 'remote');
       } // if
 
     } // foreach
