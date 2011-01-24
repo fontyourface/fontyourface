@@ -744,10 +744,8 @@ function fontyourface_add_css_in_preprocess(&$vars, $css_path, $type = 'public')
   else {
   
     if ($type == 'public') {
-    
-      $full_path = drupal_realpath(file_build_uri($css_path));
-      $base_path = drupal_realpath('.');
-      $css_path = str_replace($base_path . '/', '', $full_path);
+
+      $css_path = file_stream_wrapper_get_instance_by_scheme('public')->getDirectoryPath() . '/' . $css_path;
 
     } // if
 
