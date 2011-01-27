@@ -420,6 +420,20 @@ function fontyourface_settings_form() {
       '#type' => 'fieldset',
       '#title' => 'Providers',
     ),
+    'logging' => array(
+      '#type' => 'fieldset',
+      '#title' => 'Logging',
+      'detailed_logs' => array(
+        '#type' => 'checkbox',
+        '#default_value' => variable_get('fontyourface_detailed_logging', FALSE),
+        '#title' => t('Keep detailed watchdog logs'),
+        '#description' => t("Don't leave this on when testing is complete. It will make everything run a bit slower."),
+      ),
+      'update' => array(
+        '#type' => 'submit',
+        '#value' => t('Change logging settings'),
+      ),
+    ),
   );
 
   foreach (module_implements('fontyourface_info') as $module) {
@@ -465,6 +479,13 @@ function fontyourface_settings_form_submit($form, &$form_state) {
     } // if
 
   } // foreach
+
+  if ($form_state['values']['detailed_logs'] == 1) {
+    variable_set('fontyourface_detailed_logging', TRUE);
+  } // if
+  else {
+    variable_set('fontyourface_detailed_logging', FALSE);
+  } // else
 
 } // fontyourface_import_submit
 

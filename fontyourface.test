@@ -56,9 +56,9 @@ class FontyourfaceSaveFontTestCase extends DrupalWebTestCase {
     $font = fontyourface_get_font($fids[0], TRUE);
 
     $this->assertTrue($font, 'Font loaded.');
-    
+
     // Check font matches.
-    
+
     $this->assertIdentical($font->name, $best_font_ever->name, 'Font name matches insert.');
     $this->assertIdentical($font->fid, $best_font_ever->fid, 'Font fid matches insert.');
 

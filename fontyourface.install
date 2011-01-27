@@ -232,9 +232,9 @@ function fontyourface_update_6200() {
 
   $schema = fontyourface_6200_schema();
 
-  db_create_table($return, 'fontyourface_font', $schema['fontyourface_font']);  
-  db_create_table($return, 'fontyourface_tag', $schema['fontyourface_tag']);  
-  db_create_table($return, 'fontyourface_tag_font', $schema['fontyourface_tag_font']);  
+  db_create_table($return, 'fontyourface_font', $schema['fontyourface_font']);
+  db_create_table($return, 'fontyourface_tag', $schema['fontyourface_tag']);
+  db_create_table($return, 'fontyourface_tag_font', $schema['fontyourface_tag_font']);
 
   drupal_get_schema('fontyourface_font', TRUE);
   drupal_get_schema('fontyourface_tag', TRUE);
