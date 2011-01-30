@@ -109,21 +109,12 @@ function typekit_api_preprocess_page(&$vars) {
 
       foreach (array_keys($kits) as $kit) {
 
-        $script = array(
-          '#type' => 'html_tag',
-          '#tag' => 'script',
-          '#attributes' => array(
-            'src' => 'http://use.typekit.com/' . $kit . '.js',
-            'type' => 'text/javascript',
-          ),
-        );
-
-        drupal_add_html_head($script, 'typekit_api_js:' . $kit);
-        $vars['head'] = drupal_get_html_head();
+        drupal_add_js('http://use.typekit.com/' . $kit . '.js', array('type' => 'external'));
+        $variables['scripts'] = drupal_get_js();
 
       } // foreach
 
-      drupal_add_js('try{Typekit.load();}catch(e){}', array('type' => 'inline', 'scope' => JS_DEFAULT));
+      drupal_add_js('try{Typekit.load();}catch(e){}', array('type' => 'inline'));
       $vars['scripts'] = drupal_get_js();
 
     } // if
