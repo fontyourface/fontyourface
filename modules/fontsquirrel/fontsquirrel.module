@@ -201,6 +201,8 @@ function fontsquirrel_fontyourface_enable($font) {
  */
 function fontsquirrel_fontyourface_import() {
 
+  $logging = variable_get('fontyourface_detailed_logging', FALSE);
+
   $api_result = drupal_http_request('http://www.fontsquirrel.com/api/fontlist/all');
 
   if ($api_result->code == '200') {
@@ -231,5 +233,14 @@ function fontsquirrel_fontyourface_import() {
     } // foreach
 
   } // if
+  else {
+
+    drupal_set_message(t('There was an error downloading font list from Font Squirrel.'), 'error');
+
+    if ($logging) {
+      watchdog('@font-your-face', 'Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)), WATCHDOG_INFO);
+    } // if
+
+  } // else
 
 } // fontsquirrel_fontyourface_import
