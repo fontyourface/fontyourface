@@ -748,18 +748,8 @@ function fontyourface_add_css_in_preprocess(&$vars, $css_path, $type = 'public')
 
   if ($type == 'remote') {
 
-    $link = array(
-      '#type' => 'html_tag',
-      '#tag' => 'link',
-      '#attributes' => array(
-        'href' => $css_path,
-        'rel' => 'stylesheet',
-        'type' => 'text/css',
-      ),
-    );
-    
-    $a = drupal_add_html_head($link, $key = 'fontyourface:' . $css_path);
-    $vars['head'] = drupal_get_html_head();    
+    drupal_add_css($css_path, array('type' => 'external', 'group' => CSS_THEME));
+    $vars['styles'] = drupal_get_css();
 
   } // if
   else {
@@ -770,8 +760,7 @@ function fontyourface_add_css_in_preprocess(&$vars, $css_path, $type = 'public')
 
     } // if
 
-    drupal_add_css($css_path);
-    $vars['css']['all']['module'][$css_path] = TRUE;
+    drupal_add_css($css_path, array('group' => CSS_THEME));
     $vars['styles'] = drupal_get_css();
 
   } // else
