@@ -62,6 +62,7 @@ function typekit_api_fontyourface_import() {
           $font->name = $variant->name;
           $font->url = 'http://typekit.com/fonts/' . $family_info->slug . '#' . $variant_id;
           $font->provider = 'typekit_api';
+          $font->enabled = 1;
           $font->metadata = serialize($metadata);
           $font->css_family = implode(', ', $family_info->css_names);
           $font->css_style = $variant->font_style;
