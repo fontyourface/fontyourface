@@ -22,6 +22,6 @@ function fonts_com_enable() {
  */
 function fonts_com_disable() {
 
-  fontyourface_provider_disable('fontdeck');
+  fontyourface_provider_disable('fonts_com');
 
 } // fonts_com_disable

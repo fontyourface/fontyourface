@@ -760,7 +760,7 @@ function fontyourface_add_css_in_preprocess(&$vars, $css_path, $type = 'public')
 
     } // if
 
-    drupal_add_css($css_path, array('group' => CSS_THEME));
+    drupal_add_css($css_path, array('group' => CSS_THEME, 'basename' => 'fontyourface-' . md5($css_path)));
     $vars['styles'] = drupal_get_css();
 
   } // else
