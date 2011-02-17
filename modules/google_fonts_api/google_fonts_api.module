@@ -64,7 +64,7 @@ function google_fonts_api_preprocess_page(&$vars) {
 
       $base = 'http://fonts.googleapis.com/css?family=';
 
-      if ($_SERVER['HTTPS'] == 'on') {
+      if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
         $base = 'https://fonts.googleapis.com/css?family=';
       } // if
 

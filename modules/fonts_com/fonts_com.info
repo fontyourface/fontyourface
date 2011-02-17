@@ -1,0 +1,7 @@
+; $Id$
+name = Fonts.com
+description = @font-your-face provider of fonts from Fonts.com.
+dependencies[] = fontyourface
+package = @font-your-face
+core = 6.x
+php = 5.2.0
