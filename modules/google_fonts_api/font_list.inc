@@ -3,7 +3,7 @@
 
 /**
  * @file
- * List of font data from http://code.google.com/webfonts/.
+ * List of font data from http://www.google.com/webfonts/.
  */
 
 $fonts = array();
