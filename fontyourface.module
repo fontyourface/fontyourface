@@ -508,7 +508,9 @@ function fontyourface_preprocess_page(&$vars) {
 
   $css = '';
 
-  if (file_prepare_directory(dirname($destination), FILE_CREATE_DIRECTORY)) {
+  $destination_directory = dirname($destination);
+
+  if (file_prepare_directory($destination_directory, FILE_CREATE_DIRECTORY)) {
 
     $enabled_fonts = fontyourface_get_fonts();
 

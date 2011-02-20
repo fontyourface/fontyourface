@@ -130,7 +130,9 @@ function fontsquirrel_fontyourface_enable($font) {
 
         // Save the .zip file
 
-        if (file_prepare_directory(dirname($zip_location), FILE_CREATE_DIRECTORY)) {
+        $zip_location_directory = dirname($zip_location);
+
+        if (file_prepare_directory($zip_location_directory, FILE_CREATE_DIRECTORY)) {
 
           file_save_data($kit_result->data, $zip_location, FILE_EXISTS_REPLACE);
 
