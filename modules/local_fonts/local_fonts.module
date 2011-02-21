@@ -7,7 +7,7 @@
 function local_fonts_fontyourface_info() {
 
   return array(
-    'name' => t('Local Uploaded Fonts'),
+    'name' => t('Local Fonts'),
     'url' => 'http://drupal.org/project/fontyourface#local'
   );
 

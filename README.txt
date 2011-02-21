@@ -17,11 +17,11 @@ Using @font-your-face:
 - Enter a CSS selector for the content you want to use the font (or leave it as "body" to use it everywhere)
 - Click "Add font"
 
-Troubleshooting @font-your-face:
---------------------------------
+Known issues:
+-------------
 
-Use the issue queue at http://drupal.org/project/issues/fontyourface to report any problems or request new features.
+Note that Internet Explorer has a limit of 32 CSS files, so using @font-your-face on CSS-heavy sites may require turning on CSS aggregation under administer >> site configuration >> performance.
 
-If a font isn't loading, first check that the CSS file from the font provider calls the same font-family as the module's generated CSS rule. For example, the rule may call for "Costura-Light", while the font provider's CSS may call for "Costura-Regular", "Costura-bold", and "Costura-demibold."
+KERNEST servers are sometimes unreliable, so you may want to download KERNEST fonts and use the Local Fonts module to load them from your server instead. KERNEST provides paid fonts that are not available for use in the API, so those can only be used with the Local Fonts module.
 
-Also note that Internet Explorer has a limit of 32 CSS files, so using @font-your-face on CSS-heavy sites may require turning on CSS aggregation under administer >> site configuration >> performance.
+See http://drupal.org/project/fontyourface#support for support options on any issues not mentioned here.
