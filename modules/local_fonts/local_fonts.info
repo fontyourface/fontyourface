@@ -1,0 +1,7 @@
+; $Id$
+name = Local Fonts
+description = @font-your-face provider with fonts installed locally on the Drupal server.
+dependencies[] = fontyourface
+package = @font-your-face
+core = 6.x
+php = 5.2.0

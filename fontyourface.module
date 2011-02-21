@@ -594,7 +594,7 @@ function fontyourface_admin_edit_form(&$form_state, $fid) {
 
   $form = array(
     'fid' => array(
-      '#type' => 'hidden',
+      '#type' => 'value',
       '#value' => $font->fid,
     ),
     'details' => array(
@@ -858,6 +858,37 @@ function fontyourface_disable_font(&$font) {
 } // fontyourface_disable_font
 
 /**
+ * Deletes a single font.
+ */
+function fontyourface_delete_font($font) {
+
+  $delete = TRUE;
+
+  $delete_function = $font->provider . '_fontyourface_delete';
+
+  if (function_exists($delete_function)) {
+    $delete = $delete_function($font);
+  } // if
+
+  if ($delete) {
+
+    // Delete font and font-tag relationships.
+  
+    $font_sql = "DELETE f.*, tf.*
+    FROM {fontyourface_font} f
+    LEFT JOIN {fontyourface_tag_font} tf
+      ON tf.fid = f.fid
+    WHERE f.fid = %d";
+  
+    db_query($font_sql, $font->fid);
+  
+    fontyourface_delete_unused_tags();
+
+  } // if
+
+} // fontyourface_delete_font
+
+/**
  * Sets a font's CSS selector.
  */
 function fontyourface_set_css_selector(&$font, $css_selector) {
@@ -988,7 +1019,7 @@ function fontyourface_font_css($font) {
 
   return implode(' ', $css);
 
-} // fontyourface_font_c
+} // fontyourface_font_css
 
 /**
  * Removes all fonts and related tags from given provider.
@@ -1005,7 +1036,14 @@ function fontyourface_provider_disable($provider) {
 
   db_query($font_sql, $provider);
 
-  // Delete all unused tags.
+  fontyourface_delete_unused_tags();
+
+} // fontyourface_provider_disable
+
+/**
+ * Deletes all unused tags.
+ */
+function fontyourface_delete_unused_tags() {
 
   $tag_sql = "DELETE t.*
   FROM {fontyourface_tag} t
@@ -1015,4 +1053,4 @@ function fontyourface_provider_disable($provider) {
 
   db_query($tag_sql);
 
-} // fontyourface_provider_disable
+} // fontyourface_delete_unused_tags
