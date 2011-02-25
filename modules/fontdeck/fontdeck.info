@@ -1,4 +1,3 @@
-; $Id$
 name = Fontdeck
 description = @font-your-face provider of fonts from Fontdeck.com.
 dependencies[] = fontyourface

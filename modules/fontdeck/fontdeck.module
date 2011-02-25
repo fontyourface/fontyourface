@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 define('FONTDECK_BASE_URL', 'http://fontdeck.com/api/v1/');
 

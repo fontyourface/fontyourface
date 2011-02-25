@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 define('FONTS_COM_API_BASE_URL', 'http://api.fonts.com');
 define('FONTS_COM_API_APP_KEY', '1fdb130c-d5c0-4fab-8e2b-271508570323932606');

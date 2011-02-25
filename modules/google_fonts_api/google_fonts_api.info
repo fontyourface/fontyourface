@@ -1,4 +1,3 @@
-; $Id$
 name = Google Fonts API
 description = @font-your-face provider with Google fonts.
 dependencies[] = fontyourface
