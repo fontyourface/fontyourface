@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 define('FONTYOURFACE_ADD_PAGE_COUNT', 20);
 

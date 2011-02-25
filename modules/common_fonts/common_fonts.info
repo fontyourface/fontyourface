@@ -1,4 +1,3 @@
-; $Id$
 name = Common fonts
 description = @font-your-face provider of fonts usually already available in browsers, with fallbacks.
 dependencies[] = fontyourface

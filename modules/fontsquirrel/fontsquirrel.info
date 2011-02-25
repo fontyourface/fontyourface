@@ -1,4 +1,3 @@
-; $Id$
 name = Font Squirrel API
 description = @font-your-face provider with Font Squirrel fonts.
 dependencies[] = fontyourface

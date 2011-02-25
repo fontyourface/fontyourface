@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 define('TYPEKIT_API_BASE_URL', 'https://typekit.com/api/v1/json/');
 
