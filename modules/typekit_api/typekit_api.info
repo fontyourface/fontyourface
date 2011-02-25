@@ -1,4 +1,3 @@
-; $Id$
 name = Typekit API
 description = @font-your-face provider with Typekit.com fonts.
 dependencies[] = fontyourface
