@@ -66,8 +66,10 @@ class views_handler_field_fontyourface_font extends views_handler_field {
 
     if ($this->options['link_to_font'] == 'edit') {
 
+      $destination = drupal_get_destination();
+
       $this->options['alter']['make_link'] = TRUE;
-      $this->options['alter']['path'] = 'admin/appearance/fontyourface/edit/' . $values->{$this->aliases['fid']};
+      $this->options['alter']['path'] = 'admin/appearance/fontyourface/edit/' . $values->{$this->aliases['fid']} . '?' . drupal_http_build_query($destination);
 
     } // if
 
