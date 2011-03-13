@@ -698,11 +698,11 @@ function fontyourface_admin_edit_form($form, &$form_state, $fid) {
     'buttons' => array(
       'submit' => array(
         '#type' => 'submit',
-        '#value' => t('Edit font'),
+        '#value' => t('Save font settings'),
       ),
       'cancel' => array(
         '#type' => 'submit',
-        '#value' => t('Cancel'),
+        '#value' => t('Cancel changes'),
       ),
     ),
   );
