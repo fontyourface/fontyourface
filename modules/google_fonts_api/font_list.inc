@@ -111,6 +111,19 @@ $fonts['Anton']->license = 'SIL Open Font License, 1.1';
 $fonts['Anton']->license_url = 'http://scripts.sil.org/OFL';
 $fonts['Anton']->metadata = 'a:1:{s:4:"path";s:5:"Anton";}';
 
+$fonts['Architects Daughter'] = new stdClass;
+$fonts['Architects Daughter']->name = 'Architects Daughter';
+$fonts['Architects Daughter']->url = 'http://www.google.com/webfonts/family?family=Architects+Daughter&subset=latin';
+$fonts['Architects Daughter']->provider = 'google_fonts_api';
+$fonts['Architects Daughter']->css_family = "'Architects Daughter'";
+$fonts['Architects Daughter']->css_style = 'normal';
+$fonts['Architects Daughter']->css_weight = 'normal';
+$fonts['Architects Daughter']->foundry = 'Kimberly Geswein';
+$fonts['Architects Daughter']->foundry_url = 'http://www.google.com/webfonts/designer?designer=Kimberly+Geswein';
+$fonts['Architects Daughter']->license = 'SIL Open Font License, 1.1';
+$fonts['Architects Daughter']->license_url = 'http://scripts.sil.org/OFL';
+$fonts['Architects Daughter']->metadata = 'a:1:{s:4:"path";s:19:"Architects+Daughter";}';
+
 $fonts['Arimo'] = new stdClass;
 $fonts['Arimo']->name = 'Arimo';
 $fonts['Arimo']->url = 'http://www.google.com/webfonts/family?family=Arimo&subset=latin';
@@ -344,6 +357,19 @@ $fonts['Calligraffitti']->foundry_url = 'http://www.google.com/webfonts/designer
 $fonts['Calligraffitti']->license = 'Apache License, version 2.0';
 $fonts['Calligraffitti']->license_url = 'http://www.apache.org/licenses/LICENSE-2.0.html';
 $fonts['Calligraffitti']->metadata = 'a:1:{s:4:"path";s:14:"Calligraffitti";}';
+
+$fonts['Candal'] = new stdClass;
+$fonts['Candal']->name = 'Candal';
+$fonts['Candal']->url = 'http://www.google.com/webfonts/family?family=Candal&subset=latin';
+$fonts['Candal']->provider = 'google_fonts_api';
+$fonts['Candal']->css_family = "'Candal'";
+$fonts['Candal']->css_style = 'normal';
+$fonts['Candal']->css_weight = 'normal';
+$fonts['Candal']->foundry = 'Vernon Adams';
+$fonts['Candal']->foundry_url = 'http://www.google.com/webfonts/designer?designer=Vernon+Adams';
+$fonts['Candal']->license = 'SIL Open Font License, 1.1';
+$fonts['Candal']->license_url = 'http://scripts.sil.org/OFL';
+$fonts['Candal']->metadata = 'a:1:{s:4:"path";s:6:"Candal";}';
 
 $fonts['Cantarell'] = new stdClass;
 $fonts['Cantarell']->name = 'Cantarell';
@@ -787,6 +813,58 @@ $fonts['Droid Serif bolditalic']->license = 'Apache License, version 2.0';
 $fonts['Droid Serif bolditalic']->license_url = 'http://www.apache.org/licenses/LICENSE-2.0.html';
 $fonts['Droid Serif bolditalic']->metadata = 'a:1:{s:4:"path";s:22:"Droid+Serif:bolditalic";}';
 
+$fonts['Expletus Sans 400'] = new stdClass;
+$fonts['Expletus Sans 400']->name = 'Expletus Sans 400';
+$fonts['Expletus Sans 400']->url = 'http://www.google.com/webfonts/family?family=Expletus+Sans&subset=latin#400';
+$fonts['Expletus Sans 400']->provider = 'google_fonts_api';
+$fonts['Expletus Sans 400']->css_family = "'Expletus Sans'";
+$fonts['Expletus Sans 400']->css_style = 'normal';
+$fonts['Expletus Sans 400']->css_weight = '400';
+$fonts['Expletus Sans 400']->foundry = 'Jasper de Waard';
+$fonts['Expletus Sans 400']->foundry_url = '';
+$fonts['Expletus Sans 400']->license = 'SIL Open Font License, 1.1';
+$fonts['Expletus Sans 400']->license_url = 'http://scripts.sil.org/OFL';
+$fonts['Expletus Sans 400']->metadata = 'a:1:{s:4:"path";s:17:"Expletus+Sans:400";}';
+
+$fonts['Expletus Sans 500'] = new stdClass;
+$fonts['Expletus Sans 500']->name = 'Expletus Sans 500';
+$fonts['Expletus Sans 500']->url = 'http://www.google.com/webfonts/family?family=Expletus+Sans&subset=latin#500';
+$fonts['Expletus Sans 500']->provider = 'google_fonts_api';
+$fonts['Expletus Sans 500']->css_family = "'Expletus Sans'";
+$fonts['Expletus Sans 500']->css_style = 'normal';
+$fonts['Expletus Sans 500']->css_weight = '500';
+$fonts['Expletus Sans 500']->foundry = 'Jasper de Waard';
+$fonts['Expletus Sans 500']->foundry_url = '';
+$fonts['Expletus Sans 500']->license = 'SIL Open Font License, 1.1';
+$fonts['Expletus Sans 500']->license_url = 'http://scripts.sil.org/OFL';
+$fonts['Expletus Sans 500']->metadata = 'a:1:{s:4:"path";s:17:"Expletus+Sans:500";}';
+
+$fonts['Expletus Sans 600'] = new stdClass;
+$fonts['Expletus Sans 600']->name = 'Expletus Sans 600';
+$fonts['Expletus Sans 600']->url = 'http://www.google.com/webfonts/family?family=Expletus+Sans&subset=latin#600';
+$fonts['Expletus Sans 600']->provider = 'google_fonts_api';
+$fonts['Expletus Sans 600']->css_family = "'Expletus Sans'";
+$fonts['Expletus Sans 600']->css_style = 'normal';
+$fonts['Expletus Sans 600']->css_weight = '600';
+$fonts['Expletus Sans 600']->foundry = 'Jasper de Waard';
+$fonts['Expletus Sans 600']->foundry_url = '';
+$fonts['Expletus Sans 600']->license = 'SIL Open Font License, 1.1';
+$fonts['Expletus Sans 600']->license_url = 'http://scripts.sil.org/OFL';
+$fonts['Expletus Sans 600']->metadata = 'a:1:{s:4:"path";s:17:"Expletus+Sans:600";}';
+
+$fonts['Expletus Sans 700'] = new stdClass;
+$fonts['Expletus Sans 700']->name = 'Expletus Sans 700';
+$fonts['Expletus Sans 700']->url = 'http://www.google.com/webfonts/family?family=Expletus+Sans&subset=latin#700';
+$fonts['Expletus Sans 700']->provider = 'google_fonts_api';
+$fonts['Expletus Sans 700']->css_family = "'Expletus Sans'";
+$fonts['Expletus Sans 700']->css_style = 'normal';
+$fonts['Expletus Sans 700']->css_weight = '700';
+$fonts['Expletus Sans 700']->foundry = 'Jasper de Waard';
+$fonts['Expletus Sans 700']->foundry_url = '';
+$fonts['Expletus Sans 700']->license = 'SIL Open Font License, 1.1';
+$fonts['Expletus Sans 700']->license_url = 'http://scripts.sil.org/OFL';
+$fonts['Expletus Sans 700']->metadata = 'a:1:{s:4:"path";s:17:"Expletus+Sans:700";}';
+
 $fonts['Fontdiner Swanky'] = new stdClass;
 $fonts['Fontdiner Swanky']->name = 'Fontdiner Swanky';
 $fonts['Fontdiner Swanky']->url = 'http://www.google.com/webfonts/family?family=Fontdiner+Swanky&subset=latin';
@@ -852,58 +930,6 @@ $fonts['Homemade Apple']->license = 'Apache License, version 2.0';
 $fonts['Homemade Apple']->license_url = 'http://www.apache.org/licenses/LICENSE-2.0.html';
 $fonts['Homemade Apple']->metadata = 'a:1:{s:4:"path";s:14:"Homemade+Apple";}';
 
-$fonts['IM Fell DW Pica'] = new stdClass;
-$fonts['IM Fell DW Pica']->name = 'IM Fell DW Pica';
-$fonts['IM Fell DW Pica']->url = 'http://www.google.com/webfonts/family?family=IM+Fell+DW+Pica&subset=latin';
-$fonts['IM Fell DW Pica']->provider = 'google_fonts_api';
-$fonts['IM Fell DW Pica']->css_family = "'IM Fell DW Pica'";
-$fonts['IM Fell DW Pica']->css_style = 'normal';
-$fonts['IM Fell DW Pica']->css_weight = 'normal';
-$fonts['IM Fell DW Pica']->foundry = 'Igino Marini';
-$fonts['IM Fell DW Pica']->foundry_url = 'http://www.google.com/webfonts/designer?designer=Igino+Marini';
-$fonts['IM Fell DW Pica']->license = 'SIL Open Font License, 1.1';
-$fonts['IM Fell DW Pica']->license_url = 'http://scripts.sil.org/OFL';
-$fonts['IM Fell DW Pica']->metadata = 'a:1:{s:4:"path";s:15:"IM+Fell+DW+Pica";}';
-
-$fonts['IM Fell DW Pica italic'] = new stdClass;
-$fonts['IM Fell DW Pica italic']->name = 'IM Fell DW Pica italic';
-$fonts['IM Fell DW Pica italic']->url = 'http://www.google.com/webfonts/family?family=IM+Fell+DW+Pica&subset=latin#italic';
-$fonts['IM Fell DW Pica italic']->provider = 'google_fonts_api';
-$fonts['IM Fell DW Pica italic']->css_family = "'IM Fell DW Pica'";
-$fonts['IM Fell DW Pica italic']->css_style = 'italic';
-$fonts['IM Fell DW Pica italic']->css_weight = 'normal';
-$fonts['IM Fell DW Pica italic']->foundry = 'Igino Marini';
-$fonts['IM Fell DW Pica italic']->foundry_url = 'http://www.google.com/webfonts/designer?designer=Igino+Marini';
-$fonts['IM Fell DW Pica italic']->license = 'SIL Open Font License, 1.1';
-$fonts['IM Fell DW Pica italic']->license_url = 'http://scripts.sil.org/OFL';
-$fonts['IM Fell DW Pica italic']->metadata = 'a:1:{s:4:"path";s:22:"IM+Fell+DW+Pica:italic";}';
-
-$fonts['IM Fell English'] = new stdClass;
-$fonts['IM Fell English']->name = 'IM Fell English';
-$fonts['IM Fell English']->url = 'http://www.google.com/webfonts/family?family=IM+Fell+English&subset=latin';
-$fonts['IM Fell English']->provider = 'google_fonts_api';
-$fonts['IM Fell English']->css_family = "'IM Fell English'";
-$fonts['IM Fell English']->css_style = 'normal';
-$fonts['IM Fell English']->css_weight = 'normal';
-$fonts['IM Fell English']->foundry = 'Igino Marini';
-$fonts['IM Fell English']->foundry_url = 'http://www.google.com/webfonts/designer?designer=Igino+Marini';
-$fonts['IM Fell English']->license = 'SIL Open Font License, 1.1';
-$fonts['IM Fell English']->license_url = 'http://scripts.sil.org/OFL';
-$fonts['IM Fell English']->metadata = 'a:1:{s:4:"path";s:15:"IM+Fell+English";}';
-
-$fonts['IM Fell English italic'] = new stdClass;
-$fonts['IM Fell English italic']->name = 'IM Fell English italic';
-$fonts['IM Fell English italic']->url = 'http://www.google.com/webfonts/family?family=IM+Fell+English&subset=latin#italic';
-$fonts['IM Fell English italic']->provider = 'google_fonts_api';
-$fonts['IM Fell English italic']->css_family = "'IM Fell English'";
-$fonts['IM Fell English italic']->css_style = 'italic';
-$fonts['IM Fell English italic']->css_weight = 'normal';
-$fonts['IM Fell English italic']->foundry = 'Igino Marini';
-$fonts['IM Fell English italic']->foundry_url = 'http://www.google.com/webfonts/designer?designer=Igino+Marini';
-$fonts['IM Fell English italic']->license = 'SIL Open Font License, 1.1';
-$fonts['IM Fell English italic']->license_url = 'http://scripts.sil.org/OFL';
-$fonts['IM Fell English italic']->metadata = 'a:1:{s:4:"path";s:22:"IM+Fell+English:italic";}';
-
 $fonts['IM Fell French Canon SC'] = new stdClass;
 $fonts['IM Fell French Canon SC']->name = 'IM Fell French Canon SC';
 $fonts['IM Fell French Canon SC']->url = 'http://www.google.com/webfonts/family?family=IM+Fell+French+Canon+SC&subset=latin';
@@ -956,18 +982,57 @@ $fonts['IM Fell French Canon italic']->license = 'SIL Open Font License, 1.1';
 $fonts['IM Fell French Canon italic']->license_url = 'http://scripts.sil.org/OFL';
 $fonts['IM Fell French Canon italic']->metadata = 'a:1:{s:4:"path";s:27:"IM+Fell+French+Canon:italic";}';
 
-$fonts['IM Fell Double Pica SC'] = new stdClass;
-$fonts['IM Fell Double Pica SC']->name = 'IM Fell Double Pica SC';
-$fonts['IM Fell Double Pica SC']->url = 'http://www.google.com/webfonts/family?family=IM+Fell+Double+Pica+SC&subset=latin';
-$fonts['IM Fell Double Pica SC']->provider = 'google_fonts_api';
-$fonts['IM Fell Double Pica SC']->css_family = "'IM Fell Double Pica SC'";
-$fonts['IM Fell Double Pica SC']->css_style = 'normal';
-$fonts['IM Fell Double Pica SC']->css_weight = 'normal';
-$fonts['IM Fell Double Pica SC']->foundry = 'Igino Marini';
-$fonts['IM Fell Double Pica SC']->foundry_url = 'http://www.google.com/webfonts/designer?designer=Igino+Marini';
-$fonts['IM Fell Double Pica SC']->license = 'SIL Open Font License, 1.1';
-$fonts['IM Fell Double Pica SC']->license_url = 'http://scripts.sil.org/OFL';
-$fonts['IM Fell Double Pica SC']->metadata = 'a:1:{s:4:"path";s:22:"IM+Fell+Double+Pica+SC";}';
+$fonts['IM Fell English'] = new stdClass;
+$fonts['IM Fell English']->name = 'IM Fell English';
+$fonts['IM Fell English']->url = 'http://www.google.com/webfonts/family?family=IM+Fell+English&subset=latin';
+$fonts['IM Fell English']->provider = 'google_fonts_api';
+$fonts['IM Fell English']->css_family = "'IM Fell English'";
+$fonts['IM Fell English']->css_style = 'normal';
+$fonts['IM Fell English']->css_weight = 'normal';
+$fonts['IM Fell English']->foundry = 'Igino Marini';
+$fonts['IM Fell English']->foundry_url = 'http://www.google.com/webfonts/designer?designer=Igino+Marini';
+$fonts['IM Fell English']->license = 'SIL Open Font License, 1.1';
+$fonts['IM Fell English']->license_url = 'http://scripts.sil.org/OFL';
+$fonts['IM Fell English']->metadata = 'a:1:{s:4:"path";s:15:"IM+Fell+English";}';
+
+$fonts['IM Fell English italic'] = new stdClass;
+$fonts['IM Fell English italic']->name = 'IM Fell English italic';
+$fonts['IM Fell English italic']->url = 'http://www.google.com/webfonts/family?family=IM+Fell+English&subset=latin#italic';
+$fonts['IM Fell English italic']->provider = 'google_fonts_api';
+$fonts['IM Fell English italic']->css_family = "'IM Fell English'";
+$fonts['IM Fell English italic']->css_style = 'italic';
+$fonts['IM Fell English italic']->css_weight = 'normal';
+$fonts['IM Fell English italic']->foundry = 'Igino Marini';
+$fonts['IM Fell English italic']->foundry_url = 'http://www.google.com/webfonts/designer?designer=Igino+Marini';
+$fonts['IM Fell English italic']->license = 'SIL Open Font License, 1.1';
+$fonts['IM Fell English italic']->license_url = 'http://scripts.sil.org/OFL';
+$fonts['IM Fell English italic']->metadata = 'a:1:{s:4:"path";s:22:"IM+Fell+English:italic";}';
+
+$fonts['IM Fell DW Pica'] = new stdClass;
+$fonts['IM Fell DW Pica']->name = 'IM Fell DW Pica';
+$fonts['IM Fell DW Pica']->url = 'http://www.google.com/webfonts/family?family=IM+Fell+DW+Pica&subset=latin';
+$fonts['IM Fell DW Pica']->provider = 'google_fonts_api';
+$fonts['IM Fell DW Pica']->css_family = "'IM Fell DW Pica'";
+$fonts['IM Fell DW Pica']->css_style = 'normal';
+$fonts['IM Fell DW Pica']->css_weight = 'normal';
+$fonts['IM Fell DW Pica']->foundry = 'Igino Marini';
+$fonts['IM Fell DW Pica']->foundry_url = 'http://www.google.com/webfonts/designer?designer=Igino+Marini';
+$fonts['IM Fell DW Pica']->license = 'SIL Open Font License, 1.1';
+$fonts['IM Fell DW Pica']->license_url = 'http://scripts.sil.org/OFL';
+$fonts['IM Fell DW Pica']->metadata = 'a:1:{s:4:"path";s:15:"IM+Fell+DW+Pica";}';
+
+$fonts['IM Fell DW Pica italic'] = new stdClass;
+$fonts['IM Fell DW Pica italic']->name = 'IM Fell DW Pica italic';
+$fonts['IM Fell DW Pica italic']->url = 'http://www.google.com/webfonts/family?family=IM+Fell+DW+Pica&subset=latin#italic';
+$fonts['IM Fell DW Pica italic']->provider = 'google_fonts_api';
+$fonts['IM Fell DW Pica italic']->css_family = "'IM Fell DW Pica'";
+$fonts['IM Fell DW Pica italic']->css_style = 'italic';
+$fonts['IM Fell DW Pica italic']->css_weight = 'normal';
+$fonts['IM Fell DW Pica italic']->foundry = 'Igino Marini';
+$fonts['IM Fell DW Pica italic']->foundry_url = 'http://www.google.com/webfonts/designer?designer=Igino+Marini';
+$fonts['IM Fell DW Pica italic']->license = 'SIL Open Font License, 1.1';
+$fonts['IM Fell DW Pica italic']->license_url = 'http://scripts.sil.org/OFL';
+$fonts['IM Fell DW Pica italic']->metadata = 'a:1:{s:4:"path";s:22:"IM+Fell+DW+Pica:italic";}';
 
 $fonts['IM Fell English SC'] = new stdClass;
 $fonts['IM Fell English SC']->name = 'IM Fell English SC';
@@ -1007,6 +1072,19 @@ $fonts['IM Fell Great Primer italic']->foundry_url = 'http://www.google.com/webf
 $fonts['IM Fell Great Primer italic']->license = 'SIL Open Font License, 1.1';
 $fonts['IM Fell Great Primer italic']->license_url = 'http://scripts.sil.org/OFL';
 $fonts['IM Fell Great Primer italic']->metadata = 'a:1:{s:4:"path";s:27:"IM+Fell+Great+Primer:italic";}';
+
+$fonts['IM Fell Double Pica SC'] = new stdClass;
+$fonts['IM Fell Double Pica SC']->name = 'IM Fell Double Pica SC';
+$fonts['IM Fell Double Pica SC']->url = 'http://www.google.com/webfonts/family?family=IM+Fell+Double+Pica+SC&subset=latin';
+$fonts['IM Fell Double Pica SC']->provider = 'google_fonts_api';
+$fonts['IM Fell Double Pica SC']->css_family = "'IM Fell Double Pica SC'";
+$fonts['IM Fell Double Pica SC']->css_style = 'normal';
+$fonts['IM Fell Double Pica SC']->css_weight = 'normal';
+$fonts['IM Fell Double Pica SC']->foundry = 'Igino Marini';
+$fonts['IM Fell Double Pica SC']->foundry_url = 'http://www.google.com/webfonts/designer?designer=Igino+Marini';
+$fonts['IM Fell Double Pica SC']->license = 'SIL Open Font License, 1.1';
+$fonts['IM Fell Double Pica SC']->license_url = 'http://scripts.sil.org/OFL';
+$fonts['IM Fell Double Pica SC']->metadata = 'a:1:{s:4:"path";s:22:"IM+Fell+Double+Pica+SC";}';
 
 $fonts['IM Fell Double Pica'] = new stdClass;
 $fonts['IM Fell Double Pica']->name = 'IM Fell Double Pica';
@@ -1059,6 +1137,19 @@ $fonts['Inconsolata']->foundry_url = 'http://www.google.com/webfonts/designer?de
 $fonts['Inconsolata']->license = 'SIL Open Font License, 1.1';
 $fonts['Inconsolata']->license_url = 'http://scripts.sil.org/OFL';
 $fonts['Inconsolata']->metadata = 'a:1:{s:4:"path";s:11:"Inconsolata";}';
+
+$fonts['Indie Flower'] = new stdClass;
+$fonts['Indie Flower']->name = 'Indie Flower';
+$fonts['Indie Flower']->url = 'http://www.google.com/webfonts/family?family=Indie+Flower&subset=latin';
+$fonts['Indie Flower']->provider = 'google_fonts_api';
+$fonts['Indie Flower']->css_family = "'Indie Flower'";
+$fonts['Indie Flower']->css_style = 'normal';
+$fonts['Indie Flower']->css_weight = 'normal';
+$fonts['Indie Flower']->foundry = 'Kimberly Geswein';
+$fonts['Indie Flower']->foundry_url = 'http://www.google.com/webfonts/designer?designer=Kimberly+Geswein';
+$fonts['Indie Flower']->license = 'SIL Open Font License, 1.1';
+$fonts['Indie Flower']->license_url = 'http://scripts.sil.org/OFL';
+$fonts['Indie Flower']->metadata = 'a:1:{s:4:"path";s:12:"Indie+Flower";}';
 
 $fonts['Irish Growler'] = new stdClass;
 $fonts['Irish Growler']->name = 'Irish Growler';
@@ -1567,6 +1658,19 @@ $fonts['Lato 900italic']->license = 'SIL Open Font License, 1.1';
 $fonts['Lato 900italic']->license_url = 'http://scripts.sil.org/OFL';
 $fonts['Lato 900italic']->metadata = 'a:1:{s:4:"path";s:14:"Lato:900italic";}';
 
+$fonts['League Script'] = new stdClass;
+$fonts['League Script']->name = 'League Script';
+$fonts['League Script']->url = 'http://www.google.com/webfonts/family?family=League+Script&subset=latin';
+$fonts['League Script']->provider = 'google_fonts_api';
+$fonts['League Script']->css_family = "'League Script'";
+$fonts['League Script']->css_style = 'normal';
+$fonts['League Script']->css_weight = '400';
+$fonts['League Script']->foundry = 'Haley Fiege';
+$fonts['League Script']->foundry_url = 'http://www.google.com/webfonts/designer?designer=Haley+Fiege';
+$fonts['League Script']->license = 'SIL Open Font License, 1.1';
+$fonts['League Script']->license_url = 'http://scripts.sil.org/OFL';
+$fonts['League Script']->metadata = 'a:1:{s:4:"path";s:13:"League+Script";}';
+
 $fonts['Lekton 400'] = new stdClass;
 $fonts['Lekton 400']->name = 'Lekton 400';
 $fonts['Lekton 400']->url = 'http://www.google.com/webfonts/family?family=Lekton&subset=latin#400';
@@ -1996,32 +2100,6 @@ $fonts['PT Sans Caption bold']->license = 'SIL Open Font License, 1.1';
 $fonts['PT Sans Caption bold']->license_url = 'http://scripts.sil.org/OFL';
 $fonts['PT Sans Caption bold']->metadata = 'a:1:{s:4:"path";s:20:"PT+Sans+Caption:bold";}';
 
-$fonts['PT Serif Caption'] = new stdClass;
-$fonts['PT Serif Caption']->name = 'PT Serif Caption';
-$fonts['PT Serif Caption']->url = 'http://www.google.com/webfonts/family?family=PT+Serif+Caption&subset=latin';
-$fonts['PT Serif Caption']->provider = 'google_fonts_api';
-$fonts['PT Serif Caption']->css_family = "'PT Serif Caption'";
-$fonts['PT Serif Caption']->css_style = 'normal';
-$fonts['PT Serif Caption']->css_weight = 'normal';
-$fonts['PT Serif Caption']->foundry = 'multiple designers';
-$fonts['PT Serif Caption']->foundry_url = '';
-$fonts['PT Serif Caption']->license = 'SIL Open Font License, 1.1';
-$fonts['PT Serif Caption']->license_url = 'http://scripts.sil.org/OFL';
-$fonts['PT Serif Caption']->metadata = 'a:1:{s:4:"path";s:16:"PT+Serif+Caption";}';
-
-$fonts['PT Serif Caption italic'] = new stdClass;
-$fonts['PT Serif Caption italic']->name = 'PT Serif Caption italic';
-$fonts['PT Serif Caption italic']->url = 'http://www.google.com/webfonts/family?family=PT+Serif+Caption&subset=latin#italic';
-$fonts['PT Serif Caption italic']->provider = 'google_fonts_api';
-$fonts['PT Serif Caption italic']->css_family = "'PT Serif Caption'";
-$fonts['PT Serif Caption italic']->css_style = 'italic';
-$fonts['PT Serif Caption italic']->css_weight = 'normal';
-$fonts['PT Serif Caption italic']->foundry = 'multiple designers';
-$fonts['PT Serif Caption italic']->foundry_url = '';
-$fonts['PT Serif Caption italic']->license = 'SIL Open Font License, 1.1';
-$fonts['PT Serif Caption italic']->license_url = 'http://scripts.sil.org/OFL';
-$fonts['PT Serif Caption italic']->metadata = 'a:1:{s:4:"path";s:23:"PT+Serif+Caption:italic";}';
-
 $fonts['PT Serif'] = new stdClass;
 $fonts['PT Serif']->name = 'PT Serif';
 $fonts['PT Serif']->url = 'http://www.google.com/webfonts/family?family=PT+Serif&subset=latin';
@@ -2073,6 +2151,45 @@ $fonts['PT Serif bolditalic']->foundry_url = '';
 $fonts['PT Serif bolditalic']->license = 'SIL Open Font License, 1.1';
 $fonts['PT Serif bolditalic']->license_url = 'http://scripts.sil.org/OFL';
 $fonts['PT Serif bolditalic']->metadata = 'a:1:{s:4:"path";s:19:"PT+Serif:bolditalic";}';
+
+$fonts['PT Serif Caption'] = new stdClass;
+$fonts['PT Serif Caption']->name = 'PT Serif Caption';
+$fonts['PT Serif Caption']->url = 'http://www.google.com/webfonts/family?family=PT+Serif+Caption&subset=latin';
+$fonts['PT Serif Caption']->provider = 'google_fonts_api';
+$fonts['PT Serif Caption']->css_family = "'PT Serif Caption'";
+$fonts['PT Serif Caption']->css_style = 'normal';
+$fonts['PT Serif Caption']->css_weight = 'normal';
+$fonts['PT Serif Caption']->foundry = 'multiple designers';
+$fonts['PT Serif Caption']->foundry_url = '';
+$fonts['PT Serif Caption']->license = 'SIL Open Font License, 1.1';
+$fonts['PT Serif Caption']->license_url = 'http://scripts.sil.org/OFL';
+$fonts['PT Serif Caption']->metadata = 'a:1:{s:4:"path";s:16:"PT+Serif+Caption";}';
+
+$fonts['PT Serif Caption italic'] = new stdClass;
+$fonts['PT Serif Caption italic']->name = 'PT Serif Caption italic';
+$fonts['PT Serif Caption italic']->url = 'http://www.google.com/webfonts/family?family=PT+Serif+Caption&subset=latin#italic';
+$fonts['PT Serif Caption italic']->provider = 'google_fonts_api';
+$fonts['PT Serif Caption italic']->css_family = "'PT Serif Caption'";
+$fonts['PT Serif Caption italic']->css_style = 'italic';
+$fonts['PT Serif Caption italic']->css_weight = 'normal';
+$fonts['PT Serif Caption italic']->foundry = 'multiple designers';
+$fonts['PT Serif Caption italic']->foundry_url = '';
+$fonts['PT Serif Caption italic']->license = 'SIL Open Font License, 1.1';
+$fonts['PT Serif Caption italic']->license_url = 'http://scripts.sil.org/OFL';
+$fonts['PT Serif Caption italic']->metadata = 'a:1:{s:4:"path";s:23:"PT+Serif+Caption:italic";}';
+
+$fonts['Pacifico'] = new stdClass;
+$fonts['Pacifico']->name = 'Pacifico';
+$fonts['Pacifico']->url = 'http://www.google.com/webfonts/family?family=Pacifico&subset=latin';
+$fonts['Pacifico']->provider = 'google_fonts_api';
+$fonts['Pacifico']->css_family = "'Pacifico'";
+$fonts['Pacifico']->css_style = 'normal';
+$fonts['Pacifico']->css_weight = 'normal';
+$fonts['Pacifico']->foundry = 'Vernon Adams';
+$fonts['Pacifico']->foundry_url = 'http://www.google.com/webfonts/designer?designer=Vernon+Adams';
+$fonts['Pacifico']->license = 'SIL Open Font License, 1.1';
+$fonts['Pacifico']->license_url = 'http://scripts.sil.org/OFL';
+$fonts['Pacifico']->metadata = 'a:1:{s:4:"path";s:8:"Pacifico";}';
 
 $fonts['Permanent Marker'] = new stdClass;
 $fonts['Permanent Marker']->name = 'Permanent Marker';
@@ -2437,6 +2554,19 @@ $fonts['Unkempt']->foundry_url = 'http://www.google.com/webfonts/designer?design
 $fonts['Unkempt']->license = 'Apache License, version 2.0';
 $fonts['Unkempt']->license_url = 'http://www.apache.org/licenses/LICENSE-2.0.html';
 $fonts['Unkempt']->metadata = 'a:1:{s:4:"path";s:7:"Unkempt";}';
+
+$fonts['VT323'] = new stdClass;
+$fonts['VT323']->name = 'VT323';
+$fonts['VT323']->url = 'http://www.google.com/webfonts/family?family=VT323&subset=latin';
+$fonts['VT323']->provider = 'google_fonts_api';
+$fonts['VT323']->css_family = "'VT323'";
+$fonts['VT323']->css_style = 'normal';
+$fonts['VT323']->css_weight = 'normal';
+$fonts['VT323']->foundry = 'Peter Hull';
+$fonts['VT323']->foundry_url = 'http://www.google.com/webfonts/designer?designer=Peter+Hull';
+$fonts['VT323']->license = 'SIL Open Font License, 1.1';
+$fonts['VT323']->license_url = 'http://scripts.sil.org/OFL';
+$fonts['VT323']->metadata = 'a:1:{s:4:"path";s:5:"VT323";}';
 
 $fonts['Vibur'] = new stdClass;
 $fonts['Vibur']->name = 'Vibur';
