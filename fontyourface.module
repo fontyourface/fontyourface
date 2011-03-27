@@ -44,7 +44,7 @@ function fontyourface_menu() {
     'access arguments' => array('administer @font-your-face'),
     'title callback' => 'fontyourface_admin_edit_form_title',
     'title arguments' => array(4),
-    'type' => MENU_CALLBACK,
+    'type' => MENU_NORMAL_ITEM,
   );
   
   $items['fontyourface/autocomplete/tag'] = array(
@@ -577,10 +577,6 @@ function fontyourface_admin_edit_form_title($fid) {
  */
 function fontyourface_admin_edit_form($form, &$form_state, $fid) {
 
-  $breadcrumb = drupal_get_breadcrumb();
-  $breadcrumb[] = l('@font-your-face', 'admin/appearance/fontyourface');
-  drupal_set_breadcrumb($breadcrumb);
-
   drupal_add_js(drupal_get_path('module', 'fontyourface') . '/js/add_form.js');
 
   $font = fontyourface_get_font($fid);
@@ -678,6 +674,8 @@ function fontyourface_admin_edit_form($form, &$form_state, $fid) {
     'css' => array(
       '#type' => 'textarea',
       '#title' => t('CSS selector'),
+      '#resizable' => FALSE,
+      '#rows' => 3,
       '#default_value' => $font->css_selector,
       '#description' => t('Use commas to separate multiple selectors, just like you would in CSS. Leave blank to handle application of the font in your theme.'),
     ),
