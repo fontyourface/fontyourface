@@ -46,6 +46,13 @@ function fontyourface_menu() {
     'title arguments' => array(4),
     'type' => MENU_CALLBACK,
   );
+  
+  $items['fontyourface/autocomplete/tag'] = array(
+    'title' => 'Autocomplete font tags',
+    'page callback' => 'fontyourface_autocomplete',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
 
   return $items;
 
@@ -585,13 +592,6 @@ function fontyourface_admin_edit_form($form, &$form_state, $fid) {
     $provider = $info_function();
   } // if
 
-  if (count($font->tags) > 0) {
-    $tags = implode(', ', $font->tags);
-  } // if
-  else {
-    $tags = '<i>No tags</i>';
-  } // else
-
   $form = array(
     'fid' => array(
       '#type' => 'hidden',
@@ -609,7 +609,11 @@ function fontyourface_admin_edit_form($form, &$form_state, $fid) {
         '#markup' => '<div class="provider">' . t('Provider: !provider', array('!provider' => l($provider['name'], $provider['url']))) . '</div>',
       ),
       'tags' => array(
-        '#markup' => '<div class="tags">' . t('Tags: !tags', array('!tags' => $tags)) . '</div>',
+        '#title' => t('Tags'),
+        '#type' => 'textfield',
+        '#default_value' => implode(', ', $font->tags),
+        '#autocomplete_path' => 'fontyourface/autocomplete/tag',
+        '#maxlength' => 1024,
       ),
     ),
   );
@@ -735,6 +739,20 @@ function fontyourface_admin_edit_form_submit($form, &$form_state) {
     if ($font->css_selector != $form['css']['#value']) {
       fontyourface_set_css_selector($font, $form['css']['#value']);
     } // if
+    
+    $tags = drupal_explode_tags($form_state['values']['tags']);
+    
+    if ($tags != $font->tags) {
+
+      db_delete('fontyourface_tag_font')
+        ->condition('fid', $font->fid)
+        ->execute();
+
+      fontyourface_add_tags_to_font($tags, $font->fid);
+      $font->tags = $tags;
+      fontyourface_delete_unused_tags();
+
+    } // if
 
     drupal_set_message(t('Updated') . ' <i>' . $font->name . '</i>.');
 
@@ -743,7 +761,60 @@ function fontyourface_admin_edit_form_submit($form, &$form_state) {
 } // fontyourface_admin_edit_form_submit
 
 /**
- * Adds a stylesheet in preproce
+ * Returns JSON-encoded autocomplete matches.
+ */
+function fontyourface_autocomplete($tags_typed = '') {
+
+  $tags_typed = drupal_explode_tags($tags_typed);
+  $tag_last = drupal_strtolower(array_pop($tags_typed));
+
+  $matches = array();
+
+  if ($tag_last != '') {
+
+    $query = db_select('fontyourface_tag', 't');
+
+    // Do not select already entered tags.
+    if (!empty($tags_typed)) {
+
+      $query->condition('t.name', $tags_typed, 'NOT IN');
+
+    } // if
+
+    // Select rows that match by tag name.
+    $tags_return = $query
+      ->fields('t', array('tid', 'name'))
+      ->condition('t.name', '%' . db_like($tag_last) . '%', 'LIKE')
+      ->range(0, 10)
+      ->execute()
+      ->fetchAllKeyed();
+
+    $prefix = count($tags_typed) ? implode(', ', $tags_typed) . ', ' : '';
+
+    $matches = array();
+
+    foreach ($tags_return as $tid => $name) {
+  
+      $n = $name;
+
+      // Tag names containing commas or quotes must be wrapped in quotes.
+      if (strpos($name, ',') !== FALSE || strpos($name, '"') !== FALSE) {
+        $n = '"' . str_replace('"', '""', $name) . '"';
+      } // if
+      else {
+        $matches[$prefix . $n] = check_plain($name);
+      } // else
+
+    } // foreach
+
+  } // if
+
+  drupal_json_output($matches);
+  
+} // fontyourface_autocomplete
+
+/**
+ * Adds a stylesheet in preprocess
  */
 function fontyourface_add_css_in_preprocess(&$vars, $css_path, $type = 'public') {
 
@@ -908,6 +979,17 @@ function fontyourface_save_font(&$font) {
     $tags = array();
   } // if
 
+  fontyourface_add_tags_to_font($tags, $font->fid);
+
+  $font->tags = $tags;
+
+} // fontyourface_save_font
+
+/**
+ * Adds tags to font.
+ */
+function fontyourface_add_tags_to_font($tags, $fid) {
+
   foreach ($tags as $tag) {
 
     $tag_object = new StdClass;
@@ -917,15 +999,13 @@ function fontyourface_save_font(&$font) {
 
     $tag_font = new StdClass;
     $tag_font->tid = $tag_object->tid;
-    $tag_font->fid = $font->fid;
+    $tag_font->fid = $fid;
 
     drupal_write_record('fontyourface_tag_font', $tag_font);
 
   } // forach
 
-  $font->tags = $tags;
-
-} // fontyourface_save_font
+} // fontyourface_add_tags_to_font
 
 /**
  * Adds tag if it doesn't already exist.
@@ -1013,7 +1093,16 @@ function fontyourface_provider_disable($provider) {
   db_delete('fontyourface_font')
     ->condition('provider', $provider)
     ->execute();
-    
+
+  fontyourface_delete_unused_tags();
+
+} // fontyourface_provider_disable
+
+/**
+ * Deletes all unused tags.
+ */
+function fontyourface_delete_unused_tags() {
+
   // Delete all unused font-tag relationships.
   
   $missing_font_query = db_select('fontyourface_tag_font', 'tf');
@@ -1060,4 +1149,4 @@ function fontyourface_provider_disable($provider) {
 
   } // if
 
-} // fontyourface_provider_disable
+} // fontyourface_delete_unused_tags
