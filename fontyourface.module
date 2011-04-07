@@ -902,7 +902,13 @@ function fontyourface_set_css_selector(&$font, $css_selector) {
  */
 function fontyourface_save_font(&$font) {
 
-  $tags = $font->tags;
+  if (isset($font->tags)) {
+    $tags = $font->tags;
+  } // if
+  else {
+    $tags = array();
+  } // else
+
   unset($font->tags);
 
   $exists = db_fetch_object(db_query("SELECT fid FROM {fontyourface_font} WHERE url = '%s' AND provider = '%s'", $font->url, $font->provider));
