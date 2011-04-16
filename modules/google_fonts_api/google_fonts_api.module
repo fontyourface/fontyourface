@@ -49,6 +49,7 @@ function google_fonts_api_preprocess_page(&$vars) {
   if (!empty($vars['fontyourface'])) {
 
     $paths = array();
+    $subsets = array();
 
     foreach ($vars['fontyourface'] as $used_font) {
 
@@ -57,6 +58,7 @@ function google_fonts_api_preprocess_page(&$vars) {
         $metadata = unserialize($used_font->metadata);
 
         $path_parts = explode(':', $metadata['path']);
+        $subsets[$metadata['subset']] = $metadata['subset'];
 
         if (!isset($paths[$path_parts[0]])) {
           $paths[$path_parts[0]] = array();
@@ -87,7 +89,9 @@ function google_fonts_api_preprocess_page(&$vars) {
         $base = 'https://fonts.googleapis.com/css?family=';
       } // if
 
-      fontyourface_add_css_in_preprocess($vars, $base . implode('|', $families), 'remote');
+      $url = $base . implode('|', $families) . '&subset=' . implode(',', $subsets);
+
+      fontyourface_add_css_in_preprocess($vars, $url, 'remote');
 
     } // if
 
@@ -104,7 +108,9 @@ function google_fonts_api_fontyourface_import() {
 
   foreach ($fonts as $font) {
 
-    $font->tags = array();
+    if (!isset($font->tags)) {
+      $font->tags = array();
+    } // if
     fontyourface_save_font($font);
 
   } // foreach
