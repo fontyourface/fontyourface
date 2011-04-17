@@ -532,7 +532,7 @@ function fontyourface_preprocess_page(&$vars) {
 
     } // foreach
 
-    file_save_data($css, $destination, FILE_EXISTS_REPLACE);
+    file_unmanaged_save_data($css, $destination, FILE_EXISTS_REPLACE);
 
   } // if
 

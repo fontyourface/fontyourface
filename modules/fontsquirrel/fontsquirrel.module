@@ -133,7 +133,7 @@ function fontsquirrel_fontyourface_enable($font) {
 
         if (file_prepare_directory($zip_location_directory, FILE_CREATE_DIRECTORY)) {
 
-          file_save_data($kit_result->data, $zip_location, FILE_EXISTS_REPLACE);
+          file_unmanaged_save_data($kit_result->data, $zip_location, FILE_EXISTS_REPLACE);
 
         } // if
         else {
@@ -167,7 +167,7 @@ function fontsquirrel_fontyourface_enable($font) {
 
             $entry_name = zip_entry_name($entry);
             $data = zip_entry_read($entry, $zip_entry_filesize);
-            file_save_data($data, $directory_location . '/' . $entry_name, FILE_EXISTS_REPLACE);
+            file_unmanaged_save_data($data, $directory_location . '/' . $entry_name, FILE_EXISTS_REPLACE);
 
           } // if
 
