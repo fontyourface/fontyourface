@@ -81,13 +81,13 @@ function fontsquirrel_fontyourface_enable($font) {
   if ($font->css_family == '') {
 
     $api_result = drupal_http_request('http://www.fontsquirrel.com/api/familyinfo/' . $metadata['path']);
-  
+
     if ($api_result->code == '200') {
-  
+
       $decoded = json_decode($api_result->data);
-  
+
       if (is_array($decoded) && is_object($decoded[0])) {
-  
+
         $font->css_family = "'" . $decoded[0]->{'fontface_name'} . "'";
         fontyourface_save_font($font);
 
@@ -99,7 +99,7 @@ function fontsquirrel_fontyourface_enable($font) {
 
       } // else
 
-    } // if    
+    } // if
     else {
 
       drupal_set_message(t('There was an error importing font information for ') . ' <i>' . $font->name .'</i> ' . t('from') . ' Font Squirrel. API not responding.', 'error');

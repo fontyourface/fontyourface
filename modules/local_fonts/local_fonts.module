@@ -87,7 +87,7 @@ function local_fonts_delete_button_submit($form, &$form_state) {
 function local_fonts_add_fontface($form_state) {
 
   $form = array();
-  
+
   $form['local_fonts']['information'] = array(
     '#type' => 'fieldset',
     '#title' => t('Font Information'),
@@ -137,7 +137,7 @@ function local_fonts_add_fontface($form_state) {
     '#title' => t('EOT font file'),
     '#description' => t('Embedded Open Type. This format is supported by IE 5-8.'),
   );
-  
+
   $form['local_fonts']['upload']['ttf'] = array(
     '#type' => 'file',
     '#title' => t('TTF font file'),
@@ -185,7 +185,7 @@ function local_fonts_add_fontface_validate($form, &$form_state) {
   ) {
 
     // Validate the files against their extension
-  
+
     $files = $_FILES['files']['name'];
 
     foreach ($files as $key => $filename) {
@@ -244,7 +244,7 @@ function local_fonts_add_fontface_submit($form, &$form_state) {
     (file_check_directory($destination_directory, FILE_CREATE_DIRECTORY))
   ) {
 
-    foreach($files as $key => $filename) {
+    foreach ($files as $key => $filename) {
 
       $format = $key;
 
@@ -266,7 +266,7 @@ function local_fonts_add_fontface_submit($form, &$form_state) {
             $src .= '  src: url("' . $file->filename . '");' . "\n";
 
           } // if
-          else if ($format == 'svg') {
+          elseif ($format == 'svg') {
 
             // Get the font ID from the SVG file.
 
@@ -287,7 +287,7 @@ function local_fonts_add_fontface_submit($form, &$form_state) {
             $url = $file->filename . '#' . $hash;
             $combined_sources[] = 'url("' . $url . '") format("' . $format . '")';
 
-          } // 
+          } // elseif
           else {
 
             $combined_sources[] = 'url("' . $file->filename . '") format("' . $format . '")';
@@ -316,7 +316,7 @@ function local_fonts_add_fontface_submit($form, &$form_state) {
     $generated_css .= '}' . "\n";
 
     $css_file = file_save_data($generated_css, $destination_css_file);
-    
+
     $local_font = new stdClass;
     $local_font->name = $font_family . ' ' . $font_style . ' ' . $font_weight;
     $local_font->url = 'http://localhost/#' . md5($local_font->name);
@@ -346,7 +346,7 @@ function local_fonts_delete_fontface($form_state, $fid) {
   $form = array(
     'fid' => array(
       '#type' => 'value',
-      '#value'=> $fid,
+      '#value' => $fid,
     ),
     'confirm' => array(
       '#type' => 'fieldset',
@@ -394,12 +394,12 @@ function local_fonts_fontyourface_delete($font) {
   $metadata = unserialize($font->metadata);
 
   $directory = dirname($metadata['path']);
-  
+
   // Delete all the files.
-  
+
   $files = scandir($directory);
 
-  foreach ($files as $file) { 
+  foreach ($files as $file) {
 
     if ($file != '.' && $file != '..') {
       unlink($directory . '/' . $file);
@@ -408,9 +408,9 @@ function local_fonts_fontyourface_delete($font) {
   } // foreach
 
   // Delete the directory.
-  
+
   rmdir($directory);
-  
+
   return TRUE;
 
 } // local_fonts_fontyourface_delete

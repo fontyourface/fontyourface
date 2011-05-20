@@ -41,7 +41,7 @@ function kernest_fontyourface_import() {
         $font->tags = array();
 
         $css = explode(';', $import_font->{'recommended css'});
-  
+
         foreach ($css as $property) {
 
           list($key, $value) = explode(':', $property);
@@ -110,7 +110,7 @@ function kernest_preprocess_page(&$vars) {
     foreach ($vars['fontyourface'] as $used_font) {
 
       if ($used_font->provider == 'kernest') {
-        $metaddata = unserialize($used_font->metadata);        
+        $metaddata = unserialize($used_font->metadata);
         fontyourface_add_css_in_preprocess($vars, $used_font->url . '.css', TRUE);
       } // if
 

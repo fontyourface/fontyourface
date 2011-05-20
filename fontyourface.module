@@ -872,15 +872,15 @@ function fontyourface_delete_font($font) {
   if ($delete) {
 
     // Delete font and font-tag relationships.
-  
+
     $font_sql = "DELETE f.*, tf.*
     FROM {fontyourface_font} f
     LEFT JOIN {fontyourface_tag_font} tf
       ON tf.fid = f.fid
     WHERE f.fid = %d";
-  
+
     db_query($font_sql, $font->fid);
-  
+
     fontyourface_delete_unused_tags();
 
   } // if

@@ -68,7 +68,7 @@ function google_fonts_api_preprocess_page(&$vars) {
       if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
         $base = 'https://fonts.googleapis.com/css?family=';
       } // if
-      
+
       $url = $base . implode('|', $paths) . '&subset=' . implode(',', $subsets);
 
       fontyourface_add_css_in_preprocess($vars, $url, TRUE);
