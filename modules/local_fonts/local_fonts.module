@@ -256,43 +256,49 @@ function local_fonts_add_fontface_submit($form, &$form_state) {
 
       if (!empty($filename)) {
 
-        if ($file = file_save_upload($key, array(), $destination_directory . '/' . $filename)) {
+        if ($file = file_save_upload($key, array(), $destination_directory . '/' . $filename . '.tmp', FILE_EXISTS_REPLACE)) {
 
-          if ($format == 'eot') {
+          // Copy the temporary file to permanent location.
 
-            // EOT goes on its own line and doesn't take a format.
-            // Because IE is a "special needs" browser.
+          if (file_copy($file, $destination_directory . '/' . $filename, FILE_EXISTS_REPLACE)) {
 
-            $src .= '  src: url("' . $file->filename . '");' . "\n";
+            if ($format == 'eot') {
 
-          } // if
-          elseif ($format == 'svg') {
+              // EOT goes on its own line and doesn't take a format.
+              // Because IE is a "special needs" browser.
 
-            // Get the font ID from the SVG file.
-
-            $svg = file_get_contents($file->filepath);
-            $hash = '';
-
-            if (preg_match('#<font([^>]+)>#i', $svg, $font_tag_match)) {
-
-              if (preg_match('#id="([^"]+)"#i', $font_tag_match[1], $id_match)) {
-                $hash = $id_match[1];
-              } // if
-              elseif (preg_match("#id='([^']+)'#i", $font_tag_match[1], $id_match)) {
-                $hash = $id_match[1];
-              } // elseif
+              $src .= '  src: url("' . $file->filename . '");' . "\n";
 
             } // if
+            elseif ($format == 'svg') {
 
-            $url = $file->filename . '#' . $hash;
-            $combined_sources[] = 'url("' . $url . '") format("' . $format . '")';
+              // Get the font ID from the SVG file.
 
-          } // elseif
-          else {
+              $svg = file_get_contents($file->filepath);
+              $hash = '';
 
-            $combined_sources[] = 'url("' . $file->filename . '") format("' . $format . '")';
+              if (preg_match('#<font([^>]+)>#i', $svg, $font_tag_match)) {
 
-          } // else
+                if (preg_match('#id="([^"]+)"#i', $font_tag_match[1], $id_match)) {
+                  $hash = $id_match[1];
+                } // if
+                elseif (preg_match("#id='([^']+)'#i", $font_tag_match[1], $id_match)) {
+                  $hash = $id_match[1];
+                } // elseif
+
+              } // if
+
+              $url = $file->filename . '#' . $hash;
+              $combined_sources[] = 'url("' . $url . '") format("' . $format . '")';
+
+            } // elseif
+            else {
+
+              $combined_sources[] = 'url("' . $file->filename . '") format("' . $format . '")';
+
+            } // else
+
+          } // if
 
         } // if
 
