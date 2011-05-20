@@ -216,7 +216,7 @@ function fonts_com_get_domains_in_project($project_id) {
 
   } // else
 
-  return $domain;
+  return $domains;
 
 } // fonts_com_get_domains_in_project
 
