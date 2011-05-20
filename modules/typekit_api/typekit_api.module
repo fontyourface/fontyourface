@@ -267,11 +267,24 @@ function typekit_api_get_kit($kit_id) {
  */
 function typekit_api_kit_matches_domain($kit, $domain) {
 
+  $domain = drupal_strtolower($domain);
+
   foreach ($kit->domains as $kit_domain) {
+
+    $kit_domain = drupal_strtolower($kit_domain);
 
     if ($kit_domain == $domain) {
       return TRUE;
     } // if
+    else {
+
+      $regex = '#' . str_replace(array('.', '*'), array('\.', '.*'), $kit_domain) . '#';
+
+      if (preg_match($regex, $domain)) {
+        return TRUE;
+      } // if
+
+    } // else
 
   } // foreach
 
