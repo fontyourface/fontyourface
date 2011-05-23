@@ -959,7 +959,16 @@ function fontyourface_save_font(&$font) {
 
   if ($exists) {
 
-    $font->fid = $exists->fid;
+    $existing_font = fontyourface_get_font($exists->fid);
+
+    $font->fid = $existing_font->fid;
+    
+    // Keep status, selector, and tags the same.
+    
+    $font->enabled = $existing_font->enabled;
+    $font->css_selector = $existing_font->css_selector;
+    fontyourface_add_font_tags($font);
+
     drupal_write_record('fontyourface_font', $font, 'fid');
 
   } // if

@@ -33,7 +33,6 @@ function fontdeck_fontyourface_import() {
     if ($response->code == 200) {
   
       $data = json_decode($response->data);
-      fontyourface_provider_disable('fontdeck');
   
       $fontdeck_css = variable_get('fontdeck_css', array());
   
