@@ -105,9 +105,15 @@ function typekit_api_preprocess_page(&$vars) {
 
     if (count($kits) > 0) {
 
+      $base = 'http://use.typekit.com/';
+
+      if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+        $base = 'https://use.typekit.com/';
+      } // if
+
       foreach (array_keys($kits) as $kit) {
 
-        drupal_add_js('http://use.typekit.com/' . $kit . '.js', array('type' => 'external'));
+        drupal_add_js($base . $kit . '.js', array('type' => 'external'));
         $variables['scripts'] = drupal_get_js();
 
       } // foreach

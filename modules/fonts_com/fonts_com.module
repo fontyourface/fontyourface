@@ -98,9 +98,15 @@ function fonts_com_preprocess_page(&$vars) {
 
     if (count($projects) > 0) {
 
+      $base = 'http://fast.fonts.com/jsapi/';
+
+      if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+        $base = 'https://fast.fonts.com/jsapi/';
+      } // if
+
       foreach (array_keys($projects) as $project) {
 
-        drupal_add_js('http://fast.fonts.com/jsapi/' . $project . '.js', array('type' => 'external'));
+        drupal_add_js($base . $project . '.js', array('type' => 'external'));
         $variables['scripts'] = drupal_get_js();
 
       } // foreach
