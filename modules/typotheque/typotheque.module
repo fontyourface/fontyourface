@@ -1,0 +1,183 @@
+<?php
+
+define('TYPOTHEQUE_BASE_URL', 'http://www.typotheque.com/ajax/drupal_api.php');
+
+/**
+ * Implements hook_fontyourface_info().
+ */
+function typotheque_fontyourface_info() {
+
+  return array(
+    'name' => 'Typotheque',
+    'url' => 'http://www.typotheque.com/',
+  );
+
+  return $info;
+
+} // typotheque_fontyourface_info
+
+/**
+ * Implements hook_fontyourface_import().
+ */
+function typotheque_fontyourface_import() {
+
+  $project = variable_get('typotheque_key', '');
+  $domain = preg_replace('#^www.#', '', $_SERVER['HTTP_HOST']);
+
+  $project_info_url = TYPOTHEQUE_BASE_URL . '?key=' . $project;
+
+  if ($project != '') {
+
+    $response = drupal_http_request($project_info_url);
+  
+    if ($response->code == 200) {
+  
+      $data = json_decode($response->data);
+
+      if (in_array($domain, $data->project[0]->domains)) {
+
+        foreach ($data->project[0]->fonts as $import_font) {
+  
+          $metadata = array(
+            'preview' => $import_font->preview,
+          );
+
+          $font = new StdClass;
+          $font->name = $import_font->name;
+          $font->url = $import_font->url;
+          $font->provider = 'typotheque';
+          $font->license = $import_font->license->name;
+          $font->license_url = $import_font->license->url;
+          $font->tags = array();
+          $font->css_family = "'" . $import_font->family . "'";
+          $font->css_style = $import_font->style;
+          $font->css_weight = $import_font->weight;
+          $font->metadata = serialize($metadata);
+
+          fontyourface_save_font($font);
+
+        } // foreach
+
+      } // if
+      else {
+
+        drupal_set_message(t('The Typotheque project for license key @project does not appear to be enabled for this domain (@domain).', array('@project' => $project, '@domain' => $domain)), 'error');
+
+      } // else
+
+    } // if
+    else {
+    
+      drupal_set_message(t('There was an error importing font information for license key @project from Typotheque.', array('@project' => $project)), 'error');
+  
+    } // else
+
+  } // if
+  else {
+
+    drupal_set_message(t('Missing project number to import.'), 'error');
+
+  } // else
+
+} // typotheque_fontyourface_import
+
+/**
+ * Implements hook_form_alter().
+ */
+function typotheque_form_alter(&$form, &$form_state, $form_id) {
+
+  if ($form_id == 'fontyourface_settings_form') {
+
+    $form['typotheque'] = array(
+      '#type' => 'fieldset',
+      '#title' => 'Typotheque',
+      '#weight' => -1,
+      'typotheque_key' => array(
+        '#type' => 'textfield',
+        '#title' => t('License key'),
+        '#description' => t('This can be found in the "Code" tab at ') . l('http://www.typotheque.com/my_account/webfonts', 'http://www.typotheque.com/my_account/webfonts'),
+        '#default_value' => variable_get('typotheque_key', ''),
+      ),
+      'typotheque_key_save' => array(
+        '#type' => 'submit',
+        '#value' => 'Update',
+      ),
+    );
+
+    $form['#submit'][] = 'typotheque_key_submit';
+
+  } // if
+
+} // typotheque_form_alter
+
+/**
+ * Updates project number.
+ */
+function typotheque_key_submit($form, &$form_state) {
+
+  if ($form_state['clicked_button']['#parents'][0] == 'typotheque_key_save') {
+
+    variable_set('typotheque_key', $form_state['values']['typotheque_key']);
+    drupal_set_message(t('Typotheque license key updated.'));
+
+  } // if
+
+} // typotheque_key_submit
+
+/**
+ * Implements hook_fontyourface_view().
+ */
+function typotheque_fontyourface_view($font, $text) {
+
+  $output = '';
+  $sizes = array(32, 24, 18, 14, 12, 10);
+
+  foreach ($sizes as $size) {
+
+    $output .= '<div style="' . fontyourface_font_css($font) . ' font-size: ' . $size . 'px; line-height: ' . $size . 'px;">' . $text . '</div>';
+
+  } // foreach
+
+  return $output;
+
+} // typotheque_fontyourface_view
+
+/**
+ * Implements hook_fontyourface_preview().
+ */
+function typotheque_fontyourface_preview($font) {
+
+  $metadata = unserialize($font->metadata);
+
+  return '<span style="' . fontyourface_font_css($font) . ' font-size: 24px;">' . $font->name . '</span>';
+
+} // typotheque_fontyourface_preview
+
+/**
+ * Implements template_preprocess_page().
+ */
+function typotheque_preprocess_page(&$vars) {
+
+  $project = variable_get('typotheque_key', '');
+
+  if (!empty($vars['fontyourface']) && $project != '') {
+
+    $enabled_fonts = FALSE;
+
+    foreach ($vars['fontyourface'] as $used_font) {
+
+      if ($used_font->provider == 'typotheque') {
+        $enabled_fonts = TRUE;
+      } // if
+
+    } // foreach
+
+    if ($enabled_fonts) {
+
+      fontyourface_add_css_in_preprocess($vars, 'http://wf.typotheque.com/' . $project, 'remote');
+
+    } // if
+
+  } // if
+
+} // typotheque_preprocess_page
