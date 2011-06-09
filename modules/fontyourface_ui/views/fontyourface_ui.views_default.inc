@@ -8,7 +8,7 @@
 /**
  * Implements hook_views_default_views().
  */
-function fontyourface_views_default_views() {
+function fontyourface_ui_views_default_views() {
   /*
    * View 'fontyourface_disabled'
    */
