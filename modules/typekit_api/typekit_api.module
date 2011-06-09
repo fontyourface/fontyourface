@@ -106,9 +106,15 @@ function typekit_api_preprocess_page(&$vars) {
 
     if (count($kits) > 0) {
 
+      $base = 'http://use.typekit.com/';
+
+      if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+        $base = 'https://use.typekit.com/';
+      } // if
+
       foreach (array_keys($kits) as $kit) {
 
-        $script = '<script type="text/javascript" src="http://use.typekit.com/' . $kit . '.js"></script>';
+        $script = '<script type="text/javascript" src="' . $base . $kit . '.js"></script>';
         drupal_set_html_head($script);
         $vars['head'] = drupal_get_html_head();
 

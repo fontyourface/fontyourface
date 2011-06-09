@@ -100,9 +100,15 @@ function fonts_com_preprocess_page(&$vars) {
 
     if (count($projects) > 0) {
 
+      $base = 'http://fast.fonts.com/jsapi/';
+
+      if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+        $base = 'https://fast.fonts.com/jsapi/';
+      } // if
+
       foreach (array_keys($projects) as $project) {
 
-        $script = '<script type="text/javascript" src="http://fast.fonts.com/jsapi/' . $project . '.js"></script>';
+        $script = '<script type="text/javascript" src="' . $base . $project . '.js"></script>';
         drupal_set_html_head($script);
         $vars['head'] = drupal_get_html_head();
 
