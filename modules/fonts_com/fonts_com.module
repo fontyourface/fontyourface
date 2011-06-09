@@ -68,7 +68,7 @@ function fonts_com_fontyourface_import() {
     $font->url = 'http://webfonts.fonts.com/en-US/Project/ChooseFonts?ViewDetails=T&ViewFontID=' . $import_font->FontID . '&AddFontToPalette=T';
     $font->provider = 'fonts_com';
     $font->metadata = serialize($metadata);
-    $font->css_family = $import_font->FontCSSName;
+    $font->css_family = '"' . $import_font->FontCSSName . '"';
     $font->foundry = $import_font->FontFondryName;
     $font->tags = array();
 
