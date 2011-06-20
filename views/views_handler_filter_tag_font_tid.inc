@@ -134,7 +134,7 @@ class views_handler_filter_tag_font_tid extends views_handler_filter_many_to_one
 
   } // value_form
 
-  function value_validate(&$form, &$form_state) {
+  function value_validate($form, &$form_state) {
 
     if ($this->options['type'] != 'textfield') {
       return;

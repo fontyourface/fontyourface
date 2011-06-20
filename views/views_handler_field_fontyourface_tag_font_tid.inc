@@ -11,7 +11,7 @@
  */
 class views_handler_field_fontyourface_tag_font_tid extends views_handler_field_prerender_list {
 
-  function init(&$view, $options) {
+  function init(&$view, &$options) {
 
     parent::init($view, $options);
     $this->additional_fields['fid'] = array('table' => 'fontyourface_font', 'field' => 'fid');
@@ -52,7 +52,7 @@ class views_handler_field_fontyourface_tag_font_tid extends views_handler_field_
 
   } // query
 
-  function pre_render($values) {
+  function pre_render(&$values) {
 
     $this->field_alias = $this->aliases['fid'];
     $fids = array();
