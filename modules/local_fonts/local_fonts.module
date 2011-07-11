@@ -262,6 +262,8 @@ function local_fonts_add_fontface_submit($form, &$form_state) {
 
           if (file_copy($file, $destination_directory . '/' . $filename, FILE_EXISTS_REPLACE)) {
 
+            file_set_status($file, FILE_STATUS_PERMANENT);
+
             if ($format == 'eot') {
 
               // EOT goes on its own line and doesn't take a format.
