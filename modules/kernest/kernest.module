@@ -44,18 +44,22 @@ function kernest_fontyourface_import() {
 
         foreach ($css as $property) {
 
-          list($key, $value) = explode(':', $property);
+          if (strpos($property, ':') !== FALSE) {
 
-          if (trim($key) == 'font-family') {
-            $font->css_family = trim($value);
-          } // if
+            list($key, $value) = explode(':', $property);
 
-          if (trim($key) == 'font-weight') {
-            $font->css_weight = trim($value);
-          } // if
+            if (trim($key) == 'font-family') {
+              $font->css_family = trim($value);
+            } // if
 
-          if (trim($key) == 'font-style') {
-            $font->css_style = trim($value);
+            if (trim($key) == 'font-weight') {
+              $font->css_weight = trim($value);
+            } // if
+
+            if (trim($key) == 'font-style') {
+              $font->css_style = trim($value);
+            } // if
+
           } // if
 
         } // foreach
