@@ -22,8 +22,6 @@ function fonts_com_fontyourface_info() {
  */
 function fonts_com_fontyourface_import() {
 
-  fontyourface_provider_disable('fonts_com');
-
   $import_fonts = array();
   $projects = fonts_com_get_projects();
 

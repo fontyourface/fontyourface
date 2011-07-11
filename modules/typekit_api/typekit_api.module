@@ -23,8 +23,6 @@ function typekit_api_fontyourface_import() {
 
   $logging = variable_get('fontyourface_detailed_logging', FALSE);
 
-  fontyourface_provider_disable('typekit_api');
-
   $kits = typekit_api_get_kits();
 
   if ($logging) {
