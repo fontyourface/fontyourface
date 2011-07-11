@@ -203,14 +203,19 @@ function fonts_com_get_domains_in_project($project_id) {
   if ($response->code == 200) {
 
     $data = json_decode($response->data);
-    $domain = $data->Domains->Domain;
 
-    if (is_array($domain)) {
-      $domains = $domain;
+    if ($data->Domains->TotalRecords > 0) {
+
+      $domain = $data->Domains->Domain;
+
+      if (is_array($domain)) {
+        $domains = $domain;
+      } // if
+      else {
+        $domains[] = $domain;
+      } // else
+
     } // if
-    else {
-      $domains[] = $domain;
-    } // else
 
   } // if
   else {
