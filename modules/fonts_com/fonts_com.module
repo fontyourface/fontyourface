@@ -302,7 +302,7 @@ function fonts_com_form_alter(&$form, &$form_state, $form_id) {
       ),
       'fonts_com_token_save' => array(
         '#type' => 'submit',
-        '#value' => 'Update',
+        '#value' => 'Update Fonts.com',
       ),
     );
 

@@ -146,7 +146,7 @@ function typekit_api_form_alter(&$form, &$form_state, $form_id) {
       ),
       'typekit_api_save' => array(
         '#type' => 'submit',
-        '#value' => 'Update',
+        '#value' => 'Update TypeKit',
       ),
     );
 
