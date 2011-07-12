@@ -225,7 +225,7 @@ function local_fonts_add_fontface_validate($form, &$form_state) {
 function local_fonts_add_fontface_submit($form, &$form_state) {
 
   $values = $form_state['values'];
-  $font_path = strtr(preg_replace('#[^a-zA-Z0-9]+#', ' ', $values['css_family']), ' ', '_');
+  $font_path = strtr(preg_replace('#[^a-zA-Z0-9]+#', ' ', $values['css_family']), ' ', '_') . '-' . $values['css_style'] . '-' . $values['css_weight'];
   $font_family = $values['css_family'];
   $font_style = $values['css_style'];
   $font_weight = $values['css_weight'];
