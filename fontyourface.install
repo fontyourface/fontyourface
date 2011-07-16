@@ -245,3 +245,13 @@ function fontyourface_update_6200() {
   return t('Updated @font-your-face.');
 
 } // fontyourface_update_6200
+
+/**
+ * Moves admin interface to fontyourface_ui module.
+ */
+function fontyourface_update_7100() {
+
+  module_enable(array('fontyourface_ui'));
+  views_invalidate_cache();
+
+} // fontyourface_update_7100
