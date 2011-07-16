@@ -496,8 +496,9 @@ function fontyourface_preprocess_page(&$vars) {
   $fonts = fontyourface_font_registry();
 
   $destination = dirname($_SERVER['SCRIPT_FILENAME']) . '/' . file_directory_path() . '/fontyourface/font.css';
+  $destination_directory = dirname($destination);
 
-  if (file_check_directory(dirname($destination),  FILE_CREATE_DIRECTORY)) {
+  if (file_check_directory($destination_directory,  FILE_CREATE_DIRECTORY)) {
 
     $css = '';
 
@@ -911,7 +912,16 @@ function fontyourface_save_font(&$font) {
 
   unset($font->tags);
 
-  $exists = db_fetch_object(db_query("SELECT fid FROM {fontyourface_font} WHERE url = '%s' AND provider = '%s'", $font->url, $font->provider));
+  if (isset($font->old_url)) {
+
+    $exists = db_fetch_object(db_query("SELECT fid FROM {fontyourface_font} WHERE (url = '%s' OR url = '%s') AND provider = '%s'", $font->url, $font->old_url, $font->provider));
+
+  } // if
+  else {
+
+    $exists = db_fetch_object(db_query("SELECT fid FROM {fontyourface_font} WHERE url = '%s' AND provider = '%s'", $font->url, $font->provider));
+
+  } // else
 
   if ($exists) {
 
