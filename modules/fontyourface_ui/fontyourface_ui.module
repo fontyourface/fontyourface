@@ -32,11 +32,29 @@ function fontyourface_ui_menu() {
     'title arguments' => array(4),
     'type' => MENU_NORMAL_ITEM,
   );
-  
+
   $items['fontyourface/autocomplete/tag'] = array(
     'title' => 'Autocomplete font tags',
     'page callback' => 'fontyourface_ui_autocomplete',
     'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['admin/appearance/fontyourface/enable/%'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('fontyourface_ui_admin_enable_form', 4),
+    'access arguments' => array('administer @font-your-face'),
+    'title callback' => 'fontyourface_ui_admin_enable_title',
+    'title arguments' => array(4),
+    'type' => MENU_CALLBACK,
+  );
+  
+  $items['admin/appearance/fontyourface/disable/%'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('fontyourface_ui_admin_disable_form', 4),
+    'access arguments' => array('administer @font-your-face'),
+    'title callback' => 'fontyourface_ui_admin_disable_title',
+    'title arguments' => array(4),
     'type' => MENU_CALLBACK,
   );
 
@@ -262,6 +280,20 @@ function fontyourface_ui_views_data() {
         'handler' => 'views_handler_argument_string',
       ),
     ),
+    'preview' => array(
+      'field' => array(
+        'title' => t('Preview'),
+        'help' => t('Provide a preview of the font.'),
+        'handler' => 'views_handler_field_fontyourface_preview',
+      ),
+    ),
+    'enable_disable_link' => array(
+      'field' => array(
+        'title' => t('Enable/Disable'),
+        'help' => t('Link to enable or disable the font.'),
+        'handler' => 'views_handler_field_fontyourface_enable_disable',
+      ),
+    ),
   );
 
   $data['fontyourface_tag_font'] = array(
@@ -401,6 +433,12 @@ function fontyourface_ui_views_handlers() {
       ),
       'views_handler_filter_tag_font_tid' => array(
         'parent' => 'views_handler_filter_many_to_one',
+      ),
+      'views_handler_field_fontyourface_preview' => array(
+        'parent' => 'views_handler_field',
+      ),
+      'views_handler_field_fontyourface_enable_disable' => array(
+        'parent' => 'views_handler_field',
       ),
     ),
   );
@@ -654,7 +692,7 @@ function fontyourface_ui_admin_edit_form($form, &$form_state, $fid) {
 
   return $form;
 
-} // fontyourface_ui_admin_add_form
+} // fontyourface_ui_admin_edit_form
 
 /**
  * Edit form submit handler.
@@ -753,3 +791,123 @@ function fontyourface_ui_autocomplete($tags_typed = '') {
   drupal_json_output($matches);
   
 } // fontyourface_ui_autocomplete
+
+/**
+ * Provides title for enable form.
+ */
+function fontyourface_ui_admin_enable_title($fid) {
+
+  $font = fontyourface_get_font($fid);
+
+  return 'Enable font ' . $font->name;
+
+} // fontyourface_ui_admin_enable_title
+
+/**
+ * Enables a single font.
+ */
+function fontyourface_ui_admin_enable_form($form, &$form_state, $fid) {
+
+  $font = fontyourface_get_font($fid);
+
+  $form = array(
+    'fid' => array(
+      '#type' => 'hidden',
+      '#value' => $font->fid,
+    ),
+    'sure' => array(
+      '#markup' => '<div>' . t('Are you sure you want to enable this font?') . '</div>',
+    ),
+    'buttons' => array(
+      'submit' => array(
+        '#type' => 'submit',
+        '#value' => t('Enable'),
+      ),
+      'cancel' => array(
+        '#type' => 'submit',
+        '#value' => t('Cancel'),
+      ),
+    ),
+  );
+
+  return $form;
+
+} // fontyourface_ui_admin_enable_form
+
+/**
+ * Enable form submit handler.
+ */
+function fontyourface_ui_admin_enable_form_submit($form, &$form_state) {
+
+  if ($form_state['clicked_button']['#value'] == t('Enable')) {
+
+    $font = fontyourface_get_font($form_state['values']['fid']);
+    fontyourface_enable_font($font);
+    drupal_set_message(t('Enabled @font.', array('@font' => $font->name)));
+
+  } // if
+  else {
+    drupal_set_message(t('Canceled.'));
+  } // else
+
+} // fontyourface_ui_admin_enable_form_submit
+
+/**
+ * Provides title for disable form.
+ */
+function fontyourface_ui_admin_disable_title($fid) {
+
+  $font = fontyourface_get_font($fid);
+
+  return 'Disable font ' . $font->name;
+
+} // fontyourface_ui_admin_disable_title
+
+/**
+ * Disables a single font.
+ */
+function fontyourface_ui_admin_disable_form($form, &$form_state, $fid) {
+
+  $font = fontyourface_get_font($fid);
+
+  $form = array(
+    'fid' => array(
+      '#type' => 'hidden',
+      '#value' => $font->fid,
+    ),
+    'sure' => array(
+      '#markup' => '<div>' . t('Are you sure you want to disable this font?') . '</div>',
+    ),
+    'buttons' => array(
+      'submit' => array(
+        '#type' => 'submit',
+        '#value' => t('Disable'),
+      ),
+      'cancel' => array(
+        '#type' => 'submit',
+        '#value' => t('Cancel'),
+      ),
+    ),
+  );
+
+  return $form;
+
+} // fontyourface_ui_admin_disable_form
+
+/**
+ * Disable form submit handler.
+ */
+function fontyourface_ui_admin_disable_form_submit($form, &$form_state) {
+
+  if ($form_state['clicked_button']['#value'] == t('Disable')) {
+
+    $font = fontyourface_get_font($form_state['values']['fid']);
+    fontyourface_disable_font($font);
+    drupal_set_message(t('Disabled @font.', array('@font' => $font->name)));
+
+  } // if
+  else {
+    drupal_set_message(t('Canceled.'));
+  } // else
+
+} // fontyourface_ui_admin_disable_form_submit

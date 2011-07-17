@@ -279,14 +279,14 @@ function fontyourface_save_tag(&$tag) {
 /**
  * Gets preview from provider, if available.
  */
-function fontyourface_preview($font, $text) {
+function fontyourface_preview($font, $text, $size) {
 
   fontyourface_font_registry($font);
 
   $function = $font->provider . '_fontyourface_preview';
 
   if (function_exists($function)) {
-    return $function($font, $text);
+    return $function($font, $text, $size);
   } // if
 
   return $text;

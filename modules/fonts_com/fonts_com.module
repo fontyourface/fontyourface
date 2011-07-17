@@ -66,7 +66,7 @@ function fonts_com_fontyourface_import() {
     $font->url = 'http://webfonts.fonts.com/en-US/Project/ChooseFonts?ViewDetails=T&ViewFontID=' . $import_font->FontID . '&AddFontToPalette=T';
     $font->provider = 'fonts_com';
     $font->metadata = serialize($metadata);
-    $font->css_family = '"' . $import_font->FontCSSName . '"';
+    $font->css_family = "'" . $import_font->FontCSSName . "'";
     $font->foundry = $import_font->FontFondryName;
     $font->tags = array();
 
@@ -118,29 +118,38 @@ function fonts_com_preprocess_page(&$vars) {
 } // fonts_com_preprocess_page
 
 /**
- * Implements hook_fontyourface_view().
- */
-function fonts_com_fontyourface_view($font, $text) {
-
-  $output = '';
-  $sizes = array(32, 24, 18, 14, 12, 10);
-
-  foreach ($sizes as $size) {
-
-    $output .= '<div style="' . fontyourface_font_css($font) . ' font-size: ' . $size . 'px; line-height: ' . $size . 'px;">' . $text . '</div>';
-
-  } // foreach
-
-  return $output;
-
-} // fonts_com_fontyourface_view
-
-/**
  * Implements hook_fontyourface_preview().
  */
-function fonts_com_fontyourface_preview($font) {
+function fonts_com_fontyourface_preview($font, $text = NULL, $size = 18) {
 
-  return '<span style="' . fontyourface_font_css($font) . ' font-size: 24px;">' . $font->name . '</span>';
+  $output = '';
+
+  if ($text == NULL) {
+    $text = $font->name;
+  } // if
+
+  if ($size == 'all') {
+
+    // Display variety of sizes.
+
+    $sizes = array(32, 24, 18, 14, 12, 10);
+
+    foreach ($sizes as $size) {
+
+      $output .= '<div style="' . fontyourface_font_css($font) . ' font-size: ' . $size . 'px; line-height: ' . $size . 'px;">' . $text . '</div>';
+
+    } // foreach
+
+  } // if
+  else {
+
+    // Display single size.
+
+    $output = '<span style="' . fontyourface_font_css($font) . ' font-size: ' . $size . 'px;">' . $text . '</span>';
+
+  } // else
+
+  return $output;
 
 } // fonts_com_fontyourface_preview
 
@@ -288,7 +297,7 @@ function fonts_com_api_headers($path) {
  */
 function fonts_com_form_alter(&$form, &$form_state, $form_id) {
 
-  if ($form_id == 'fontyourface_settings_form') {
+  if ($form_id == 'fontyourface_ui_settings_form') {
 
     $form['fonts_com'] = array(
       '#type' => 'fieldset',
