@@ -156,7 +156,7 @@ class views_handler_filter_tag_font_tid extends views_handler_filter_many_to_one
     }
 
     // If it's optional and there's no value don't bother filtering.
-    if ($this->options['expose']['optional'] && empty($this->validated_exposed_input)) {
+    if (isset($this->options['expose']['optional']) && $this->options['expose']['optional'] && empty($this->validated_exposed_input)) {
       return FALSE;
     }
 

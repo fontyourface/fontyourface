@@ -23,6 +23,14 @@ function fontyourface_ui_menu() {
     'type' => MENU_LOCAL_TASK,
     'weight' => 10
   );
+  
+  $items['admin/appearance/fontyourface/apply'] = array(
+    'title' => 'Apply',
+    'description' => 'Apply fonts with CSS selectors.',
+    'access arguments' => array('administer @font-your-face'),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
 
   $items['admin/appearance/fontyourface/edit/%'] = array(
     'page callback' => 'drupal_get_form',
@@ -57,6 +65,20 @@ function fontyourface_ui_menu() {
     'title arguments' => array(4),
     'type' => MENU_CALLBACK,
   );
+  
+  $items['admin/appearance/fontyourface/ajax/enable'] = array(
+    'title' => '@font-your-face AJAX enable',
+    'page callback' => 'fontyourface_ui_admin_enable_ajax',
+    'access arguments' => array('administer @font-your-face'),
+    'type' => MENU_CALLBACK,
+  );
+  
+  $items['admin/appearance/fontyourface/ajax/disable'] = array(
+    'title' => '@font-your-face AJAX disable',
+    'page callback' => 'fontyourface_ui_admin_disable_ajax',
+    'access arguments' => array('administer @font-your-face'),
+    'type' => MENU_CALLBACK,
+  );
 
   return $items;
 
@@ -79,17 +101,18 @@ function fontyourface_ui_views_api() {
  */
 function fontyourface_ui_views_pre_render(&$view) {
 
-  if ($view->name == 'fontyourface_disabled') {
+  if ($view->name == 'fontyourface_browse') {
 
-    $breadcrumb = drupal_get_breadcrumb();
-    $breadcrumb[] = l('@font-your-face', 'admin/appearance/fontyourface');
-    drupal_set_breadcrumb($breadcrumb);
+    $view->display_handler->handlers['header']['area']->options['content'] = fontyourface_ui_enabled_count();
+
+    drupal_add_css(drupal_get_path('module', 'fontyourface_ui') . '/css/fontyourface_ui.css');
+    drupal_add_js(drupal_get_path('module', 'fontyourface_ui') . '/js/browse.js');
 
     $providers = module_implements('fontyourface_info');
 
     if (count($providers) == 0) {
 
-      drupal_set_message(t('No font providers enabled. !enable before adding fonts.', array('!enable' => l(t('Enable font providers'), 'admin/modules'))), 'error');
+      drupal_set_message(t('No font providers enabled. !enable before browsing fonts.', array('!enable' => l(t('Enable font providers'), 'admin/modules'))), 'error');
 
     } // if
 
@@ -143,6 +166,9 @@ function fontyourface_ui_views_data() {
       ),
       'argument' => array(
         'handler' => 'views_handler_argument_numeric',
+      ),
+      'field' => array(
+        'handler' => 'views_handler_field_numeric',
       ),
     ),
     'name' => array(
@@ -536,7 +562,7 @@ function fontyourface_ui_admin_page() {
   $view->set_display('block_1');
   $output = $view->preview();
 
-  $output .= '<div>' . l('Browse fonts to enable.', 'admin/appearance/fontyourface/add') . '</div>';
+  $output .= '<div>' . l('Browse fonts to enable.', 'admin/appearance/fontyourface/browse') . '</div>';
 
   return $output;
 
@@ -911,3 +937,72 @@ function fontyourface_ui_admin_disable_form_submit($form, &$form_state) {
   } // else
 
 } // fontyourface_ui_admin_disable_form_submit
+
+/**
+ * Enables font based on POSTed fid.
+ */
+function fontyourface_ui_admin_enable_ajax() {
+
+  $fid = intval($_POST['fid']);
+
+  $output = array(
+    'fid' => $fid,
+    'status' => 'error',
+  );
+
+  if ($fid > 0) {
+
+    $font = fontyourface_get_font($fid);
+    fontyourface_enable_font($font);
+    $output['status'] = 'success';
+    $output['enabled'] = fontyourface_ui_enabled_count();
+
+  } // if
+
+  drupal_json_output($output);
+
+} // fontyourface_ui_admin_enable_ajax
+
+/**
+ * Disables font based on POSTed fid.
+ */
+function fontyourface_ui_admin_disable_ajax() {
+
+  $fid = intval($_POST['fid']);
+
+  $output = array(
+    'fid' => $fid,
+    'status' => 'error',
+  );
+
+  if ($fid > 0) {
+
+    $font = fontyourface_get_font($fid);
+    fontyourface_disable_font($font);
+    $output['status'] = 'success';
+    $output['enabled'] = fontyourface_ui_enabled_count();
+
+  } // if
+
+  drupal_json_output($output);
+
+} // fontyourface_ui_admin_disable_ajax
+
+/**
+ * Returns HTML for enabled font count.
+ */
+function fontyourface_ui_enabled_count() {
+
+  $enabled_count = db_select('fontyourface_font')
+    ->condition('enabled', 1)
+    ->countQuery()->execute()->fetchField();
+
+  if ($enabled_count > 0) {
+
+    return l(format_plural($enabled_count, '1 font currently enabled.', '@count fonts currently enabled.'), 'admin/appearance/fontyourface');
+
+  } // if
+
+  return t('@count fonts currently enabled.', array('@count' => 0));
+
+} // fontyourface_ui_enabled_count

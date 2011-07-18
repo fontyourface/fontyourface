@@ -1,0 +1,91 @@
+.view-fontyourface-browse table {
+  border: none;
+  width: auto;
+}
+
+.view-fontyourface-browse td {
+  position: relative;
+}
+
+  .view-fontyourface-browse td.col-last {
+    border: none;
+  }
+
+  .view-fontyourface-browse div.fontyourface-header {
+    height: 20px;
+    left: 20px;
+    margin-bottom: 10px;
+    padding: 0 15px 0 0;
+    position: absolute;
+    top: 20px;
+  }
+  
+    .view-fontyourface-browse div.fontyourface-header h4 {
+      margin: 0;
+    }
+
+  .view-fontyourface-browse div.fontyourface-preview {
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    
+    border: 1px solid #ccc;
+    display: inline-block;
+    height: 10px;
+    margin: 0;
+    padding: 70px 10px;
+    width: 150px;
+  }
+
+  .view-fontyourface-browse div.fontyourface-footer a {
+    -webkit-border-radius: 0 0 8px 8px;
+    -moz-border-radius: 0 0 8px 8px;
+    border-radius: 0 0 8px 8px;
+  
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    bottom: 0;
+    display: block;
+    height: 20px;
+    left: 0;
+    margin: 0 10px 10px 10px;
+    padding: 5px 10px;
+    position: absolute;
+    width: 150px;
+  }
+  
+
+    .view-fontyourface-browse div.fontyourface-footer .fontyourface-indicator {
+      background: url(indicator.gif);
+      display: inline-block;
+      float: right;
+      height: 16px;
+      position: relative;
+      top: 2px;
+      width: 16px;
+    }
+
+  .view-fontyourface-browse div.enabled-No {
+    background: #fff;
+  }
+  
+    .view-fontyourface-browse div.fontyourface-footer.enabled-No a {
+      background: #eee;
+    }
+    
+      .view-fontyourface-browse div.fontyourface-footer.enabled-No a:active {
+        background: #ddd;
+      }
+
+  .view-fontyourface-browse div.enabled-Yes {
+    background: #dfd;
+  }
+  
+    .view-fontyourface-browse div.fontyourface-footer.enabled-Yes a {
+      background: #bdb;
+    }
+    
+      .view-fontyourface-browse div.fontyourface-footer.enabled-Yes a:active {
+        background: #aca;
+      }

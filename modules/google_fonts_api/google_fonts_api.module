@@ -17,25 +17,34 @@ function google_fonts_api_fontyourface_info() {
 /**
  * Implements hook_fontyourface_preview().
  */
-function google_fonts_api_fontyourface_preview($font) {
-
-  return '<span style="' . fontyourface_font_css($font) . ' font-size: 24px;">' . $font->name . '</span>';
-
-} // google_fonts_api_fontyourface_preview
-
-/**
- * Implements hook_fontyourface_view().
- */
-function google_fonts_api_fontyourface_view($font, $text) {
+function google_fonts_api_fontyourface_preview($font, $text = NULL, $size = 18) {
 
   $output = '';
-  $sizes = array(32, 24, 18, 14, 12, 10);
 
-  foreach ($sizes as $size) {
+  if ($text == NULL) {
+    $text = $font->name;
+  } // if
 
-    $output .= '<div style="' . fontyourface_font_css($font) . ' font-size: ' . $size . 'px; line-height: ' . $size . 'px;">' . $text . '</div>';
+  if ($size == 'all') {
 
-  } // foreach
+    // Display variety of sizes.
+
+    $sizes = array(32, 24, 18, 14, 12, 10);
+
+    foreach ($sizes as $size) {
+
+      $output .= '<div style="' . fontyourface_font_css($font) . ' font-size: ' . $size . 'px; line-height: ' . $size . 'px;">' . $text . '</div>';
+
+    } // foreach
+
+  } // if
+  else {
+
+    // Display single size.
+
+    $output = '<span style="' . fontyourface_font_css($font) . ' font-size: ' . $size . 'px;">' . $text . '</span>';
+
+  } // else
 
   return $output;
 
