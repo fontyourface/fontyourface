@@ -14,19 +14,37 @@
   .view-fontyourface-browse td.col-last {
     border: none;
   }
-
-  .view-fontyourface-browse div.fontyourface-header {
-    height: 20px;
-    left: 20px;
-    margin-bottom: 10px;
-    padding: 0 15px 0 0;
-    position: absolute;
-    top: 20px;
-  }
   
     .view-fontyourface-browse div.fontyourface-header h4 {
-      margin: 0;
+      height: 20px;
+      left: 20px;
+      margin-bottom: 10px;
+      padding: 0 25px 0 0;
+      position: absolute;
+      top: 5px;
     }
+
+    .view-fontyourface-browse div.fontyourface-header a {
+      background: transparent url(gear-select.png) no-repeat 2px 0;
+      display: none;
+      height: 18px;
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      width: 20px;
+    }
+
+      .view-fontyourface-browse td:hover div.fontyourface-header a {
+        display: block;
+      }
+
+      .view-fontyourface-browse div.fontyourface-header a:hover {
+        background-position-y: -18px;
+      }
+
+      .view-fontyourface-browse div.fontyourface-header a span {
+        display: none;
+      }
 
   .view-fontyourface-browse div.fontyourface-preview {
     -webkit-border-radius: 8px;
