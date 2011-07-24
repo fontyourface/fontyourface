@@ -1,6 +1,7 @@
 name = @font-your-face UI
 description = Administrative interface for managing fonts.
 package = @font-your-face
+dependencies[] = fontyourface
 dependencies[] = views
 core = 7.x
 files[] = fontyourface_ui.module

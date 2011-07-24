@@ -23,12 +23,11 @@
 
       var td = link.parents('td');
             
-      if (json.status == 'success') {
+      if (json.complete == '1') {
 
         td.find('.enabled-No')
           .addClass('enabled-Yes')
           .removeClass('enabled-No');
-        td.find('.fontyourface-indicator').remove();
         link
           .text(Drupal.t('Disable'))
           .addClass('disable-link')
@@ -36,14 +35,10 @@
           .unbind('click')
           .click(fontyourfaceDisableClick);
 
-        $('.view-header p').html(json.enabled);
-
       } // if
-      else {
-      
-        $('.view-header p').text(Drupal.t('Error. Unable to enable font.'));
-      
-      } // else
+
+      td.find('.fontyourface-indicator').remove();
+      $('.view-header').html(json.status);
 
     }, 'json');
 
@@ -63,12 +58,11 @@
 
       var td = link.parents('td');
 
-      if (json.status == 'success') {
+      if (json.complete == '1') {
 
         td.find('.enabled-Yes')
           .addClass('enabled-No')
           .removeClass('enabled-Yes');
-        td.find('.fontyourface-indicator').remove();
         link
           .text(Drupal.t('Enable'))
           .addClass('enable-link')
@@ -76,14 +70,10 @@
           .unbind('click')
           .click(fontyourfaceEnableClick);
 
-        $('.view-header p').html(json.enabled);
-
       } // if
-      else {
       
-        $('.view-header p').text(Drupal.t('Error. Unable to disable font.'));
-      
-      } // else
+      td.find('.fontyourface-indicator').remove();
+      $('.view-header').html(json.status);
 
     }, 'json');
 

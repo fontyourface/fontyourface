@@ -145,7 +145,7 @@ function fonts_com_fontyourface_preview($font, $text = NULL, $size = 18) {
 
     // Display single size.
 
-    $output = '<span style="' . fontyourface_font_css($font) . ' font-size: ' . $size . 'px;">' . $text . '</span>';
+    $output = '<span style="' . fontyourface_font_css($font) . ' font-size: ' . $size . 'px; line-height: ' . $size . 'px;">' . $text . '</span>';
 
   } // else
 

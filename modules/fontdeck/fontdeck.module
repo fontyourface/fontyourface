@@ -80,7 +80,7 @@ function fontdeck_fontyourface_import() {
  */
 function fontdeck_form_alter(&$form, &$form_state, $form_id) {
 
-  if ($form_id == 'fontyourface_settings_form') {
+  if ($form_id == 'fontyourface_ui_settings_form') {
 
     $form['fontdeck'] = array(
       '#type' => 'fieldset',
@@ -94,7 +94,7 @@ function fontdeck_form_alter(&$form, &$form_state, $form_id) {
       ),
       'fontdeck_project_save' => array(
         '#type' => 'submit',
-        '#value' => 'Update',
+        '#value' => 'Update Fontdeck',
       ),
     );
 
@@ -119,29 +119,38 @@ function fontdeck_project_submit($form, &$form_state) {
 } // fontdeck_project_submit
 
 /**
- * Implements hook_fontyourface_view().
- */
-function fontdeck_fontyourface_view($font, $text) {
-
-  $output = '';
-  $sizes = array(32, 24, 18, 14, 12, 10);
-
-  foreach ($sizes as $size) {
-
-    $output .= '<div style="' . fontyourface_font_css($font) . ' font-size: ' . $size . 'px; line-height: ' . $size . 'px;">' . $text . '</div>';
-
-  } // foreach
-
-  return $output;
-
-} // fontdeck_fontyourface_view
-
-/**
  * Implements hook_fontyourface_preview().
  */
-function fontdeck_fontyourface_preview($font) {
+function fontdeck_fontyourface_preview($font, $text = NULL, $size = 18) {
 
-  return '<span style="' . fontyourface_font_css($font) . ' font-size: 24px;">' . $font->name . '</span>';
+  $output = '';
+
+  if ($text == NULL) {
+    $text = $font->name;
+  } // if
+
+  if ($size == 'all') {
+
+    // Display variety of sizes.
+
+    $sizes = array(32, 24, 18, 14, 12, 10);
+
+    foreach ($sizes as $size) {
+
+      $output .= '<div style="' . fontyourface_font_css($font) . ' font-size: ' . $size . 'px; line-height: ' . $size . 'px;">' . $text . '</div>';
+
+    } // foreach
+
+  } // if
+  else {
+
+    // Display single size.
+
+    $output = '<span style="' . fontyourface_font_css($font) . ' font-size: ' . $size . 'px; line-height: ' . $size . 'px;">' . $text . '</span>';
+
+  } // else
+
+  return $output;
 
 } // fontdeck_fontyourface_preview
 

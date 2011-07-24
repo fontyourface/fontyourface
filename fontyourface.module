@@ -86,10 +86,10 @@ function fontyourface_add_css_in_preprocess(&$vars, $css_path, $type = 'public')
 /**
  * Gets fonts, defualt to all enabled.
  */
-function fontyourface_get_fonts($where = 'enabled = 1', $order_by = 'name ASC') {
+function fontyourface_get_fonts($where = "enabled = 1 AND css_selector != ''", $order_by = 'name ASC') {
 
   $fonts = array();
-  
+
   $results = db_query('SELECT * FROM {fontyourface_font} WHERE ' . $where . ' ORDER BY ' . $order_by);
 
   while ($result = $results->fetchObject()) {
@@ -156,8 +156,10 @@ function fontyourface_enable_font(&$font) {
   $enable_function = $font->provider . '_fontyourface_enable';
 
   if (function_exists($enable_function)) {
-    $enable_function($font);
+    return $enable_function($font);
   } // if
+
+  return TRUE;
 
 } // fontyourface_enable_font
 
@@ -175,8 +177,10 @@ function fontyourface_disable_font(&$font) {
   $disable_function = $font->provider . '_fontyourface_disable';
 
   if (function_exists($disable_function)) {
-    $disable_function($font);
+    return $disable_function($font);
   } // if
+
+  return TRUE;
 
 } // fontyourface_disable_font
 
@@ -192,6 +196,19 @@ function fontyourface_set_css_selector(&$font, $css_selector) {
   $font->css_selector = $css_selector;
 
 } // fontyourface_set_css_selector
+
+/**
+ * Sets a font's CSS fallbacks.
+ */
+function fontyourface_set_css_fallbacks(&$font, $css_fallbacks) {
+
+  db_update('fontyourface_font')
+    ->fields(array('css_fallbacks' => $css_fallbacks))
+    ->condition('fid', $font->fid)
+    ->execute();
+  $font->css_fallbacks = $css_fallbacks;
+
+} // fontyourface_set_css_fallbacks
 
 /**
  * Adds or updates font, depending on whether it already exists.

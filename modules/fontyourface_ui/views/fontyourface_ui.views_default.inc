@@ -39,17 +39,70 @@ function fontyourface_ui_views_default_views() {
   $handler->display->display_options['style_options']['fill_single_line'] = 1;
   $handler->display->display_options['row_plugin'] = 'fields';
   /* Header: Global: Text area */
-  $handler->display->display_options['header']['text']['id'] = 'area';
-  $handler->display->display_options['header']['text']['table'] = 'views';
-  $handler->display->display_options['header']['text']['field'] = 'area';
-  $handler->display->display_options['header']['text']['empty'] = FALSE;
-  $handler->display->display_options['header']['text']['content'] = 'Click a font name to view details and add the font.';
-  $handler->display->display_options['header']['text']['format'] = '1';
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['empty'] = TRUE;
+  $handler->display->display_options['header']['area']['content'] = '0 fonts currently enabled.';
+  $handler->display->display_options['header']['area']['format'] = 'filtered_html';
+  $handler->display->display_options['header']['area']['tokenize'] = 0;
   /* Relationship: Font: Font Tag */
   $handler->display->display_options['relationships']['tid']['id'] = 'tid';
   $handler->display->display_options['relationships']['tid']['table'] = 'fontyourface_tag_font';
   $handler->display->display_options['relationships']['tid']['field'] = 'tid';
   $handler->display->display_options['relationships']['tid']['required'] = 0;
+  /* Field: Font: Font ID */
+  $handler->display->display_options['fields']['fid']['id'] = 'fid';
+  $handler->display->display_options['fields']['fid']['table'] = 'fontyourface_font';
+  $handler->display->display_options['fields']['fid']['field'] = 'fid';
+  $handler->display->display_options['fields']['fid']['label'] = '';
+  $handler->display->display_options['fields']['fid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['fid']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['fid']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['fid']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['fid']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['fid']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['fid']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['fid']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['fid']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['fid']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['fid']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['fid']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['fid']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['fid']['element_type'] = '0';
+  $handler->display->display_options['fields']['fid']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['fid']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['fid']['element_default_classes'] = 0;
+  $handler->display->display_options['fields']['fid']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['fid']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['fid']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['fid']['separator'] = '';
+  $handler->display->display_options['fields']['fid']['format_plural'] = 0;
+  /* Field: Font: Enabled */
+  $handler->display->display_options['fields']['enabled']['id'] = 'enabled';
+  $handler->display->display_options['fields']['enabled']['table'] = 'fontyourface_font';
+  $handler->display->display_options['fields']['enabled']['field'] = 'enabled';
+  $handler->display->display_options['fields']['enabled']['label'] = '';
+  $handler->display->display_options['fields']['enabled']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['enabled']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['enabled']['alter']['text'] = '<div class="fontyourface-container enabled-[enabled]">';
+  $handler->display->display_options['fields']['enabled']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['enabled']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['enabled']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['enabled']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['enabled']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['enabled']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['enabled']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['enabled']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['enabled']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['enabled']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['enabled']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['enabled']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['enabled']['element_default_classes'] = 0;
+  $handler->display->display_options['fields']['enabled']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['enabled']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['enabled']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['enabled']['not'] = 0;
   /* Field: Font: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'fontyourface_font';
@@ -70,18 +123,45 @@ function fontyourface_ui_views_default_views() {
   $handler->display->display_options['fields']['name']['element_type'] = 'h4';
   $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['name']['element_wrapper_type'] = 'div';
+  $handler->display->display_options['fields']['name']['element_wrapper_class'] = 'fontyourface-header';
   $handler->display->display_options['fields']['name']['element_default_classes'] = 0;
   $handler->display->display_options['fields']['name']['hide_empty'] = 0;
   $handler->display->display_options['fields']['name']['empty_zero'] = 0;
   $handler->display->display_options['fields']['name']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['name']['link_to_font'] = '0';
   $handler->display->display_options['fields']['name']['display_as'] = '0';
+  /* Field: Font: Enable/Disable */
+  $handler->display->display_options['fields']['enable_disable_link']['id'] = 'enable_disable_link';
+  $handler->display->display_options['fields']['enable_disable_link']['table'] = 'fontyourface_font';
+  $handler->display->display_options['fields']['enable_disable_link']['field'] = 'enable_disable_link';
+  $handler->display->display_options['fields']['enable_disable_link']['label'] = '';
+  $handler->display->display_options['fields']['enable_disable_link']['alter']['alter_text'] = 1;
+  $handler->display->display_options['fields']['enable_disable_link']['alter']['text'] = '<div class="fontyourface-footer enabled-[enabled]" data-fid="[fid]">[enable_disable_link]</div>';
+  $handler->display->display_options['fields']['enable_disable_link']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['enable_disable_link']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['enable_disable_link']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['enable_disable_link']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['enable_disable_link']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['enable_disable_link']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['enable_disable_link']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['enable_disable_link']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['enable_disable_link']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['enable_disable_link']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['enable_disable_link']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['enable_disable_link']['element_type'] = '0';
+  $handler->display->display_options['fields']['enable_disable_link']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['enable_disable_link']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['enable_disable_link']['element_default_classes'] = 0;
+  $handler->display->display_options['fields']['enable_disable_link']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['enable_disable_link']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['enable_disable_link']['hide_alter_empty'] = 0;
   /* Field: Font: Preview */
   $handler->display->display_options['fields']['preview']['id'] = 'preview';
   $handler->display->display_options['fields']['preview']['table'] = 'fontyourface_font';
   $handler->display->display_options['fields']['preview']['field'] = 'preview';
   $handler->display->display_options['fields']['preview']['label'] = '';
-  $handler->display->display_options['fields']['preview']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['preview']['alter']['alter_text'] = 1;
+  $handler->display->display_options['fields']['preview']['alter']['text'] = '<div class="fontyourface-preview enabled-[enabled]">[preview]</div>';
   $handler->display->display_options['fields']['preview']['alter']['make_link'] = 0;
   $handler->display->display_options['fields']['preview']['alter']['absolute'] = 0;
   $handler->display->display_options['fields']['preview']['alter']['external'] = 0;
@@ -100,30 +180,6 @@ function fontyourface_ui_views_default_views() {
   $handler->display->display_options['fields']['preview']['hide_empty'] = 0;
   $handler->display->display_options['fields']['preview']['empty_zero'] = 0;
   $handler->display->display_options['fields']['preview']['hide_alter_empty'] = 0;
-  /* Field: Font: Enable/Disable */
-  $handler->display->display_options['fields']['enable_disable_link']['id'] = 'enable_disable_link';
-  $handler->display->display_options['fields']['enable_disable_link']['table'] = 'fontyourface_font';
-  $handler->display->display_options['fields']['enable_disable_link']['field'] = 'enable_disable_link';
-  $handler->display->display_options['fields']['enable_disable_link']['label'] = '';
-  $handler->display->display_options['fields']['enable_disable_link']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['enable_disable_link']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['enable_disable_link']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['enable_disable_link']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['enable_disable_link']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['enable_disable_link']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['enable_disable_link']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['enable_disable_link']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['enable_disable_link']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['enable_disable_link']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['enable_disable_link']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['enable_disable_link']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['enable_disable_link']['element_type'] = 'div';
-  $handler->display->display_options['fields']['enable_disable_link']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['enable_disable_link']['element_wrapper_type'] = '0';
-  $handler->display->display_options['fields']['enable_disable_link']['element_default_classes'] = 0;
-  $handler->display->display_options['fields']['enable_disable_link']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['enable_disable_link']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['enable_disable_link']['hide_alter_empty'] = 0;
   /* Sort criterion: Font: Name */
   $handler->display->display_options['sorts']['name']['id'] = 'name';
   $handler->display->display_options['sorts']['name']['table'] = 'fontyourface_font';
@@ -192,6 +248,8 @@ function fontyourface_ui_views_default_views() {
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page_1');
   $handler->display->display_options['path'] = 'admin/appearance/fontyourface/browse';
+  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['menu']['title'] = 'Browse';
   $handler->display->display_options['menu']['weight'] = '0';
   $translatables['fontyourface_browse'] = array(
     t('Defaults'),
@@ -205,8 +263,12 @@ function fontyourface_ui_views_default_views() {
     t('Items per page'),
     t('- All -'),
     t('Offset'),
-    t('Click a font name to view details and add the font.'),
+    t('0 fonts currently enabled.'),
     t('Font Tag'),
+    t('.'),
+    t('<div class="fontyourface-container enabled-[enabled]">'),
+    t('<div class="fontyourface-footer enabled-[enabled]" data-fid="[fid]">[enable_disable_link]</div>'),
+    t('<div class="fontyourface-preview enabled-[enabled]">[preview]</div>'),
     t('Name'),
     t('Tags'),
     t('Foundry'),
@@ -217,212 +279,6 @@ function fontyourface_ui_views_default_views() {
 
   $views[$view->name] = $view;
 
-  /*
-   * View 'fontyourface_enabled'
-   */
-  $view = new view;
-  $view->name = 'fontyourface_enabled';
-  $view->description = 'All enabled fonts.';
-  $view->tag = '@font-your-face';
-  $view->view_php = '';
-  $view->base_table = 'fontyourface_font';
-  $view->is_cacheable = FALSE;
-  $view->api_version = 2;
-  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
-  $handler = $view->new_display('default', 'Defaults', 'default');
-  $handler->override_option('fields', array(
-    'name' => array(
-      'label' => 'Name',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'link_to_font' => 'edit',
-      'display_as' => 'preview',
-      'exclude' => 0,
-      'id' => 'name',
-      'table' => 'fontyourface_font',
-      'field' => 'name',
-      'relationship' => 'none',
-    ),
-    'provider' => array(
-      'label' => 'Provider',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'exclude' => 0,
-      'id' => 'provider',
-      'table' => 'fontyourface_font',
-      'field' => 'provider',
-      'relationship' => 'none',
-    ),
-    'css_family' => array(
-      'label' => 'font-family',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'exclude' => 0,
-      'id' => 'css_family',
-      'table' => 'fontyourface_font',
-      'field' => 'css_family',
-      'relationship' => 'none',
-    ),
-    'tid' => array(
-      'label' => 'Tags',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'type' => 'separator',
-      'separator' => ', ',
-      'exclude' => 0,
-      'id' => 'tid',
-      'table' => 'fontyourface_tag_font',
-      'field' => 'tid',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('sorts', array(
-    'name' => array(
-      'order' => 'ASC',
-      'id' => 'name',
-      'table' => 'fontyourface_font',
-      'field' => 'name',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('filters', array(
-    'enabled' => array(
-      'operator' => '=',
-      'value' => '1',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'enabled',
-      'table' => 'fontyourface_font',
-      'field' => 'enabled',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('access', array(
-    'type' => 'none',
-  ));
-  $handler->override_option('cache', array(
-    'type' => 'none',
-  ));
-  $handler->override_option('empty', 'No fonts currently enabled.');
-  $handler->override_option('empty_format', '1');
-  $handler->override_option('use_ajax', TRUE);
-  $handler->override_option('items_per_page', 25);
-  $handler->override_option('use_pager', '1');
-  $handler->override_option('style_plugin', 'table');
-  $handler->override_option('style_options', array(
-    'grouping' => '',
-    'override' => 1,
-    'sticky' => 0,
-    'order' => 'asc',
-    'columns' => array(
-      'name' => 'name',
-      'provider' => 'provider',
-      'css_family' => 'css_family',
-      'tid' => 'tid',
-    ),
-    'info' => array(
-      'name' => array(
-        'sortable' => 1,
-        'separator' => '',
-      ),
-      'provider' => array(
-        'sortable' => 1,
-        'separator' => '',
-      ),
-      'css_family' => array(
-        'sortable' => 1,
-        'separator' => '',
-      ),
-      'tid' => array(
-        'separator' => '',
-      ),
-    ),
-    'default' => 'name',
-  ));
-  $handler = $view->new_display('block', 'Block', 'block_1');
-  $handler->override_option('block_description', '');
-  $handler->override_option('block_caching', -1);
-  $views[$view->name] = $view;
-
   return $views;
-}
+
+} // fontyourface_ui_views_default_views

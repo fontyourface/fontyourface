@@ -76,7 +76,7 @@ class views_handler_field_fontyourface_font extends views_handler_field {
     if ($this->options['display_as'] == 'preview') {
 
       $font = fontyourface_get_font($values->fid);
-      return fontyourface_preview($font, $values->{$this->field_alias});
+      return fontyourface_preview($font, $values->{$this->field_alias}, 16);
 
     } // if
 

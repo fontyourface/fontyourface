@@ -15,24 +15,37 @@ function fontsquirrel_fontyourface_info() {
 /**
  * Implements hook_fontyourface_preview().
  */
-function fontsquirrel_fontyourface_preview($font) {
+function fontsquirrel_fontyourface_preview($font, $text = NULL, $size = 18) {
 
+  $output = '';
   $metadata = unserialize($font->metadata);
 
-  return '<img src="http://www.fontsquirrel.com/utils/makeFont.php?font=' . $metadata['id'] . '/' . $metadata['font_filename'] . '&width=300&size=18&text=' . urlencode($font->name) . '" />';
+  if ($text == NULL) {
+    $text = $font->name;
+  } // if
 
-} // fontsquirrel_fontyourface_preview
+  if ($size == 'all') {
 
-/**
- * Implements hook_fontyourface_view().
- */
-function fontsquirrel_fontyourface_view($font, $text) {
+    // Display variety of sizes.
 
-  $metadata = unserialize($font->metadata);
+    $sizes = array(32, 24, 18, 14, 12, 10);
 
-  $output = '<div><img src="http://www.fontsquirrel.com/utils/makeFont.php?font=' . $metadata['id'] . '/' . $metadata['font_filename'] . '&width=800&size=14&text=' . urlencode($text) . '" /></div>';
+    foreach ($sizes as $size) {
 
-  $output .= '<div><img src="http://www.fontsquirrel.com/utils/makeSolotypeSample.php?font=' . $metadata['id'] . '/' . $metadata['font_filename'] . '&case=all" /></div>';
+      $output = '<img src="http://www.fontsquirrel.com/utils/makeFont.php?font=' . $metadata['id'] . '/' . $metadata['font_filename'] . '&width=300&size=' . $size . '&text=' . urlencode($text) . '" />';
+
+    } // foreach
+
+    $output .= '<div><img src="http://www.fontsquirrel.com/utils/makeSolotypeSample.php?font=' . $metadata['id'] . '/' . $metadata['font_filename'] . '&case=all" /></div>';
+
+  } // if
+  else {
+
+    // Display single size.
+
+    $output = '<img src="http://www.fontsquirrel.com/utils/makeFont.php?font=' . $metadata['id'] . '/' . $metadata['font_filename'] . '&width=150&size=' . ($size - 10) . '&text=' . urlencode($text) . '" />';
+
+  } // else
 
   return $output;
 
