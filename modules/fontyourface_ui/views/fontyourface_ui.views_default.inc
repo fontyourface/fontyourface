@@ -51,6 +51,34 @@ function fontyourface_ui_views_default_views() {
   $handler->display->display_options['relationships']['tid']['table'] = 'fontyourface_tag_font';
   $handler->display->display_options['relationships']['tid']['field'] = 'tid';
   $handler->display->display_options['relationships']['tid']['required'] = 0;
+  /* Field: Font: Name */
+  $handler->display->display_options['fields']['name_1']['id'] = 'name_1';
+  $handler->display->display_options['fields']['name_1']['table'] = 'fontyourface_font';
+  $handler->display->display_options['fields']['name_1']['field'] = 'name';
+  $handler->display->display_options['fields']['name_1']['label'] = '';
+  $handler->display->display_options['fields']['name_1']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['name_1']['alter']['alter_text'] = 1;
+  $handler->display->display_options['fields']['name_1']['alter']['text'] = '<span>Edit</span>';
+  $handler->display->display_options['fields']['name_1']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['name_1']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['name_1']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['name_1']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['name_1']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['name_1']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['name_1']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['name_1']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['name_1']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['name_1']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['name_1']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['name_1']['element_type'] = '0';
+  $handler->display->display_options['fields']['name_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['name_1']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['name_1']['element_default_classes'] = 0;
+  $handler->display->display_options['fields']['name_1']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['name_1']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['name_1']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['name_1']['link_to_font'] = 'edit';
+  $handler->display->display_options['fields']['name_1']['display_as'] = '0';
   /* Field: Font: Font ID */
   $handler->display->display_options['fields']['fid']['id'] = 'fid';
   $handler->display->display_options['fields']['fid']['table'] = 'fontyourface_font';
@@ -108,7 +136,8 @@ function fontyourface_ui_views_default_views() {
   $handler->display->display_options['fields']['name']['table'] = 'fontyourface_font';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['label'] = '';
-  $handler->display->display_options['fields']['name']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['name']['alter']['alter_text'] = 1;
+  $handler->display->display_options['fields']['name']['alter']['text'] = '<div class="fontyourface-header"><h4>[name]</h4> [name_1]</div>';
   $handler->display->display_options['fields']['name']['alter']['make_link'] = 0;
   $handler->display->display_options['fields']['name']['alter']['absolute'] = 0;
   $handler->display->display_options['fields']['name']['alter']['external'] = 0;
@@ -120,10 +149,9 @@ function fontyourface_ui_views_default_views() {
   $handler->display->display_options['fields']['name']['alter']['strip_tags'] = 0;
   $handler->display->display_options['fields']['name']['alter']['trim'] = 0;
   $handler->display->display_options['fields']['name']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['name']['element_type'] = 'h4';
+  $handler->display->display_options['fields']['name']['element_type'] = '0';
   $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['name']['element_wrapper_type'] = 'div';
-  $handler->display->display_options['fields']['name']['element_wrapper_class'] = 'fontyourface-header';
+  $handler->display->display_options['fields']['name']['element_wrapper_type'] = '0';
   $handler->display->display_options['fields']['name']['element_default_classes'] = 0;
   $handler->display->display_options['fields']['name']['hide_empty'] = 0;
   $handler->display->display_options['fields']['name']['empty_zero'] = 0;
@@ -189,6 +217,7 @@ function fontyourface_ui_views_default_views() {
   $handler->display->display_options['filters']['name']['table'] = 'fontyourface_font';
   $handler->display->display_options['filters']['name']['field'] = 'name';
   $handler->display->display_options['filters']['name']['operator'] = 'contains';
+  $handler->display->display_options['filters']['name']['group'] = 0;
   $handler->display->display_options['filters']['name']['exposed'] = TRUE;
   $handler->display->display_options['filters']['name']['expose']['operator_id'] = 'name_op';
   $handler->display->display_options['filters']['name']['expose']['label'] = 'Name';
@@ -199,6 +228,7 @@ function fontyourface_ui_views_default_views() {
   $handler->display->display_options['filters']['tid']['table'] = 'fontyourface_tag';
   $handler->display->display_options['filters']['tid']['field'] = 'tid';
   $handler->display->display_options['filters']['tid']['relationship'] = 'tid';
+  $handler->display->display_options['filters']['tid']['group'] = 0;
   $handler->display->display_options['filters']['tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['tid']['expose']['operator_id'] = 'tid_op';
   $handler->display->display_options['filters']['tid']['expose']['label'] = 'Tags';
@@ -208,23 +238,34 @@ function fontyourface_ui_views_default_views() {
   $handler->display->display_options['filters']['tid']['expose']['reduce'] = 0;
   $handler->display->display_options['filters']['tid']['reduce_duplicates'] = 0;
   $handler->display->display_options['filters']['tid']['type'] = 'select';
+  /* Filter criterion: Font: Provider */
+  $handler->display->display_options['filters']['provider']['id'] = 'provider';
+  $handler->display->display_options['filters']['provider']['table'] = 'fontyourface_font';
+  $handler->display->display_options['filters']['provider']['field'] = 'provider';
+  $handler->display->display_options['filters']['provider']['group'] = 0;
+  $handler->display->display_options['filters']['provider']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['provider']['expose']['operator_id'] = 'provider_op';
+  $handler->display->display_options['filters']['provider']['expose']['label'] = 'Provider';
+  $handler->display->display_options['filters']['provider']['expose']['operator'] = 'provider_op';
+  $handler->display->display_options['filters']['provider']['expose']['identifier'] = 'provider';
+  $handler->display->display_options['filters']['provider']['expose']['reduce'] = 0;
   /* Filter criterion: Font: Foundry */
   $handler->display->display_options['filters']['foundry']['id'] = 'foundry';
   $handler->display->display_options['filters']['foundry']['table'] = 'fontyourface_font';
   $handler->display->display_options['filters']['foundry']['field'] = 'foundry';
-  $handler->display->display_options['filters']['foundry']['operator'] = 'contains';
+  $handler->display->display_options['filters']['foundry']['group'] = 0;
   $handler->display->display_options['filters']['foundry']['exposed'] = TRUE;
   $handler->display->display_options['filters']['foundry']['expose']['operator_id'] = 'foundry_op';
   $handler->display->display_options['filters']['foundry']['expose']['label'] = 'Foundry';
   $handler->display->display_options['filters']['foundry']['expose']['operator'] = 'foundry_op';
   $handler->display->display_options['filters']['foundry']['expose']['identifier'] = 'foundry';
-  $handler->display->display_options['filters']['foundry']['expose']['required'] = 0;
-  $handler->display->display_options['filters']['foundry']['expose']['multiple'] = FALSE;
+  $handler->display->display_options['filters']['foundry']['expose']['reduce'] = 0;
   /* Filter criterion: Font: License */
   $handler->display->display_options['filters']['license']['id'] = 'license';
   $handler->display->display_options['filters']['license']['table'] = 'fontyourface_font';
   $handler->display->display_options['filters']['license']['field'] = 'license';
   $handler->display->display_options['filters']['license']['operator'] = 'contains';
+  $handler->display->display_options['filters']['license']['group'] = 0;
   $handler->display->display_options['filters']['license']['exposed'] = TRUE;
   $handler->display->display_options['filters']['license']['expose']['operator_id'] = 'license_op';
   $handler->display->display_options['filters']['license']['expose']['label'] = 'License';
@@ -232,18 +273,6 @@ function fontyourface_ui_views_default_views() {
   $handler->display->display_options['filters']['license']['expose']['identifier'] = 'license';
   $handler->display->display_options['filters']['license']['expose']['required'] = 0;
   $handler->display->display_options['filters']['license']['expose']['multiple'] = FALSE;
-  /* Filter criterion: Font: Provider */
-  $handler->display->display_options['filters']['provider']['id'] = 'provider';
-  $handler->display->display_options['filters']['provider']['table'] = 'fontyourface_font';
-  $handler->display->display_options['filters']['provider']['field'] = 'provider';
-  $handler->display->display_options['filters']['provider']['operator'] = 'contains';
-  $handler->display->display_options['filters']['provider']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['provider']['expose']['operator_id'] = 'provider_op';
-  $handler->display->display_options['filters']['provider']['expose']['label'] = 'Provider';
-  $handler->display->display_options['filters']['provider']['expose']['operator'] = 'provider_op';
-  $handler->display->display_options['filters']['provider']['expose']['identifier'] = 'provider';
-  $handler->display->display_options['filters']['provider']['expose']['required'] = 0;
-  $handler->display->display_options['filters']['provider']['expose']['multiple'] = FALSE;
   
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page_1');
@@ -265,15 +294,17 @@ function fontyourface_ui_views_default_views() {
     t('Offset'),
     t('0 fonts currently enabled.'),
     t('Font Tag'),
+    t('<span>Edit</span>'),
     t('.'),
     t('<div class="fontyourface-container enabled-[enabled]">'),
+    t('<div class="fontyourface-header"><h4>[name]</h4> [name_1]</div>'),
     t('<div class="fontyourface-footer enabled-[enabled]" data-fid="[fid]">[enable_disable_link]</div>'),
     t('<div class="fontyourface-preview enabled-[enabled]">[preview]</div>'),
     t('Name'),
     t('Tags'),
+    t('Provider'),
     t('Foundry'),
     t('License'),
-    t('Provider'),
     t('Page'),
   );
 

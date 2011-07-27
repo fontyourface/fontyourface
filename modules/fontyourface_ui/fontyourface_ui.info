@@ -3,6 +3,7 @@ description = Administrative interface for managing fonts.
 package = @font-your-face
 dependencies[] = fontyourface
 dependencies[] = views
+configure = admin/config/user-interface/fontyourface
 core = 7.x
 files[] = fontyourface_ui.module
 files[] = views/fontyourface.views_default.inc

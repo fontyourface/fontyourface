@@ -4,6 +4,26 @@ define('FONTS_COM_API_BASE_URL', 'http://api.fonts.com');
 define('FONTS_COM_API_APP_KEY', '1fdb130c-d5c0-4fab-8e2b-271508570323932606');
 
 /**
+ * Implements hook_menu().
+ */
+function fonts_com_menu() {
+
+  $items = array();
+
+  $items['admin/config/user-interface/fontyourface/fonts_com'] = array(
+    'title' => 'Fonts.com',
+    'description' => 'Manage settings for Fonts.com',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('fonts_com_admin_form'),
+    'access arguments' => array('administer @font-your-face'),
+    'type' => MENU_LOCAL_TASK,
+  );
+
+  return $items;
+
+} // fonts_com_menu
+
+/**
  * Implements hook_fontyourface_info().
  */
 function fonts_com_fontyourface_info() {
@@ -292,34 +312,31 @@ function fonts_com_api_headers($path) {
 
 } // fonts_com_api_headers
 
-/**
- * Implements hook_form_alter().
- */
-function fonts_com_form_alter(&$form, &$form_state, $form_id) {
+function fonts_com_admin_form($form, &$form_state) {
 
-  if ($form_id == 'fontyourface_ui_settings_form') {
+  $form = array();
 
-    $form['fonts_com'] = array(
-      '#type' => 'fieldset',
-      '#title' => 'Fonts.com',
-      '#weight' => -1,
-      'fonts_com_token' => array(
-        '#type' => 'textfield',
-        '#title' => t('Fonts.com authentication token'),
-        '#description' => t('This is available at !url', array('!url' => l('https://webfonts.fonts.com/en-US/Account/AccountInformation', 'https://webfonts.fonts.com/en-US/Account/AccountInformation'))),
-        '#default_value' => variable_get('fonts_com_token', ''),
-      ),
-      'fonts_com_token_save' => array(
-        '#type' => 'submit',
-        '#value' => 'Update Fonts.com',
-      ),
-    );
+  $form['fonts_com'] = array(
+    '#type' => 'fieldset',
+    '#title' => 'Fonts.com',
+    '#weight' => -1,
+    'fonts_com_token' => array(
+      '#type' => 'textfield',
+      '#title' => t('Fonts.com authentication token'),
+      '#description' => t('This is available at !url', array('!url' => l('https://webfonts.fonts.com/en-US/Account/AccountInformation', 'https://webfonts.fonts.com/en-US/Account/AccountInformation'))),
+      '#default_value' => variable_get('fonts_com_token', ''),
+    ),
+    'fonts_com_token_save' => array(
+      '#type' => 'submit',
+      '#value' => 'Update Fonts.com',
+    ),
+  );
 
-    $form['#submit'][] = 'fonts_com_token_submit';
+  // $form['#submit'][] = 'fonts_com_token_submit';
 
-  } // if
+  return $form;
 
-} // fonts_com_form_alter
+} // fonts_com_admin_form
 
 /**
  * Updates auth token.
