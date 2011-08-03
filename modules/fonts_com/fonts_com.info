@@ -7,3 +7,4 @@ php = 5.2.0
 
 files[] = fonts_com.install
 files[] = fonts_com.module
+files[] = api.inc
