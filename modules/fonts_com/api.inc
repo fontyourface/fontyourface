@@ -13,8 +13,6 @@ define('FONTS_COM_API_APP_KEY', '1fdb130c-d5c0-4fab-8e2b-271508570323932606');
  */
 function fonts_com_get_fonts_in_project($project_id) {
 
-  $logging = variable_get('fontyourface_detailed_logging', FALSE);
-
   $fonts = array();
 
   $path = '/rest/json/Fonts/?wfspstart=0&wfsplimit=100&wfspid=' . $project_id;
@@ -25,22 +23,13 @@ function fonts_com_get_fonts_in_project($project_id) {
 
     $data = json_decode($response->data);
     $font = $data->Fonts->Font;
-
-    if (is_array($font)) {
-      $fonts = $font;
-    } // if
-    else {
-      $fonts[] = $font;
-    } // else
+    $fonts = fonts_com_unknown_to_array($font);
 
   } // if
   else {
 
     drupal_set_message(t('There was an error importing a project (@project) font list from Fonts.com.', array('@project' => $project_id)), 'error');
-
-    if ($logging) {
-      watchdog('@font-your-face', 'Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)), WATCHDOG_INFO);
-    } // if
+    fontyourface_log('Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)));
 
   } // else
 
@@ -53,9 +42,7 @@ function fonts_com_get_fonts_in_project($project_id) {
  */
 function fonts_com_get_key_for_account($email, $password) {
 
-  $logging = variable_get('fontyourface_detailed_logging', FALSE);
-
-  $key = '';
+  $key = FALSE;
 
   $path = '/rest/json/Accounts/?wfsemail=' . $email;
 
@@ -65,17 +52,27 @@ function fonts_com_get_key_for_account($email, $password) {
 
     $data = json_decode($response->data);
 
-    dpm($data);
-    dpm($response);
+    if (
+      isset($data->Accounts) && 
+      isset($data->Accounts->Account) && 
+      isset($data->Accounts->Account->AuthorizationKey)
+    ) {
+
+      $key = $data->Accounts->Account->AuthorizationKey;
+
+    } // if
+    else {
+
+      drupal_set_message(t('The submitted email and password were not recognized by Fonts.com.'), 'error');
+      fontyourface_log('Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)));
+
+    } // else
 
   } // if
   else {
 
     drupal_set_message(t('There was an error getting your key from Fonts.com.'), 'error');
-
-    if ($logging) {
-      watchdog('@font-your-face', 'Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)), WATCHDOG_INFO);
-    } // if
+    fontyourface_log('Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)));
 
   } // else
 
@@ -84,11 +81,52 @@ function fonts_com_get_key_for_account($email, $password) {
 } // fonts_com_get_key_for_account
 
 /**
+ * Creates a new account.
+ */
+function fonts_com_create_account($email, $first_name, $last_name) {
+
+  $success = FALSE;
+
+  $path = '/rest/json/Accounts/';
+
+  $response = drupal_http_request(FONTS_COM_API_BASE_URL . $path, array('headers' => array('AppKey' => FONTS_COM_API_APP_KEY), 'method' => 'POST', 'data' => 'wfsfirst_name=' . $first_name . '&wfslast_name=' . $last_name . '&wfsemail=' . $email));
+
+  if ($response->code == 200) {
+
+    $data = json_decode($response->data);
+
+    if (
+      isset($data->Accounts) && 
+      isset($data->Accounts->Message) &&
+      ($data->Accounts->Message == 'Success')
+    ) {
+
+      $success = TRUE;
+
+    } // if
+    else {
+
+      drupal_set_message(t('Fonts.com as unable to create your account.'), 'error');
+      fontyourface_log('Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)));
+
+    } // else
+
+  } // if
+  else {
+
+    drupal_set_message(t('There was an error creating an account at Fonts.com.'), 'error');
+    fontyourface_log('Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)));
+
+  } // else
+
+  return $success;
+
+} // fonts_com_create_account
+
+/**
  * Gets list of domains in a given project.
  */
 function fonts_com_get_domains_in_project($project_id) {
-
-  $logging = variable_get('fontyourface_detailed_logging', FALSE);
 
   $domains = array();
 
@@ -103,13 +141,7 @@ function fonts_com_get_domains_in_project($project_id) {
     if ($data->Domains->TotalRecords > 0) {
 
       $domain = $data->Domains->Domain;
-  
-      if (is_array($domain)) {
-        $domains = $domain;
-      } // if
-      else {
-        $domains[] = $domain;
-      } // else
+      $domains = fonts_com_unknown_to_array($domain);
 
     } // if
 
@@ -117,10 +149,7 @@ function fonts_com_get_domains_in_project($project_id) {
   else {
 
     drupal_set_message(t('There was an error importing a project (@project) domain list from Fonts.com.', array('@project' => $project_id)), 'error');
-
-    if ($logging) {
-      watchdog('@font-your-face', 'Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)), WATCHDOG_INFO);
-    } // if
+    fontyourface_log('Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)));
 
   } // else
 
@@ -133,8 +162,6 @@ function fonts_com_get_domains_in_project($project_id) {
  */
 function fonts_com_get_projects() {
 
-  $logging = variable_get('fontyourface_detailed_logging', FALSE);
-
   $projects = array();
 
   $path = '/rest/json/Projects/?wfspstart=0&wfsplimit=100';
@@ -145,22 +172,13 @@ function fonts_com_get_projects() {
 
     $data = json_decode($response->data);
     $project = $data->Projects->Project;
-    
-    if (is_array($project)) {
-      $projects = $project;
-    } // if
-    else {
-      $projects[] = $project;
-    } // else
+    $projects = fonts_com_unknown_to_array($project);
 
   } // if
   else {
 
     drupal_set_message(t('There was an error importing project list from Fonts.com.'), 'error');
-
-    if ($logging) {
-      watchdog('@font-your-face', 'Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)), WATCHDOG_INFO);
-    } // if
+    fontyourface_log('Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)));
 
   } // else
 
@@ -181,3 +199,16 @@ function fonts_com_api_headers($path) {
   return array('Authorization' => $auth, 'AppKey' => FONTS_COM_API_APP_KEY);
 
 } // fonts_com_api_headers
+
+/**
+ * Returns an array, regardless of input.
+ */
+function fonts_com_unknown_to_array($unknown) {
+
+  if (is_array($unknown)) {
+    return $unknown;
+  } // if
+
+  return array($unknown);
+
+} // fonts_com_unknown_to_array

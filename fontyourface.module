@@ -420,3 +420,14 @@ function fontyourface_delete_unused_tags() {
   } // if
 
 } // fontyourface_delete_unused_tags
+
+/**
+ * Logs to watchdog if logging is enabled.
+ */
+function fontyourface_log($message, $arguments) {
+
+  if (variable_get('fontyourface_detailed_logging', FALSE)) {
+    watchdog('@font-your-face', $message, $arguments, WATCHDOG_INFO);
+  } // if
+
+} // fontyourface_log
