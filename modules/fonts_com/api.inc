@@ -158,6 +158,85 @@ function fonts_com_get_domains_in_project($project_id) {
 } // fonts_com_get_domains_in_project
 
 /**
+ * Saves list of domains in a given project.
+ */
+function fonts_com_save_domains_in_project($project_id, $new_domains) {
+
+  $old_domains = array();
+  $domain_to_index = array();
+  
+  $old_domain_objects = fonts_com_get_domains_in_project($project_id);
+
+  foreach ($old_domain_objects as $index => $old_domain_object) {
+  
+    $domain_to_index[$old_domain_object->DomainName] = $index;
+    $old_domains[] = $old_domain_object->DomainName;
+  
+  } // foreach
+  
+  $add_domains = array_diff($new_domains, $old_domains);
+  $delete_domains = array_diff($old_domains, $new_domains);
+
+  foreach ($delete_domains as $delete_domain) {
+
+    $delete_domain_object = $old_domain_objects[$domain_to_index[$delete_domain]];    
+    fonts_com_delete_domain($project_id, $delete_domain_object->DomainID);
+
+  } // foreach
+
+  foreach ($add_domains as $add_domain) {
+    fonts_com_add_domain($project_id, $add_domain);
+  } // foreach
+
+} // fonts_com_save_domains_in_project
+
+/**
+ * Deletes a single domain in a project.
+ */
+function fonts_com_delete_domain($project_id, $domain_id) {
+
+  $path = '/rest/json/Domains/?wfspid=' . $project_id . '&wfsdomain_id=' . $domain_id;
+
+  $response = drupal_http_request(FONTS_COM_API_BASE_URL . $path, array('headers' => fonts_com_api_headers($path), 'method' => 'DELETE'));
+
+  if ($response->code == 200) {
+    return TRUE;
+  } // if
+  else {
+
+    drupal_set_message(t('There was an error deleting a domain (@domain) in a project (@project) on Fonts.com.', array('@domain' => $domain_id, '@project' => $project_id)), 'error');
+    fontyourface_log('Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)));
+
+  } // else
+
+  return FALSE;
+
+} // fonts_com_delete_domain
+
+/**
+ * Adds a single domain to a project.
+ */
+function fonts_com_add_domain($project_id, $domain_name) {
+
+  $path = '/rest/json/Domains/?wfspid=' . $project_id;
+
+  $response = drupal_http_request(FONTS_COM_API_BASE_URL . $path, array('headers' => fonts_com_api_headers($path), 'method' => 'POST', 'data' => 'wfsdomain_name=' . $domain_name));
+
+  if ($response->code == 200) {
+    return TRUE;
+  } // if
+  else {
+
+    drupal_set_message(t('There was an error adding a domain (@domain) in a project (@project) on Fonts.com.', array('@domain' => $domain_name, '@project' => $project_id)), 'error');
+    fontyourface_log('Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)));
+
+  } // else
+
+  return FALSE;
+
+} // fonts_com_add_domain
+
+/**
  * Gets list of projects from API.
  */
 function fonts_com_get_projects() {
@@ -171,8 +250,13 @@ function fonts_com_get_projects() {
   if ($response->code == 200) {
 
     $data = json_decode($response->data);
-    $project = $data->Projects->Project;
-    $projects = fonts_com_unknown_to_array($project);
+
+    if ($data->Projects->TotalRecords > 0) {
+
+      $project = $data->Projects->Project;
+      $projects = fonts_com_unknown_to_array($project);
+
+    } // if
 
   } // if
   else {
@@ -185,6 +269,62 @@ function fonts_com_get_projects() {
   return $projects;
 
 } // fonts_com_get_projects
+
+/**
+ * Gets list of projects from API.
+ */
+function fonts_com_get_project_by_id($project_id) {
+
+  $projects = fonts_com_get_projects();
+  
+  if (count($projects) > 0) {
+
+    foreach ($projects as $project) {
+
+        if ($project->ProjectKey == $project_id) {
+          return $project;
+        } // if
+
+      } // foreach
+
+  } // if
+  
+  return FALSE;
+
+} // fonts_com_get_project_by_id
+
+/**
+ * Update.
+ */
+function fonts_com_save_project($project) {
+
+  $path = '/rest/json/Projects/';
+  $method = 'POST';
+
+  if (isset($project->ProjectKey)) {
+
+    $path .= '?wfspid=' . $project->ProjectKey;
+    $method = 'PUT';
+
+  } // if
+  
+  $response = drupal_http_request(FONTS_COM_API_BASE_URL . $path, array('headers' => fonts_com_api_headers($path), 'method' => $method, 'data' => 'wfsproject_name=' . $project->ProjectName));
+
+  if ($response->code == 200) {
+
+    return TRUE;
+
+  } // if
+  else {
+
+    drupal_set_message(t('There was an error saving project to Fonts.com.'), 'error');
+    fontyourface_log('Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)));
+
+  } // else
+
+  return FALSE;
+
+} // fonts_com_save_project
 
 /**
  * Provides headers with api parameters.
