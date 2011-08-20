@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * @file
+ * Views handler.
+ */
+
+
 /**
  * Field handler to present font preview.
  */

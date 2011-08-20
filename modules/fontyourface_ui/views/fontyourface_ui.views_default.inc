@@ -21,7 +21,7 @@ function fontyourface_ui_views_default_views() {
   $view->core = 0;
   $view->api_version = '3.0-alpha1';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
-  
+
   /* Display: Defaults */
   $handler = $view->new_display('default', 'Defaults', 'default');
   $handler->display->display_options['title'] = 'Browse fonts';
@@ -273,7 +273,7 @@ function fontyourface_ui_views_default_views() {
   $handler->display->display_options['filters']['license']['expose']['identifier'] = 'license';
   $handler->display->display_options['filters']['license']['expose']['required'] = 0;
   $handler->display->display_options['filters']['license']['expose']['multiple'] = FALSE;
-  
+
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page_1');
   $handler->display->display_options['path'] = 'admin/appearance/fontyourface/browse';

@@ -12,7 +12,7 @@
 class views_handler_filter_fontyourface_provider extends views_handler_filter_in_operator {
 
   function get_value_options() {
-  
+
     if (!isset($this->value_options)) {
 
       $this->value_title = t('Provider');
@@ -25,7 +25,7 @@ class views_handler_filter_fontyourface_provider extends views_handler_filter_in
         $options[$module] = $provider['name'];
 
       } // foreach
-      
+
       asort($options);
       $this->value_options = $options;
 

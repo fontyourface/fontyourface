@@ -112,6 +112,20 @@ function fontyourface_7200_schema() {
         'default' => '',
         'description' => 'URL for license for the font.',
       ),
+      'designer' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Designer for the font.',
+      ),
+      'designer_url' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'URL for designer for the font.',
+      ),
       'metadata' => array(
         'type' => 'text',
         'not null' => FALSE,
@@ -425,9 +439,11 @@ function fontyourface_update_7200() {
   module_enable(array('fontyourface_ui'));
   views_invalidate_cache();
 
-  // Add css_fallbacks to schema.
+  // Add new fields to schema.
 
   $schema = fontyourface_7200_schema();
   db_add_field('fontyourface_font', 'css_fallbacks', $schema['fontyourface_font']['fields']['css_fallbacks']);
+  db_add_field('fontyourface_font', 'designer', $schema['fontyourface_font']['fields']['designer']);
+  db_add_field('fontyourface_font', 'designer_url', $schema['fontyourface_font']['fields']['designer_url']);
 
 } // fontyourface_update_7200

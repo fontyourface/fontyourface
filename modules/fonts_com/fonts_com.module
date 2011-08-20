@@ -72,45 +72,45 @@ function fonts_com_fontyourface_info() {
  */
 function fonts_com_fontyourface_import() {
 
+  $batch = array(
+    'operations' => array(
+      array('fonts_com_import_process', array())
+    ),
+    'finished' => 'fonts_com_import_finished',
+    'title' => t('Importing fonts from Fonts.com'),
+    'init_message' => t('Import starting.'),
+    'progress_message' => t('Processed @current out of @total.'),
+    'error_message' => t('Import has encountered an error.'),
+  );
+
+  batch_set($batch);
+
+} // fonts_com_import
+
+/**
+ * Processes importing fonts.
+ */
+function fonts_com_import_process(&$context) {
+
   module_load_include('inc', 'fonts_com', 'api');
 
-  $import_fonts = array();
-  $projects = fonts_com_get_projects();
+  $per_page = 200;
 
-  foreach ($projects as $project) {
+  if (empty($context['sandbox'])) {
 
-    $fonts = array();
+    $context['sandbox'] = array();
+    $context['sandbox']['progress'] = 0;
+    $context['sandbox']['max'] = ceil(fonts_com_get_all_fonts_count() / $per_page);
+
+  } // if
+
+  $import_fonts = fonts_com_get_all_fonts($context['sandbox']['progress'], $per_page);
   
-    $domains = fonts_com_get_domains_in_project($project->ProjectKey);
-    $domain_match = FALSE;
-
-    foreach ($domains as $domain) {
-    
-      if ($domain->DomainName == $_SERVER['HTTP_HOST']) {
-        $domain_match = TRUE;
-      } // if
-    
-    } // foreach
-    
-    if ($domain_match) {
-
-      $fonts = fonts_com_get_fonts_in_project($project->ProjectKey);
-      
-      foreach ($fonts as $font) {
-
-        $font->project = $project;
-        $import_fonts[] = $font;
-
-      } // foreach
-
-    } // if
-
-  } // foreach
-
   foreach ($import_fonts as $import_font) {
   
     $metadata = array(
       'project_id' => $import_font->project->ProjectKey,
+      'details' => $import_font,
     );
 
     $font = new stdClass;
@@ -126,7 +126,24 @@ function fonts_com_fontyourface_import() {
 
   } // foreach
 
-} // fonts_com_import
+  $context['sandbox']['progress']++;
+
+  DD($context['sandbox']['progress']);
+
+  if ($context['sandbox']['progress'] < $context['sandbox']['max']) {
+    $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+  } // if
+  else {
+    $context['finished'] = 1;
+  } // else
+
+} // fonts_com_import_process
+
+/**
+ * Completes import.
+ */
+function fonts_com_import_finished($success, $results, $operations) {
+} // fonts_com_import_finished
 
 /**
  * Implements template_preprocess_page().
@@ -136,13 +153,20 @@ function fonts_com_preprocess_page(&$vars) {
   if (!empty($vars['fontyourface'])) {
 
     $projects = array();
+    $preview_projects = array();
 
     foreach ($vars['fontyourface'] as $used_font) {
 
       if ($used_font->provider == 'fonts_com') {
 
         $metadata = unserialize($used_font->metadata);
-        $projects[$metadata['project_id']] = TRUE;
+
+        if ($metadata['project_id'] != '') {
+          $projects[$metadata['project_id']] = TRUE;
+        } // if
+        else {
+          $preview_fonts[] = $used_font;
+        } // else
 
       } // if
 
@@ -163,6 +187,61 @@ function fonts_com_preprocess_page(&$vars) {
 
       } // foreach
 
+    } // if
+    
+    if (count($preview_fonts) > 0) {
+    
+      $destination = file_build_uri('fontyourface/fonts_com/preview.css');
+
+      $css = '';
+    
+      $destination_directory = dirname($destination);
+    
+      if (file_prepare_directory($destination_directory, FILE_CREATE_DIRECTORY)) {
+        
+        foreach ($preview_fonts as $font) {
+
+          $metadata = unserialize($font->metadata);
+
+          $font_css = '@font-face {' . "\n";
+          $font_css .= "  font-family: " . $font->css_family . ";" . "\n";
+          $font_css .= '  src: url("' . $metadata['details']->EOTURL . '");' . "\n";
+
+          $combined_sources = array();
+
+          $combined_sources[] = 'url("' . $metadata['details']->TTFURL . '") format("truetype")';
+          $combined_sources[] = 'url("' . $metadata['details']->WOFFURL . '") format("woff")';
+
+          if (preg_match('#origId=([^&]+)&#i', $metadata['details']->SVGURL, $svg_match)) {
+            $combined_sources[] = 'url("' . $metadata['details']->SVGURL . '#' . $svg_match[1] . '") format("svg")';
+          } // if
+
+          $font_css .= '  src: ' . implode(', ', $combined_sources) . ';' . "\n";
+
+          if ($font->css_style != '') {
+            $font_css .= '  font-style: ' . $font->css_style . ';' . "\n";
+          } // if
+
+          if ($font->css_weight != '') {
+            $font_css .= '  font-weight: ' . $font->css_weight . ';' . "\n";
+          } // if
+
+          $font_css .= '}' . "\n";
+
+          $css .= $font_css . "\n\n";
+
+        } // foreach
+    
+        file_unmanaged_save_data($css, $destination, FILE_EXISTS_REPLACE);
+    
+      } // if
+    
+      if ($css != '') {
+
+        fontyourface_add_css_in_preprocess($vars, 'fontyourface/fonts_com/preview.css');
+
+      } // if
+    
     } // if
 
   } // if

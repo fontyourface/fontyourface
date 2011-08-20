@@ -38,6 +38,59 @@ function fonts_com_get_fonts_in_project($project_id) {
 } // fonts_com_get_fonts_in_project
 
 /**
+ * Gets a list of all fonts, in given range.
+ */
+function fonts_com_get_all_fonts($start = 0, $limit = 100) {
+
+  $fonts = array();
+
+  $path = '/rest/json/AllFonts/?wfspstart=' . $start . '&wfsplimit=' . $limit;
+
+  $response = drupal_http_request(FONTS_COM_API_BASE_URL . $path, array('headers' => fonts_com_api_headers($path)));
+
+  if ($response->code == 200) {
+
+    $data = json_decode($response->data);
+    // dpm($response);
+    $font = $data->AllFonts->Font;
+    $fonts = fonts_com_unknown_to_array($font);
+
+  } // if
+  else {
+
+    drupal_set_message(t('There was an error importing a font list from Fonts.com.'), 'error');
+    fontyourface_log('Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)));
+
+  } // else
+
+  return $fonts;
+
+} // fonts_com_get_all_fonts
+
+/**
+ * Gets total font count.
+ */
+function fonts_com_get_all_fonts_count() {
+
+  $path = '/rest/json/AllFonts/?wfspstart=0&wfsplimit=1';
+
+  $response = drupal_http_request(FONTS_COM_API_BASE_URL . $path, array('headers' => fonts_com_api_headers($path)));
+
+  if ($response->code == 200) {
+
+    $data = json_decode($response->data);
+    return $data->AllFonts->TotalRecords;
+
+  } // if
+
+  drupal_set_message(t('There was an error importing the font count from Fonts.com.'), 'error');
+  fontyourface_log('Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)));
+
+  return FALSE;
+
+} // fonts_com_get_all_fonts_count
+
+/**
  * Gets auth key for a given account.
  */
 function fonts_com_get_key_for_account($email, $password) {
@@ -53,8 +106,8 @@ function fonts_com_get_key_for_account($email, $password) {
     $data = json_decode($response->data);
 
     if (
-      isset($data->Accounts) && 
-      isset($data->Accounts->Account) && 
+      isset($data->Accounts) &&
+      isset($data->Accounts->Account) &&
       isset($data->Accounts->Account->AuthorizationKey)
     ) {
 
@@ -96,7 +149,7 @@ function fonts_com_create_account($email, $first_name, $last_name) {
     $data = json_decode($response->data);
 
     if (
-      isset($data->Accounts) && 
+      isset($data->Accounts) &&
       isset($data->Accounts->Message) &&
       ($data->Accounts->Message == 'Success')
     ) {
@@ -164,22 +217,22 @@ function fonts_com_save_domains_in_project($project_id, $new_domains) {
 
   $old_domains = array();
   $domain_to_index = array();
-  
+
   $old_domain_objects = fonts_com_get_domains_in_project($project_id);
 
   foreach ($old_domain_objects as $index => $old_domain_object) {
-  
+
     $domain_to_index[$old_domain_object->DomainName] = $index;
     $old_domains[] = $old_domain_object->DomainName;
-  
+
   } // foreach
-  
+
   $add_domains = array_diff($new_domains, $old_domains);
   $delete_domains = array_diff($old_domains, $new_domains);
 
   foreach ($delete_domains as $delete_domain) {
 
-    $delete_domain_object = $old_domain_objects[$domain_to_index[$delete_domain]];    
+    $delete_domain_object = $old_domain_objects[$domain_to_index[$delete_domain]];
     fonts_com_delete_domain($project_id, $delete_domain_object->DomainID);
 
   } // foreach
@@ -276,7 +329,7 @@ function fonts_com_get_projects() {
 function fonts_com_get_project_by_id($project_id) {
 
   $projects = fonts_com_get_projects();
-  
+
   if (count($projects) > 0) {
 
     foreach ($projects as $project) {
@@ -288,7 +341,7 @@ function fonts_com_get_project_by_id($project_id) {
       } // foreach
 
   } // if
-  
+
   return FALSE;
 
 } // fonts_com_get_project_by_id
@@ -307,7 +360,7 @@ function fonts_com_save_project($project) {
     $method = 'PUT';
 
   } // if
-  
+
   $response = drupal_http_request(FONTS_COM_API_BASE_URL . $path, array('headers' => fonts_com_api_headers($path), 'method' => $method, 'data' => 'wfsproject_name=' . $project->ProjectName));
 
   if ($response->code == 200) {
@@ -333,7 +386,7 @@ function fonts_com_api_headers($path) {
 
   list($public_key, $private_key) = explode('--', variable_get('fonts_com_token', ''));
 
-  $encoded = base64_encode(hash_hmac('md5', $public_key . '|' . $path, $private_key, true));
+  $encoded = base64_encode(hash_hmac('md5', $public_key . '|' . $path, $private_key, TRUE));
   $auth = urlencode($public_key . ':' . $encoded);
 
   return array('Authorization' => $auth, 'AppKey' => FONTS_COM_API_APP_KEY);

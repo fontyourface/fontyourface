@@ -45,7 +45,7 @@ class views_handler_filter_tag_font_tid extends views_handler_filter_many_to_one
       $default = '';
 
       if ($this->value) {
-        
+
         $result = db_select('fontyourface_tag', 't')
           ->condition('t.tid', $this->value, 'IN')
           ->execute();

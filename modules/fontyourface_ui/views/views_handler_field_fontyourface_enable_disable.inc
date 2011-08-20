@@ -1,4 +1,10 @@
 <?php
+
+/**
+ * @file
+ * Views handler.
+ */
+
 /**
  * Field handler to present font enable/disable link.
  */
@@ -27,12 +33,12 @@ class views_handler_field_fontyourface_enable_disable extends views_handler_fiel
 
     if ($enabled) {
 
-      return l('Disable', 'admin/appearance/fontyourface/disable/' . $fid . '?' . drupal_http_build_query($destination), array('attributes' => array('class' => 'disable-link')));
+      return l(t('Disable'), 'admin/appearance/fontyourface/disable/' . $fid . '?' . drupal_http_build_query($destination), array('attributes' => array('class' => 'disable-link')));
 
     } // if
     else {
 
-      return l('Enable', 'admin/appearance/fontyourface/enable/' . $fid . '?' . drupal_http_build_query($destination), array('attributes' => array('class' => 'enable-link')));
+      return l(t('Enable'), 'admin/appearance/fontyourface/enable/' . $fid . '?' . drupal_http_build_query($destination), array('attributes' => array('class' => 'enable-link')));
 
     } // else
 

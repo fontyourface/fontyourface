@@ -69,7 +69,7 @@ function fontyourface_add_css_in_preprocess(&$vars, $css_path, $type = 'public')
 
   } // if
   else {
-  
+
     if ($type == 'public') {
 
       $css_path = file_stream_wrapper_get_instance_by_scheme('public')->getDirectoryPath() . '/' . $css_path;
@@ -225,9 +225,9 @@ function fontyourface_save_font(&$font) {
     $existing_font = fontyourface_get_font($exists->fid);
 
     $font->fid = $existing_font->fid;
-    
+
     // Keep status, selector, and tags the same.
-    
+
     $font->enabled = $existing_font->enabled;
     $font->css_selector = $existing_font->css_selector;
     fontyourface_add_font_tags($font);
@@ -374,7 +374,7 @@ function fontyourface_provider_disable($provider) {
 function fontyourface_delete_unused_tags() {
 
   // Delete all unused font-tag relationships.
-  
+
   $missing_font_query = db_select('fontyourface_tag_font', 'tf');
   $font_alias = $missing_font_query->leftJoin('fontyourface_font', 'f', 'tf.fid = f.fid');
   $missing_fonts = $missing_font_query
@@ -387,7 +387,7 @@ function fontyourface_delete_unused_tags() {
   foreach ($missing_fonts as $missing_font) {
     $missing_fids[] = $missing_font->fid;
   } // foreach
-  
+
   if (count($missing_fids) > 0) {
 
     db_delete('fontyourface_tag_font')
