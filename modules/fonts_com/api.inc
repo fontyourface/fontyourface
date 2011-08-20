@@ -380,6 +380,56 @@ function fonts_com_save_project($project) {
 } // fonts_com_save_project
 
 /**
+ * Adds font to project.
+ */
+function fonts_com_add_font_to_project($font_id, $project_id) {
+
+  $path = '/rest/json/Fonts/?wfspid=' . $project_id;
+
+  $response = drupal_http_request(FONTS_COM_API_BASE_URL . $path, array('headers' => fonts_com_api_headers($path), 'method' => 'POST', 'data' => 'wfsfid=' . $font_id));
+
+  if ($response->code == 200) {
+
+    return TRUE;
+
+  } // if
+  else {
+
+    drupal_set_message(t('There was an error enabling the font on Fonts.com.'), 'error');
+    fontyourface_log('Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)));
+
+  } // else
+
+  return FALSE;
+
+} // fonts_com_add_font_to_project
+
+/**
+ * Deletes font from project.
+ */
+function fonts_com_delete_font_from_project($font_id, $project_id) {
+
+  $path = '/rest/json/Fonts/?wfspid=' . $project_id . '&wfsfid=' . $font_id;
+
+  $response = drupal_http_request(FONTS_COM_API_BASE_URL . $path, array('headers' => fonts_com_api_headers($path), 'method' => 'DELETE'));
+
+  if ($response->code == 200) {
+
+    return TRUE;
+
+  } // if
+  else {
+
+    drupal_set_message(t('There was an error disabling the font on Fonts.com.'), 'error');
+    fontyourface_log('Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)));
+
+  } // else
+
+  return FALSE;
+
+} // fonts_com_delete_font_from_project
+
+/**
  * Provides headers with api parameters.
  */
 function fonts_com_api_headers($path) {

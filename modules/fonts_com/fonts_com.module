@@ -608,3 +608,51 @@ function fonts_com_project_edit_form_submit($form, &$form_state) {
   } // if
 
 } // fonts_com_project_edit_form_submit
+
+/**
+ * Implements hook_fontyourface_enable().
+ */
+function fonts_com_fontyourface_enable($font) {
+
+  module_load_include('inc', 'fonts_com', 'api');
+
+  $project = variable_get('fonts_com_project', '');
+  $metadata = unserialize($font->metadata);
+
+  if ($project == '') {
+
+    drupal_set_message(t('Please @selectproject before enabling <i>@font</i>.', array('@selectproject' => l('select a project', 'admin/config/user-interface/fontyourface/fonts_com/project'), '@font' => $font->name)), 'error');
+    return FALSE;
+
+  } // if
+  elseif (fonts_com_add_font_to_project($metadata['details']->FontID, $project)) {
+    return TRUE;
+  } // elseif
+  
+  return FALSE;
+
+} // fonts_com_fontyourface_enable
+
+/**
+ * Implements hook_fontyourface_disable().
+ */
+function fonts_com_fontyourface_disable($font) {
+
+  module_load_include('inc', 'fonts_com', 'api');
+
+  $project = variable_get('fonts_com_project', '');
+  $metadata = unserialize($font->metadata);
+
+  if ($project == '') {
+
+    drupal_set_message(t('Please @selectproject before disabling <i>@font</i>.', array('@selectproject' => l('select a project', 'admin/config/user-interface/fontyourface/fonts_com/project'), '@font' => $font->name)), 'error');
+    return FALSE;
+
+  } // if
+  elseif (fonts_com_delete_font_from_project($metadata['details']->FontID, $project)) {
+    return TRUE;
+  } // elseif
+
+  return FALSE;
+
+} // fonts_com_fontyourface_enable
