@@ -128,8 +128,6 @@ function fonts_com_import_process(&$context) {
 
   $context['sandbox']['progress']++;
 
-  DD($context['sandbox']['progress']);
-
   if ($context['sandbox']['progress'] < $context['sandbox']['max']) {
     $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
   } // if
