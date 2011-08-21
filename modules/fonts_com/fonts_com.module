@@ -94,7 +94,7 @@ function fonts_com_import_process(&$context) {
 
   module_load_include('inc', 'fonts_com', 'api');
 
-  $per_page = 200;
+  $per_page = 100;
 
   if (empty($context['sandbox'])) {
 
@@ -151,7 +151,7 @@ function fonts_com_preprocess_page(&$vars) {
   if (!empty($vars['fontyourface'])) {
 
     $projects = array();
-    $preview_projects = array();
+    $preview_fonts = array();
 
     foreach ($vars['fontyourface'] as $used_font) {
 
@@ -624,9 +624,14 @@ function fonts_com_fontyourface_enable($font) {
 
   } // if
   elseif (fonts_com_add_font_to_project($metadata['details']->FontID, $project)) {
+
+    $metadata['project_id'] = $project;
+    $font->metadata = serialize($metadata);
+    fontyourface_save_font($font);
     return TRUE;
+
   } // elseif
-  
+
   return FALSE;
 
 } // fonts_com_fontyourface_enable

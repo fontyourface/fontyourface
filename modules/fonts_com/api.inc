@@ -51,7 +51,6 @@ function fonts_com_get_all_fonts($start = 0, $limit = 100) {
   if ($response->code == 200) {
 
     $data = json_decode($response->data);
-    // dpm($response);
     $font = $data->AllFonts->Font;
     $fonts = fonts_com_unknown_to_array($font);
 
@@ -390,6 +389,7 @@ function fonts_com_add_font_to_project($font_id, $project_id) {
 
   if ($response->code == 200) {
 
+    $data = json_decode($response->data);
     return TRUE;
 
   } // if
