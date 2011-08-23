@@ -109,9 +109,12 @@ function fonts_com_import_process(&$context) {
   foreach ($import_fonts as $import_font) {
   
     $metadata = array(
-      'project_id' => $import_font->project->ProjectKey,
       'details' => $import_font,
     );
+
+    if (isset($import_font->project)) {
+      $metadata['project_id'] = $import_font->project->ProjectKey;
+    } // if
 
     $font = new stdClass;
     $font->name = $import_font->FontName;
@@ -229,14 +232,13 @@ function fonts_com_preprocess_page(&$vars) {
           $css .= $font_css . "\n\n";
 
         } // foreach
-    
-        file_unmanaged_save_data($css, $destination, FILE_EXISTS_REPLACE);
-    
+
       } // if
-    
+
       if ($css != '') {
 
-        fontyourface_add_css_in_preprocess($vars, 'fontyourface/fonts_com/preview.css');
+        drupal_add_css($css, array('group' => CSS_THEME, 'type' => 'inline'));
+        $vars['styles'] = drupal_get_css();
 
       } // if
     
