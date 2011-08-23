@@ -162,7 +162,10 @@ function fonts_com_preprocess_page(&$vars) {
 
         $metadata = unserialize($used_font->metadata);
 
-        if ($metadata['project_id'] != '') {
+        if (
+          (isset($metadata['project_id'])) &&
+          ($metadata['project_id'] != '')
+        ) {
           $projects[$metadata['project_id']] = TRUE;
         } // if
         else {
