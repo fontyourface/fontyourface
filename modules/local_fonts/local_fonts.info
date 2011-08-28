@@ -1,0 +1,8 @@
+name = Local Fonts
+description = @font-your-face provider with fonts installed locally on the Drupal server.
+dependencies[] = fontyourface
+package = @font-your-face
+core = 7.x
+
+files[] = local_fonts.install
+files[] = local_fonts.module
