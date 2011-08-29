@@ -94,7 +94,7 @@ function fontsquirrel_fontyourface_enable($font) {
       } // if
       else {
 
-        rupal_set_message(t('There was an error importing font information for %fontname from Font Squirrel. Font not found in API.', array('%fontname' => $font->name)), 'error');
+        drupal_set_message(t('There was an error importing font information for %fontname from Font Squirrel. Font not found in API.', array('%fontname' => $font->name)), 'error');
         $success = FALSE;
 
       } // else
