@@ -39,6 +39,7 @@
     var select = $(this);
     var selector = select.val();
     var input = select.parent().find('input');
+    var fontFamily = select.parent().attr('data-font-family');
 
     if (selector == '-- other --') {
 
@@ -53,6 +54,13 @@
 
       input.val(selector);
       input.hide();
+      select.parent().find('.font-family').remove();      
+
+      if (selector == '<none>') {
+      
+        select.parent().append('<div class="font-family">font-family: ' + fontFamily + ';</div>');
+
+      } // if
 
     } // else
 

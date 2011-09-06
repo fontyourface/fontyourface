@@ -144,6 +144,9 @@ function fonts_com_import_process(&$context) {
  * Completes import.
  */
 function fonts_com_import_finished($success, $results, $operations) {
+
+  fonts_com_enable_from_active_project();
+
 } // fonts_com_import_finished
 
 /**
@@ -439,22 +442,32 @@ function fonts_com_project_form($form, &$form_state) {
   if (count($projects) > 0) {
 
     $form['project'] = array(
-      '#type' => 'radios',
-      '#title' => t('Active project'),
-      '#options' => array(),
-      '#default_value' => variable_get('fonts_com_project', ''),
+      '#type' => 'select',
+      '#title' => t('Project'),
+      '#options' => array('' => '-- Select a project --'),
+      '#ajax' => array(
+        'callback' => 'fonts_com_project_ajax_callback',
+        'wrapper' => 'project-info',
+      ),
     );
 
     foreach ($projects as $project) {
 
       $edit_link = l(t('Edit'), 'admin/config/user-interface/fontyourface/fonts_com/project/edit/' . $project->ProjectKey);
-      $form['project']['#options'][$project->ProjectKey] = $project->ProjectName . ' ' . $edit_link;
+      $form['project']['#options'][$project->ProjectKey] = $project->ProjectName; // . ' ' . $edit_link;
 
     } // foreach
 
-    $form['set_active_project'] = array(
+    $form['project']['#options']['*new*'] = '-- Create new project --';
+
+    $form['edit_project'] = array(
       '#type' => 'submit',
-      '#value' => t('Set active project'),
+      '#value' => t('Edit project'),
+      '#attached' => array(
+        'js' => array(
+          drupal_get_path('module', 'fonts_com') . '/js/project.js', 
+        )
+      ),
     );
 
   } // if
@@ -464,32 +477,60 @@ function fonts_com_project_form($form, &$form_state) {
     drupal_goto('admin/config/user-interface/fontyourface/fonts_com/project/new');
 
   } // else
-
-  $form['new_project'] = array(
-    '#type' => 'submit',
-    '#value' => t('Create new project'),
+  
+  $form['project_info'] = array(
+    '#prefix' => '<div id="project-info">',
+    '#suffix' => '</div>',
   );
+  
+  if (!empty($form_state['values']['project'])) {
+
+    $form['project_info'] += fonts_com_project_info_form($form_state['values']['project']);
+
+    // Prevents input from setting values so default values apply.
+    unset($form_state['input']);
+
+  } // if
 
   return $form;
 
 } // fonts_com_project_form
 
 /**
+ * Handles AJAX callback for project change.
+ */
+function fonts_com_project_ajax_callback($form, $form_state) {
+
+  return $form['project_info'];
+
+} // fonts_com_project_ajax_callback
+
+/**
  * Sets active project, or creates a new project.
  */
 function fonts_com_project_form_submit($form, &$form_state) {
   
-  if ($form_state['values']['op'] == t('Set active project')) {
+  if (isset($form_state['values']['project_name'])) {
 
-    variable_set('fonts_com_project', $form_state['values']['project']);
-    drupal_set_message(t('Active project set.'));
+    // Handles AJAX form submission, saves project info.
+
+    fonts_com_project_edit_form_submit($form, &$form_state);
 
   } // if
-  elseif ($form_state['values']['op'] == t('Create new project')) {
+  else {
 
-    drupal_goto('admin/config/user-interface/fontyourface/fonts_com/project/new');
+    // Handles non-AJAX for submission, redirects to project.
 
-  } // elseif
+    $project_id = $form_state['values']['project'];
+    $path_end = 'edit/' . $project_id;
+    
+    if ($project_id == '*new*') {
+      $path_end = 'new';
+    } // if
+
+    drupal_goto('admin/config/user-interface/fontyourface/fonts_com/project/' . $path_end);
+
+  } // else
 
 } // fonts_com_project_form_submit
 
@@ -497,6 +538,17 @@ function fonts_com_project_form_submit($form, &$form_state) {
  * Provides form to create or edit a project.
  */
 function fonts_com_project_edit_form($form, &$form_state, $project_id) {
+
+  $form = fonts_com_project_info_form($project_id); 
+
+  return $form;
+
+} // fonts_com_project_edit_form
+
+/**
+ * Returns project info form array.
+ */
+function fonts_com_project_info_form($project_id) {
 
   module_load_include('inc', 'fonts_com', 'api');
 
@@ -508,6 +560,19 @@ function fonts_com_project_edit_form($form, &$form_state, $project_id) {
     '#size' => 50,
   );
   
+  $form['active'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Active'),
+    '#description' => t('Font updates (enabled status, CSS selectors) affect the active project.'),
+  );
+
+  if (variable_get('fonts_com_project', '') == $project_id) {
+    $form['active']['#default_value'] = 1;
+  } // if
+  else {
+    $form['active']['#default_value'] = 0;
+  } // else
+
   $form['domains'] = array(
     '#type' => 'fieldset',
     '#title' => 'Publish domains',
@@ -558,7 +623,7 @@ function fonts_com_project_edit_form($form, &$form_state, $project_id) {
     $domain_index++;
 
   } // for
-
+  
   $form['save'] = array(
     '#type' => 'submit',
     '#value' => t('Save project'),
@@ -566,7 +631,7 @@ function fonts_com_project_edit_form($form, &$form_state, $project_id) {
 
   return $form;
 
-} // fonts_com_project_edit_form
+} // form_com_project_info_form
 
 /**
  * Saves changes to project.
@@ -576,8 +641,8 @@ function fonts_com_project_edit_form_submit($form, &$form_state) {
   module_load_include('inc', 'fonts_com', 'api');
 
   $values = $form_state['values'];
-  
-  if (isset($values['project_id'])) {
+
+  if (isset($values['project_id']) && $values['project_id'] != '*new*') {
 
     $project = fonts_com_get_project_by_id($values['project_id']);
     $project->ProjectName = $values['project_name'];
@@ -589,6 +654,13 @@ function fonts_com_project_edit_form_submit($form, &$form_state) {
     $project->ProjectName = $values['project_name'];
 
   } // else
+
+  if ($values['active']) {
+
+    variable_set('fonts_com_project', $values['project_id']);
+    fonts_com_enable_from_active_project();
+
+  } // if
 
   if (fonts_com_save_project($project)) {
 
@@ -664,3 +736,59 @@ function fonts_com_fontyourface_disable($font) {
   return FALSE;
 
 } // fonts_com_fontyourface_enable
+
+/**
+ * Enables fonts locally based on the current active project.
+ */
+function fonts_com_enable_from_active_project() {
+
+  module_load_include('inc', 'fonts_com', 'api');
+
+  // Disables all Fonts.com fonts.
+
+  db_update('fontyourface_font')
+    ->fields(array('enabled' => 0))
+    ->condition('provider', 'fonts_com')
+    ->execute();
+
+  // Gets all fonts in active project.
+
+  $urls_to_enable = array();
+  $project_id = variable_get('fonts_com_project', '');
+  
+  if ($project_id != '') {
+
+    $fonts = fonts_com_get_fonts_in_project($project_id);
+
+    foreach ($fonts as $font) {
+
+      $urls_to_enable[] = 'http://webfonts.fonts.com/en-US/Project/ChooseFonts?ViewDetails=T&ViewFontID=' . $font->FontID . '&AddFontToPalette=T';
+
+    } // foreach
+
+  } // if
+
+  // Enables all fonts in active project.
+
+  db_update('fontyourface_font')
+    ->fields(array('enabled' => 1))
+    ->condition('provider', 'fonts_com')
+    ->condition('url', $urls_to_enable, 'IN')
+    ->execute();
+
+} // fonts_com_enable_from_active_project
+
+/**
+ * Implements hook_fontyourface_selector_update().
+ */
+function fonts_com_fontyourface_selector_update($font) {
+
+  module_load_include('inc', 'fonts_com', 'api');
+
+  $project_id = variable_get('fonts_com_project', '');
+  $metadata = unserialize($font->metadata);
+  $font_id = $metadata['details']->FontID;
+
+  fonts_com_set_font_selector($project_id, $font_id, $font->css_selector);
+
+} // fonts_com_fontyourface_selector_update

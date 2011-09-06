@@ -22,8 +22,13 @@ function fonts_com_get_fonts_in_project($project_id) {
   if ($response->code == 200) {
 
     $data = json_decode($response->data);
-    $font = $data->Fonts->Font;
-    $fonts = fonts_com_unknown_to_array($font);
+
+    if (isset($data->Fonts) && isset($data->Fonts->Font)) {
+
+      $font = $data->Fonts->Font;
+      $fonts = fonts_com_unknown_to_array($font);
+
+    } // if
 
   } // if
   else {
@@ -428,6 +433,126 @@ function fonts_com_delete_font_from_project($font_id, $project_id) {
   return FALSE;
 
 } // fonts_com_delete_font_from_project
+
+/**
+ * Sets selector on font.
+ */
+function fonts_com_set_font_selector($project_id, $font_id, $selector) {
+
+  fonts_com_add_selector_to_project($project_id, $selector);
+  $project_selectors = fonts_get_selectors_in_project($project_id);
+  $selector_id = FALSE;
+
+  foreach ($project_selectors as $project_selector) {
+
+    if ($project_selector->SelectorTag == $selector) {
+
+      $selector_id = $project_selector->SelectorID;
+
+    } // if
+
+  } // foreach
+
+  if ($selector_id) {
+
+    $path = '/rest/json/Selectors/?wfspid=' . $project_id;
+  
+    $response = drupal_http_request(
+      FONTS_COM_API_BASE_URL . $path, 
+      array(
+        'headers' => fonts_com_api_headers($path), 
+        'method' => 'PUT',
+        'data' => 'wfsselector_ids=' . $selector_id . '&wfsfont_ids=' . $font_id
+      )
+    );
+  
+    if ($response->code == 200) {
+
+      return TRUE;
+  
+    } // if
+    else {
+  
+      drupal_set_message(t('There was an error adding a CSS selector on Fonts.com.'), 'error');
+      fontyourface_log('Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)));
+  
+    } // else
+    
+  } // if
+
+  return FALSE;
+
+} // fonts_com_set_font_selector
+
+/**
+ * Adds selector to project.
+ */
+function fonts_com_add_selector_to_project($project_id, $selector) {
+
+  $path = '/rest/json/Selectors/?wfspid=' . $project_id;
+
+  $response = drupal_http_request(
+    FONTS_COM_API_BASE_URL . $path, 
+    array(
+      'headers' => fonts_com_api_headers($path), 
+      'method' => 'POST',
+      'data' => 'wfsselector_tag=' . urlencode($selector)
+    )
+  );
+
+  if ($response->code == 200) {
+
+    return TRUE;
+
+  } // if
+  else {
+
+    drupal_set_message(t('There was an error adding a CSS selector on Fonts.com.'), 'error');
+    fontyourface_log('Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)));
+
+  } // else
+
+  return FALSE;
+
+} // fonts_com_add_selector_to_project
+
+/**
+ * Gets selectors in project.
+ */
+function fonts_get_selectors_in_project($project_id) {
+
+  $selectors = array();
+
+  $path = '/rest/json/Selectors/?wfspid=' . $project_id;
+
+  $response = drupal_http_request(
+    FONTS_COM_API_BASE_URL . $path, 
+    array(
+      'headers' => fonts_com_api_headers($path), 
+    )
+  );
+
+  if ($response->code == 200) {
+
+    $data = json_decode($response->data);
+
+    if (isset($data->Selectors) && isset($data->Selectors->Selector)) {
+    
+      $selectors = fonts_com_unknown_to_array($data->Selectors->Selector);
+    
+    } // if
+
+  } // if
+  else {
+
+    drupal_set_message(t('There was an error adding a CSS selector on Fonts.com.'), 'error');
+    fontyourface_log('Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)));
+
+  } // else
+
+  return $selectors;
+
+} // fonts_com_add_selector_to_project
 
 /**
  * Provides headers with api parameters.

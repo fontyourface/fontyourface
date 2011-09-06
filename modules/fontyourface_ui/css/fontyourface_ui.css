@@ -2,6 +2,11 @@
   border: none;
 }
 
+#fontyourface-ui-apply-by-font-form tbody tr td.css-selector div.form-type-textfield {
+  margin: 0;
+  padding: 0;
+}
+
 .view-fontyourface-browse table {
   border: none;
   width: auto;

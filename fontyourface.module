@@ -194,6 +194,12 @@ function fontyourface_set_css_selector(&$font, $css_selector) {
     ->condition('fid', $font->fid)
     ->execute();
   $font->css_selector = $css_selector;
+  
+  $selector_functon = $font->provider . '_fontyourface_selector_update';
+
+  if (function_exists($selector_functon)) {
+    return $selector_functon($font);
+  } // if
 
 } // fontyourface_set_css_selector
 
