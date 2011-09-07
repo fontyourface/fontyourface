@@ -310,7 +310,7 @@ function fonts_com_get_projects() {
 
     if ($data->Projects->TotalRecords > 0) {
 
-      $project = $data->Projects->Project;
+      $project = $data->Projects->Projects;
       $projects = fonts_com_unknown_to_array($project);
 
     } // if
