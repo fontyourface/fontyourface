@@ -514,7 +514,7 @@ function fonts_com_project_form_submit($form, &$form_state) {
 
     // Handles AJAX form submission, saves project info.
 
-    fonts_com_project_edit_form_submit($form, &$form_state);
+    fonts_com_project_edit_form_submit($form, $form_state);
 
   } // if
   else {

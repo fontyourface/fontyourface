@@ -434,7 +434,7 @@ function fontyourface_update_6200() {
  */
 function fontyourface_update_7200() {
 
-  // Move views over to new fontyourface_ui module.
+  // Move UI over to new fontyourface_ui module.
 
   module_enable(array('fontyourface_ui'));
   views_invalidate_cache();
