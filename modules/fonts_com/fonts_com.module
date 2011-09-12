@@ -100,7 +100,7 @@ function fonts_com_import_process(&$context) {
 
     $context['sandbox'] = array();
     $context['sandbox']['progress'] = 0;
-    $context['sandbox']['max'] = 2; // ceil(fonts_com_get_all_fonts_count() / $per_page);
+    $context['sandbox']['max'] = ceil(fonts_com_get_all_fonts_count() / $per_page);
 
   } // if
 
