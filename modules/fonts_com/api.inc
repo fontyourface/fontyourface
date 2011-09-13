@@ -245,6 +245,8 @@ function fonts_com_save_domains_in_project($project_id, $new_domains) {
     fonts_com_add_domain($project_id, $add_domain);
   } // foreach
 
+  fonts_com_publish();
+
 } // fonts_com_save_domains_in_project
 
 /**
@@ -310,7 +312,7 @@ function fonts_com_get_projects() {
 
     if ($data->Projects->TotalRecords > 0) {
 
-      $project = $data->Projects->Projects;
+      $project = $data->Projects->Project;
       $projects = fonts_com_unknown_to_array($project);
 
     } // if
@@ -395,6 +397,7 @@ function fonts_com_add_font_to_project($font_id, $project_id) {
   if ($response->code == 200) {
 
     $data = json_decode($response->data);
+    fonts_com_publish();
     return TRUE;
 
   } // if
@@ -420,6 +423,7 @@ function fonts_com_delete_font_from_project($font_id, $project_id) {
 
   if ($response->code == 200) {
 
+    fonts_com_publish();
     return TRUE;
 
   } // if
@@ -468,6 +472,7 @@ function fonts_com_set_font_selector($project_id, $font_id, $selector) {
   
     if ($response->code == 200) {
 
+      fonts_com_publish();
       return TRUE;
   
     } // if
@@ -553,6 +558,22 @@ function fonts_get_selectors_in_project($project_id) {
   return $selectors;
 
 } // fonts_com_add_selector_to_project
+
+/**
+ * Publishes changes.
+ */
+function fonts_com_publish() {
+
+  $path = '/rest/json/Publish/';
+
+  $response = drupal_http_request(
+    FONTS_COM_API_BASE_URL . $path, 
+    array(
+      'headers' => fonts_com_api_headers($path), 
+    )
+  );
+
+} // fonts_com_publish
 
 /**
  * Provides headers with api parameters.

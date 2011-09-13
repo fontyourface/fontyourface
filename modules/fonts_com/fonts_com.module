@@ -94,13 +94,13 @@ function fonts_com_import_process(&$context) {
 
   module_load_include('inc', 'fonts_com', 'api');
 
-  $per_page = 100;
+  $per_page = 200;
 
   if (empty($context['sandbox'])) {
 
     $context['sandbox'] = array();
-    $context['sandbox']['progress'] = 0;
-    $context['sandbox']['max'] = ceil(fonts_com_get_all_fonts_count() / $per_page);
+    $context['sandbox']['progress'] = 1;
+    $context['sandbox']['max'] = fonts_com_get_all_fonts_count();
 
   } // if
 
@@ -122,14 +122,14 @@ function fonts_com_import_process(&$context) {
     $font->provider = 'fonts_com';
     $font->metadata = serialize($metadata);
     $font->css_family = "'" . $import_font->FontCSSName . "'";
-    $font->foundry = $import_font->FontFondryName;
+    $font->foundry = $import_font->FontFoundryName;
     $font->tags = array();
 
     fontyourface_save_font($font);
 
   } // foreach
 
-  $context['sandbox']['progress']++;
+  $context['sandbox']['progress'] += $per_page;
 
   if ($context['sandbox']['progress'] < $context['sandbox']['max']) {
     $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
@@ -770,11 +770,15 @@ function fonts_com_enable_from_active_project() {
 
   // Enables all fonts in active project.
 
-  db_update('fontyourface_font')
-    ->fields(array('enabled' => 1))
-    ->condition('provider', 'fonts_com')
-    ->condition('url', $urls_to_enable, 'IN')
-    ->execute();
+  if (count($urls_to_enable) > 0) {
+
+    db_update('fontyourface_font')
+      ->fields(array('enabled' => 1))
+      ->condition('provider', 'fonts_com')
+      ->condition('url', $urls_to_enable, 'IN')
+      ->execute();
+
+  } // if
 
 } // fonts_com_enable_from_active_project
 
