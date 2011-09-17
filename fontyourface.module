@@ -317,6 +317,21 @@ function fontyourface_preview($font, $text, $size) {
 } // fontyourface_preview
 
 /**
+ * Gets preview text from provider, if available.
+ */
+function fontyourface_short_preview_text($font) {
+
+  $function = $font->provider . '_fontyourface_short_preview_text';
+
+  if (function_exists($function)) {
+    return $function($font);
+  } // if
+
+  return 'AaGg';
+
+} // fontyourface_short_preview_text
+
+/**
  * Manages registry of fonts used on current page, to provide
  * list to fontyourface_preprocess_page().
  */

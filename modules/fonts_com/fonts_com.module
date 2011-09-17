@@ -796,3 +796,20 @@ function fonts_com_fontyourface_selector_update($font) {
   fonts_com_set_font_selector($project_id, $font_id, $font->css_selector);
 
 } // fonts_com_fontyourface_selector_update
+
+/**
+ * Implements hook_fontyourface_short_preview_text().
+ */
+function fonts_com_fontyourface_short_preview_text($font) {
+
+  $metadata = unserialize($font->metadata);
+  
+  if (strpos($metadata['details']->FontLanguage, 'Latin') === FALSE) {
+
+    return substr($metadata['details']->FontPreviewTextLong, 0, 4);
+
+  } // if
+
+  return 'AaGg';
+
+} // fonts_com_fontyourface_short_preview_text

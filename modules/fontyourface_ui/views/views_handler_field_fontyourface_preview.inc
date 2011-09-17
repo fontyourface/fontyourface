@@ -30,7 +30,7 @@ class views_handler_field_fontyourface_preview extends views_handler_field {
     $fid = $this->get_value($values, 'fid');
 
     $font = fontyourface_get_font($fid);
-    return fontyourface_preview($font, 'AaGg', 40);
+    return fontyourface_preview($font, fontyourface_short_preview_text($font), 40);
 
   } // render
 
