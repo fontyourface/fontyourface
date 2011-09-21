@@ -579,8 +579,13 @@ function fonts_com_publish() {
  * Provides headers with api parameters.
  */
 function fonts_com_api_headers($path) {
-
-  list($public_key, $private_key) = explode('--', variable_get('fonts_com_token', ''));
+  
+  $fonts_com_token = variable_get('fonts_com_token', '');
+  if (empty($fonts_com_token)) {
+    return;
+  }
+  
+  list($public_key, $private_key) = explode('--', $fonts_com_token);
 
   $encoded = base64_encode(hash_hmac('md5', $public_key . '|' . $path, $private_key, TRUE));
   $auth = urlencode($public_key . ':' . $encoded);
