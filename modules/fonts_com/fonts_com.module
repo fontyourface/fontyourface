@@ -661,6 +661,11 @@ function fonts_com_project_edit_form_submit($form, &$form_state) {
     fonts_com_enable_from_active_project();
 
   } // if
+  else if ($values['active'] === 0 && $values['project'] == variable_get('fonts_com_project', '')) {
+
+    variable_set('fonts_com_project', '');
+
+  } // else if
 
   if (fonts_com_save_project($project)) {
 
@@ -696,7 +701,7 @@ function fonts_com_fontyourface_enable($font) {
 
   if ($project == '') {
 
-    drupal_set_message(t('Please @selectproject before enabling <i>@font</i>.', array('@selectproject' => l('select a project', 'admin/config/user-interface/fontyourface/fonts_com/project'), '@font' => $font->name)), 'error');
+    drupal_set_message(t('Please !selectproject before enabling <i>@font</i>.', array('!selectproject' => l('select a project', 'admin/config/user-interface/fontyourface/fonts_com/project'), '@font' => $font->name)), 'error');
     return FALSE;
 
   } // if
@@ -813,3 +818,25 @@ function fonts_com_fontyourface_short_preview_text($font) {
   return 'AaGg';
 
 } // fonts_com_fontyourface_short_preview_text
+
+/**
+ * Implements hook_fontyourface_status().
+ */
+function fonts_com_fontyourface_status() {
+
+  $project_id = variable_get('fonts_com_project', '');
+  drupal_set_message('Warning: Because Fonts.com has so many fonts, the import may take several minutes.', 'warning');
+
+  if ($project_id) {
+
+    module_load_include('inc', 'fonts_com', 'api');
+  
+    $project = fonts_com_get_project_by_id($project_id);
+    return t('Active project: @project.', array('@project' => $project->ProjectName));
+
+  } // if
+  else {
+    return '<i>' . t('No active project.') . '</i>';
+  } // else
+
+} // fonts_com_fontyourface_status

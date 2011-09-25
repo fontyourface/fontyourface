@@ -514,16 +514,23 @@ function fontyourface_ui_settings_form($form, &$form_state) {
   foreach (module_implements('fontyourface_info') as $module) {
 
     $info_function = $module . '_fontyourface_info';
+    $status_function = $module. '_fontyourface_status';
     $provider = $info_function();
 
     $count = db_query("SELECT COUNT(fid) AS total FROM {fontyourface_font} WHERE provider = :provider", array(':provider' => $module))->fetchObject();
+
+    $status = t('@provider is enabled with @count fonts.', array('@provider' => $provider['name'], '@count' => $count->total));
+
+    if (function_exists($status_function)) {
+      $status .= ' ' . $status_function();
+    } // if
 
     $form['providers'][$module . '_import'] = array(
       '#prefix' => '<div>',
       '#suffix' => '</div>',
       'count' => array(
         '#type' => 'item',
-        '#markup' => t('@provider is enabled with @count fonts.', array('@provider' => $provider['name'], '@count' => $count->total)) . ' ',
+        '#markup' => $status . ' ',
       ),
       'import' => array(
         '#type' => 'submit',
