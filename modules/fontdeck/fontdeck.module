@@ -89,8 +89,10 @@ function fontdeck_form_alter(&$form, &$form_state, $form_id) {
       'fontdeck_project' => array(
         '#type' => 'textfield',
         '#title' => t('Fontdeck project number'),
-        '#description' => t('This is the number in the URL http://fontdeck.com/project/####'),
+        '#description' => t('Only paste the project number part in the URL.'),
         '#default_value' => variable_get('fontdeck_project', ''),
+        '#field_prefix' => t('http://fontdeck.com/project/'),
+        '#size' => 10,
       ),
       'fontdeck_project_save' => array(
         '#type' => 'submit',
