@@ -267,9 +267,15 @@ function fontyourface_save_font(&$font) {
 function fontyourface_add_tags_to_font($tags, $fid) {
 
   foreach ($tags as $tag) {
-
-    $tag_object = new StdClass;
-    $tag_object->name = $tag;
+    
+    if (is_object($tag)) {
+      $tag_object = $tag;
+    }
+    else{
+      $tag_object = new StdClass;
+      $tag_object->name = $tag;
+      $tag_object->type = 'tag';
+    }
 
     fontyourface_save_tag($tag_object);
 
