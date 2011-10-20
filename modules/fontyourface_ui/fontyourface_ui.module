@@ -39,6 +39,15 @@ function fontyourface_ui_menu() {
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => -10,
   );
+  
+  $items['admin/appearance/fontyourface/browse'] = array(
+    'title' => 'Browse',
+    'page callback' => 'fontyourface_ui_browse_page',
+    'description' => 'Browse fonts to enable.',
+    'access arguments' => array('administer @font-your-face'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 0,
+  );
 
   $items['admin/appearance/fontyourface/edit/%'] = array(
     'page callback' => 'drupal_get_form',
@@ -111,7 +120,8 @@ function fontyourface_ui_views_pre_render(&$view) {
 
   if ($view->name == 'fontyourface_browse') {
 
-    $view->display_handler->handlers['header']['area']->options['content'] = fontyourface_ui_enabled_count();
+    $view->display_handler->handlers['header']['area']->options['format'] = 'full_html';
+    $view->display_handler->handlers['header']['area']->options['content'] = '<div><p>' . fontyourface_ui_enabled_count() . '</p></div>' . fontyourface_ui_browse_tabs();
 
     drupal_add_css(drupal_get_path('module', 'fontyourface_ui') . '/css/fontyourface_ui.css');
     drupal_add_js(drupal_get_path('module', 'fontyourface_ui') . '/js/browse.js');
@@ -124,20 +134,18 @@ function fontyourface_ui_views_pre_render(&$view) {
 
     } // if
 
-    foreach (module_implements('fontyourface_info') as $module) {
+    $selected_provider = arg(4);
 
-      $has_fonts = db_query_range("SELECT fid FROM {fontyourface_font} WHERE provider = :provider", 0, 1, array(':provider' => $module))->fetchObject();
+    $has_fonts = db_query_range("SELECT fid FROM {fontyourface_font} WHERE provider = :provider", 0, 1, array(':provider' => $selected_provider))->fetchObject();
 
-      if (!$has_fonts) {
+    if (!$has_fonts) {
 
-        $function = $module . '_fontyourface_info';
-        $info = $function();
+      $function = $selected_provider . '_fontyourface_info';
+      $info = $function();
 
-        drupal_set_message(t('@provider currently has no fonts. This is probably because the import has not been run yet. !import to add fonts.', array('@provider' => $info['name'], '!import' => l(t('Run import'), 'admin/config/user-interface/fontyourface'))), 'error');
+      drupal_set_message(t('@provider currently has no fonts. This is probably because the import has not been run yet. !import to add fonts.', array('@provider' => $info['name'], '!import' => l(t('Run import'), 'admin/config/user-interface/fontyourface'))), 'error');
 
-      } // if
-
-    } // foreach
+    } // if
 
   } // if
 
@@ -515,6 +523,8 @@ function fontyourface_ui_settings_form($form, &$form_state) {
 
     $info_function = $module . '_fontyourface_info';
     $status_function = $module. '_fontyourface_status';
+    $import_function = $module. '_fontyourface_import';
+
     $provider = $info_function();
 
     $count = db_query("SELECT COUNT(fid) AS total FROM {fontyourface_font} WHERE provider = :provider", array(':provider' => $module))->fetchObject();
@@ -532,11 +542,16 @@ function fontyourface_ui_settings_form($form, &$form_state) {
         '#type' => 'item',
         '#markup' => $status . ' ',
       ),
-      'import' => array(
+    );
+    
+    if (function_exists($import_function)) {
+
+      $form['providers'][$module . '_import']['import'] = array(
         '#type' => 'submit',
         '#value' => 'Import ' . $provider['name'],
-      ),
-    );
+      );
+
+    } // if
 
   } // foreach
 
@@ -613,6 +628,25 @@ function fontyourface_ui_apply_page() {
   return $output;
 
 } // fontyourface_ui_apply_page
+
+/**
+ * Redirects to the first enabled provider.
+ */
+function fontyourface_ui_browse_page() {
+
+  $providers = module_implements('fontyourface_info');
+
+  if (count($providers) > 0) {
+    drupal_goto('admin/appearance/fontyourface/browse/' . $providers[0]);
+  } // if
+  else {
+      
+    drupal_set_message(t('No font providers enabled. !enable before browsing fonts.', array('!enable' => l(t('Enable font providers'), 'admin/modules'))), 'error');
+    return '';
+
+  } // else
+
+} // fontyourface_ui_browse_page
 
 /**
  * Provides form to apply selectors to fonts.
@@ -1268,7 +1302,6 @@ function fontyourface_ui_admin_enable_ajax() {
   } // else
 
   $output['status'] = theme_status_messages(array()) . '<p>' . fontyourface_ui_enabled_count() . '</p>';
-
   drupal_json_output($output);
 
 } // fontyourface_ui_admin_enable_ajax
@@ -1302,7 +1335,6 @@ function fontyourface_ui_admin_disable_ajax() {
   } // else
 
   $output['status'] = theme_status_messages(array()) . '<p>' . fontyourface_ui_enabled_count() . '</p>';
-
   drupal_json_output($output);
 
 } // fontyourface_ui_admin_disable_ajax
@@ -1325,3 +1357,27 @@ function fontyourface_ui_enabled_count() {
   return t('@count fonts currently enabled.', array('@count' => 0));
 
 } // fontyourface_ui_enabled_count
+
+/**
+ * Returns tab header for provider browsing.
+ */
+function fontyourface_ui_browse_tabs() {
+
+  $providers = module_implements('fontyourface_info');
+
+  $tabs = '<ul class="tabs">';
+
+  foreach ($providers as $provider) {
+  
+    $function = $provider . '_fontyourface_info';
+    $info = $function();  
+
+    $tabs .= '<li>' . l($info['name'], 'admin/appearance/fontyourface/browse/' . $provider) . '</li>';
+
+  } // foreach
+
+  $tabs .= '</ul>';
+
+  return $tabs;
+
+} // fontyourface_ui_browse_tabs

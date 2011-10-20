@@ -7,6 +7,48 @@
   padding: 0;
 }
 
+.view-fontyourface-browse ul.tabs {
+  border-bottom: 1px solid #a6a7a2;
+  font-size: 0.923em;
+  margin: 0;
+  padding: 0.769em 0 5px 0;
+}
+
+  .view-fontyourface-browse ul.tabs li {
+    display: inline;
+    list-style: none;
+    position: relative;
+    top: 3px;
+  }
+  
+    .view-fontyourface-browse ul.tabs li a {
+      background: #a6a7a2;
+      border-color: #a6a7a2;
+      border-style: solid;
+      border-radius: 8px 8px 0 0;
+      border-width: 1px 1px 0 1px;
+      color: #000;
+      font-weight: bold;
+      margin-right: 4px;
+      padding: 6px 20px;
+      text-decoration: none;
+      -moz-border-radius: 8px 8px 0 0;
+      -webkit-border-radius: 8px 8px 0 0;
+    }
+    
+      .view-fontyourface-browse ul.tabs li a:hover {
+        color: #fff;
+      }
+    
+      .view-fontyourface-browse ul.tabs li a.active {
+        background: #fff;
+        border-color: #c9cAc4;
+      }
+      
+        .view-fontyourface-browse ul.tabs li a.active:hover {
+          color: #000;
+        }
+
 .view-fontyourface-browse table {
   border: none;
   width: auto;

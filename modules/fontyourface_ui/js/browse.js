@@ -38,7 +38,7 @@
       } // if
 
       td.find('.fontyourface-indicator').remove();
-      $('.view-header').html(json.status);
+      $('.view-header div').html(json.status);
 
     }, 'json');
 
@@ -73,7 +73,7 @@
       } // if
       
       td.find('.fontyourface-indicator').remove();
-      $('.view-header').html(json.status);
+      $('.view-header div').html(json.status);
 
     }, 'json');
 

@@ -45,11 +45,16 @@ function fonts_com_get_fonts_in_project($project_id) {
 /**
  * Gets a list of all fonts, in given range.
  */
-function fonts_com_get_all_fonts($start = 0, $limit = 100) {
+function fonts_com_get_all_fonts($start = 0, $limit = 100, $filters = array()) {
 
   $fonts = array();
 
-  $path = '/rest/json/AllFonts/?wfspstart=' . $start . '&wfsplimit=' . $limit;
+  $query = array(
+    'wfspstart' => $start,
+    'wfsplimit' => $limit,
+  ) + $filters;
+
+  $path = '/rest/json/AllFonts/?' . drupal_http_build_query($query);
 
   $response = drupal_http_request(FONTS_COM_API_BASE_URL . $path, array('headers' => fonts_com_api_headers($path)));
 
@@ -558,6 +563,44 @@ function fonts_get_selectors_in_project($project_id) {
   return $selectors;
 
 } // fonts_com_add_selector_to_project
+
+/**
+ * Gets choices for filter.
+ */
+function fonts_get_filter_choices($filter) {
+
+  $choices = array();
+
+  $path = '/rest/json/FilterValues/?wfsfiltertype=' . $filter;
+
+  $response = drupal_http_request(
+    FONTS_COM_API_BASE_URL . $path, 
+    array(
+      'headers' => fonts_com_api_headers($path), 
+    )
+  );
+
+  if ($response->code == 200) {
+
+    $data = json_decode($response->data);
+
+    if (isset($data->FilterValues) && isset($data->FilterValues->FilterValue)) {
+
+      $choices = fonts_com_unknown_to_array($data->FilterValues->FilterValue);
+    
+    } // if
+
+  } // if
+  else {
+
+    drupal_set_message(t('There was an error getting filter choices from Fonts.com.'), 'error');
+    fontyourface_log('Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)));
+
+  } // else
+
+  return $choices;
+
+} // fonts_get_filter_choices
 
 /**
  * Publishes changes.
