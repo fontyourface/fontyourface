@@ -25,13 +25,11 @@ function fontyourface_init() {
  * Load and display fonts that have been added through THEMENAME.info
  */
 function fontyourface_add_theme_info_fonts() {
-
-  // Parse the info file of the currently used theme
-  global $theme_key;
-  $info = drupal_parse_info_file(drupal_get_path('theme', $theme_key) . '/' . $theme_key . '.info');
   
-  if (isset($info['fonts'])) {
-    foreach ($info['fonts'] as $font_provider => $fonts) {
+  $theme_declarations = fontyourface_parse_theme_info_file();
+  
+  if (isset($theme_declarations)) {
+    foreach ($theme_declarations as $font_provider => $fonts) {
       if (module_exists($font_provider)) {
         foreach ($fonts as $declaration) {
           $font_url_function = $font_provider . '_load_font_by_info_declaration';
@@ -212,6 +210,12 @@ function fontyourface_enable_font(&$font) {
  * Disables a single font.
  */
 function fontyourface_disable_font(&$font) {
+
+  $theme_declarations = fontyourface_parse_theme_info_file();
+  
+  if (isset($theme_declarations[$font->provider])) {
+    drupal_set_message(t('It seems that you have enabled some fonts in your the .info file of your theme. Those fonts are (re-)enabled by default. If you want to disable these fonts, you have to remove them out of your .info file first.'));
+  }
 
   db_update('fontyourface_font')
     ->fields(array('enabled' => 0))
@@ -503,3 +507,18 @@ function fontyourface_log($message, $arguments) {
   } // if
 
 } // fontyourface_log
+
+/**
+ * Parse the info file of the currently used theme
+ */
+function fontyourface_parse_theme_info_file() {
+  $font_declarations = array();
+  
+  $theme_default = variable_get('theme_default', 'bartik');
+  $info = drupal_parse_info_file(drupal_get_path('theme', $theme_default) . '/' . $theme_default . '.info');
+  if (isset($info['fonts'])) {
+    $font_declarations = $info['fonts'];
+  }
+  
+  return $font_declarations;
+}
