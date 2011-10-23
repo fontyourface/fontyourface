@@ -15,6 +15,36 @@ function google_fonts_api_fontyourface_info() {
 } // google_fonts_api_fontyourface_info
 
 /**
+ * Implements hook_fontyourface_info_font().
+ * Allows adding fonts using THEMENAME.info
+ */
+function google_fonts_api_fontyourface_info_font($declaration) {
+  
+  $declaration = str_replace(' ', '+', strtolower($declaration));
+  
+  if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+    $base = 'https://fonts.googleapis.com/css?family=';
+  }
+  else {
+    $base = 'http://fonts.googleapis.com/css?family=';
+  }
+  
+  drupal_add_css($base . $declaration, array('type' => 'external', 'group' => CSS_THEME));
+  
+} // google_fonts_api_generate_font_url
+
+/**
+ * Implements hook_load_font_by_info_declaration().
+ * Allows adding fonts using THEMENAME.info
+ */
+function google_fonts_api_load_font_by_info_declaration($declaration) {
+  
+  $font = db_query('SELECT * FROM {fontyourface_font} WHERE provider = :provider AND css_family LIKE :css_family', array(':provider' => 'google_fonts_api', ':css_family' => $declaration . '%'))->fetchObject();
+  return $font;
+  
+} // hook_load_font_by_info_declaration
+
+/**
  * Implements hook_fontyourface_preview().
  */
 function google_fonts_api_fontyourface_preview($font, $text = NULL, $size = 18) {

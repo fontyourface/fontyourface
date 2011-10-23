@@ -13,6 +13,18 @@ function fontsquirrel_fontyourface_info() {
 } // fontsquirrel_fonts_api_fontyourface_info
 
 /**
+ * Implements hook_load_font_by_info_declaration().
+ * Allows adding fonts using THEMENAME.info
+ */
+function fontsquirrel_load_font_by_info_declaration($declaration) {
+  
+  $font = db_query('SELECT * FROM {fontyourface_font} WHERE provider = :provider AND name LIKE :name', array(':provider' => 'fontsquirrel', ':name' => $declaration . '%'))->fetchObject();
+
+  return $font;
+  
+} // hook_load_font_by_info_declaration
+
+/**
  * Implements hook_fontyourface_preview().
  */
 function fontsquirrel_fontyourface_preview($font, $text = NULL, $size = 18) {

@@ -15,6 +15,51 @@ function fontyourface_permission() {
 } // fontyourface_perm
 
 /**
+ * Implements hook_init().
+ */
+function fontyourface_init() {
+  fontyourface_add_theme_info_fonts();
+}
+
+/**
+ * Load and display fonts that have been added through THEMENAME.info
+ */
+function fontyourface_add_theme_info_fonts() {
+
+  // Parse the info file of the currently used theme
+  global $theme_key;
+  $info = drupal_parse_info_file(drupal_get_path('theme', $theme_key) . '/' . $theme_key . '.info');
+  
+  if (isset($info['fonts'])) {
+    foreach ($info['fonts'] as $font_provider => $fonts) {
+      if (module_exists($font_provider)) {
+        foreach ($fonts as $declaration) {
+          $font_url_function = $font_provider . '_load_font_by_info_declaration';
+
+          if (function_exists($font_url_function)) {
+            $font = $font_url_function($declaration);
+            
+            if (isset($font->enabled) && !$font->enabled) {
+
+              // Enable the font and set the default CSS selector to <none>
+              if (fontyourface_enable_font($font)) {
+                $font->css_selector = '<none>';
+                drupal_write_record('fontyourface_font', $font, 'fid');
+                drupal_set_message(t('Font %font has been enabled', array('%font' => $font->name)));
+              } // if
+              
+            } // if
+          } // if
+        } // foreach
+      } // if
+      else {
+        drupal_set_message(t('The font provider @provider is not enabled yet. Please <a href="!module_path">enable</a> it first.', array('@provider' => $font_provider, '!module_path' => url('admin/modules', array('fragment' => 'edit-modules-font-your-face')))), 'error');
+      } // else
+    } // foreach
+  } // if
+} // fontyourface_add_theme_info_fonts
+
+/**
  * Implements template_preprocess_page().
  */
 function fontyourface_preprocess_page(&$vars) {
