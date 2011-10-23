@@ -141,9 +141,11 @@ function fontyourface_ui_views_pre_render(&$view) {
     if (!$has_fonts) {
 
       $function = $selected_provider . '_fontyourface_info';
-      $info = $function();
-
-      drupal_set_message(t('@provider currently has no fonts. This is probably because the import has not been run yet. !import to add fonts.', array('@provider' => $info['name'], '!import' => l(t('Run import'), 'admin/config/user-interface/fontyourface'))), 'error');
+      
+      if (function_exists($function)) {
+        $info = $function();
+        drupal_set_message(t('@provider currently has no fonts. This is probably because the import has not been run yet. !import to add fonts.', array('@provider' => $info['name'], '!import' => l(t('Run import'), 'admin/config/user-interface/fontyourface'))), 'error');
+      }
 
     } // if
 
