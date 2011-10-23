@@ -46,7 +46,10 @@ function fontyourface_add_theme_info_fonts() {
                 drupal_set_message(t('Font %font has been enabled', array('%font' => $font->name)));
               } // if
               
-            } // if
+            } 
+            elseif (empty($font)) {
+              drupal_set_message(t('The %provider font that is added to the theme .info file cannot be loaded. This is probably because the import has not been run yet. !import to add fonts.', array('%provider' => $font_provider, '!import' => l(t('Run import'), 'admin/config/user-interface/fontyourface'))), 'error');
+            } //elseif
           } // if
         } // foreach
       } // if
