@@ -150,6 +150,7 @@ function google_fonts_api_fontyourface_import() {
   // be sufficient as it is only used when selecting fonts in the
   // admin interface. After that, the fonts are cached in Drupal.
   
+  $fonts = array();
   $result = drupal_http_request('https://www.googleapis.com/webfonts/v1/webfonts?key=' . variable_get('google_fonts_api_key', 'AIzaSyBgeqKlFdYj3Y7VwmrEXnXzpnx5TfKXG4o'));
   if ($result->code != 200) {
     drupal_set_message(t('The list of Google Fonts could not be fetched. Verify that your server can connect the Google Servers (https://www.googleapis.com). Error: %error', array('%error' => $result->error)), 'error');
