@@ -158,9 +158,7 @@ function google_fonts_api_fontyourface_import() {
     $json_results = json_decode($result->data);
     $fonts = _google_fonts_api_convert_api_results($json_results->items);
   } //elseif
-  
-//  include DRUPAL_ROOT . '/' . drupal_get_path('module', 'google_fonts_api') . '/font_list.inc';
-  
+    
   foreach ($fonts as $font) {
 
     if (!isset($font->tags)) {
