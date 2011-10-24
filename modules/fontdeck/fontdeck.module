@@ -101,9 +101,15 @@ function fontdeck_form_alter(&$form, &$form_state, $form_id) {
       ),
       'fontdeck_project_save' => array(
         '#type' => 'submit',
-        '#value' => 'Update Fontdeck',
+        '#value' => t('Save project number'),
       ),
     );
+    
+    // Move the default update/import button to the Fontdeck fieldset
+    if (isset($form['providers']['fontdeck_import'])) {
+      $form['fontdeck']['fontdeck_import'] = $form['providers']['fontdeck_import'];
+      unset($form['providers']['fontdeck_import']);
+    }
 
     $form['#submit'][] = 'fontdeck_project_submit';
 
