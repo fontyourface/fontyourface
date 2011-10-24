@@ -569,15 +569,9 @@ function fontyourface_ui_settings_form_submit($form, &$form_state) {
   foreach (module_implements('fontyourface_import') as $module) {
 
     if ($form_state['clicked_button']['#array_parents'][1] == $module . '_import') {
-
-      $info_function = $module . '_fontyourface_info';
-      $provider = $info_function();
-
-      $import_function = $module . '_fontyourface_import';
-      $import_function();
-
-      drupal_set_message(t('@provider import complete.', array('@provider' => $provider['name'])));
-
+      
+      fontyourface_import_fonts($module);
+      
     } // if
 
   } // foreach

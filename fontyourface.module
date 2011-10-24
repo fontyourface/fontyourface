@@ -130,7 +130,7 @@ function fontyourface_add_css_in_preprocess(&$vars, $css_path, $type = 'public')
 } // fontyourface_add_css_in_preproce
 
 /**
- * Gets fonts, defualt to all enabled.
+ * Gets fonts, defaults to all enabled.
  */
 function fontyourface_get_fonts($where = "enabled = 1 AND css_selector != ''", $order_by = 'name ASC') {
 
@@ -187,6 +187,26 @@ function fontyourface_add_font_tags(&$font) {
   } // while
 
 } // fontyourface_add_tags_to_font
+
+/**
+ * Runs the font import of the given provider. Triggered 
+ * from the UI interface and when a provider is enabled.
+ */
+function fontyourface_import_fonts($provider) {
+
+  if (module_exists($provider)) {
+
+    $info_function = $provider . '_fontyourface_info';
+    $provider_info = $info_function();
+
+    $import_function = $provider . '_fontyourface_import';
+    $import_function();
+
+    drupal_set_message(t('@provider import complete.', array('@provider' => $provider_info['name'])));
+
+  } // if
+
+} // fontyourface_import_fonts
 
 /**
  * Enables a single font.
