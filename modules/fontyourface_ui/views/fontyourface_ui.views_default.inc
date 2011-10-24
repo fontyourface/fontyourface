@@ -244,17 +244,6 @@ function fontyourface_ui_views_default_views() {
   $handler->display->display_options['filters']['tid']['expose']['reduce'] = 0;
   $handler->display->display_options['filters']['tid']['reduce_duplicates'] = 0;
   $handler->display->display_options['filters']['tid']['type'] = 'select';
-  /* Filter criterion: Font: Provider */
-  $handler->display->display_options['filters']['provider']['id'] = 'provider';
-  $handler->display->display_options['filters']['provider']['table'] = 'fontyourface_font';
-  $handler->display->display_options['filters']['provider']['field'] = 'provider';
-  $handler->display->display_options['filters']['provider']['group'] = 0;
-  $handler->display->display_options['filters']['provider']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['provider']['expose']['operator_id'] = 'provider_op';
-  $handler->display->display_options['filters']['provider']['expose']['label'] = 'Provider';
-  $handler->display->display_options['filters']['provider']['expose']['operator'] = 'provider_op';
-  $handler->display->display_options['filters']['provider']['expose']['identifier'] = 'provider';
-  $handler->display->display_options['filters']['provider']['expose']['reduce'] = 0;
   /* Filter criterion: Font: Foundry */
   $handler->display->display_options['filters']['foundry']['id'] = 'foundry';
   $handler->display->display_options['filters']['foundry']['table'] = 'fontyourface_font';
