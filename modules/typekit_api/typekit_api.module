@@ -167,9 +167,10 @@ function typekit_api_form_alter(&$form, &$form_state, $form_id) {
       ),
     );
     
+    // Move the default update/import button to the Typekit fieldset
     if (isset($form['providers']['typekit_api_import'])) {
       $form['typekit_api']['typekit_api_import'] = $form['providers']['typekit_api_import'];
-      unset ($form['providers']['typekit_api_import']);
+      unset($form['providers']['typekit_api_import']);
     }
     
     $form['#submit'][] = 'typekit_api_token_submit';
