@@ -163,10 +163,15 @@ function typekit_api_form_alter(&$form, &$form_state, $form_id) {
       ),
       'typekit_api_save' => array(
         '#type' => 'submit',
-        '#value' => 'Update TypeKit',
+        '#value' => t('Save TypeKit API token'),
       ),
     );
-
+    
+    if (isset($form['providers']['typekit_api_import'])) {
+      $form['typekit_api']['typekit_api_import'] = $form['providers']['typekit_api_import'];
+      unset ($form['providers']['typekit_api_import']);
+    }
+    
     $form['#submit'][] = 'typekit_api_token_submit';
 
   } // if

@@ -548,8 +548,8 @@ function fontyourface_ui_settings_form($form, &$form_state) {
     
     if (function_exists($import_function)) {
       
-      $button_text = ($count->total> 0) ? t('Update @provider', array('@provider' => $provider['name'])): 
-                                          t('Import @provider', array('@provider' => $provider['name']));
+      $button_text = ($count->total> 0) ? t('Update @provider fonts', array('@provider' => $provider['name'])): 
+                                          t('Import @provider fonts', array('@provider' => $provider['name']));
       
       $form['providers'][$module . '_import']['import'] = array(
         '#type' => 'submit',
