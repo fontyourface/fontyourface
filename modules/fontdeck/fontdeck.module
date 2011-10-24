@@ -21,6 +21,7 @@ function fontdeck_fontyourface_info() {
  */
 function fontdeck_fontyourface_import() {
 
+  $success = TRUE;
   $project = variable_get('fontdeck_project', '');
   $domain = preg_replace('#^www.#', '', $_SERVER['HTTP_HOST']);
 
@@ -61,18 +62,22 @@ function fontdeck_fontyourface_import() {
 
     } // if
     else {
-    
+      
+      $success = FALSE;
       drupal_set_message(t('There was an error importing font information for project @project on this domain (@domain) from Fontdeck.', array('@project' => $project, '@domain' => $domain)), 'error');
   
     } // else
 
   } // if
   else {
-
+    
+    $success = FALSE;
     drupal_set_message(t('Missing project number to import.'), 'error');
 
   } // else
 
+  return $success;
+  
 } // fontdeck_fontyourface_import
 
 /**

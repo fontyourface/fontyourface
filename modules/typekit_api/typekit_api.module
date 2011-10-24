@@ -32,9 +32,9 @@ function typekit_api_load_font_by_info_declaration($declaration) {
  * Implements hook_fontyourface_import().
  */
 function typekit_api_fontyourface_import() {
-
+  
+  $success = TRUE;
   $logging = variable_get('fontyourface_detailed_logging', FALSE);
-
   $kits = typekit_api_get_kits();
 
   if ($logging) {
@@ -88,11 +88,16 @@ function typekit_api_fontyourface_import() {
 
     } // if
     elseif ($logging) {
+      $success = FALSE;
       watchdog('@font-your-face', 'Typekit kit did not match current domain, @domain', array('@domain' => $_SERVER['HTTP_HOST']), WATCHDOG_INFO);
     } // elseif
-
+    else {
+      $success = FALSE;
+    }
   } // foreach
 
+  return $success; 
+  
 } // typekit_api_fontyourface_import
 
 /**

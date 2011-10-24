@@ -200,9 +200,9 @@ function fontyourface_import_fonts($provider) {
     $provider_info = $info_function();
 
     $import_function = $provider . '_fontyourface_import';
-    $import_function();
-
-    drupal_set_message(t('@provider import complete.', array('@provider' => $provider_info['name'])));
+    if ($import_function()) {
+      drupal_set_message(t('@provider import complete.', array('@provider' => $provider_info['name'])));
+    }
 
   } // if
 

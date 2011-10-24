@@ -29,8 +29,9 @@ function kernest_load_font_by_info_declaration($declaration) {
  */
 function kernest_fontyourface_import() {
 
+  $success = TRUE;
+    
   // KERNEST's Joyent server throws 500 error on Drupal's user agent
-
   $logging = variable_get('fontyourface_detailed_logging', FALSE);
 
   $api_result = drupal_http_request('http://kernest.com/styles/web-native.json', array('headers' => array('User-Agent' => 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3')));
@@ -84,9 +85,15 @@ function kernest_fontyourface_import() {
 
   } // if
   elseif ($logging) {
+    $success = FALSE;
     watchdog('@font-your-face', 'Invalid drupal_http_request response: @response', array('@response' => print_r($api_result, TRUE)), WATCHDOG_INFO);
   } // elseif
-
+  else {
+    $success = FALSE;
+  } // else
+  
+  return $success;
+  
 } // kernest_fontyourface_import
 
 /**
