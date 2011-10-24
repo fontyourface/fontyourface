@@ -13,6 +13,9 @@ function google_fonts_api_enable() {
   // Weight must be above @font-your-face weight so preprocess comes after
 
   db_query("UPDATE {system} SET weight = 1 WHERE name = 'google_fonts_api'");
+  
+  // Import/update fonts
+  fontyourface_import_fonts('google_fonts_api');
 
 } // google_fonts_api_enable
 
