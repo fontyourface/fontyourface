@@ -54,7 +54,7 @@ function fontyourface_features_export($data, &$export, $module_name = '') {
   // Add dependencies for each font.
   $fonts = fontyourface_get_fonts('enabled = 1');
   
-  foreach($fonts as $font) {
+  foreach ($fonts as $font) {
     if (in_array($font->name, $data)) {
 
       // Make the font provider required
@@ -105,7 +105,7 @@ function fontyourface_features_export_render($module, $data) {
       }
     }
   }
-  $code = "  return ". features_var_export($code, '  ') .";";
+  $code = "  return " . features_var_export($code, '  ') . ";";
   return array('fontyourface_features_default_font' => $code);
 }
 
