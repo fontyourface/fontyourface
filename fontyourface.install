@@ -136,6 +136,9 @@ function fontyourface_7200_schema() {
     'indexes' => array(
       'enabled' => array('enabled'),
     ),
+    'unique keys' => array(
+      'name' => array('name'),
+    ),
     'primary key' => array('fid'),
   );
 
@@ -250,4 +253,14 @@ function fontyourface_update_7201() {
       ->condition('tid', $font->tid)
       ->execute();
   }
+}
+
+/**
+ * Make the 'name' column unique to enable exportables
+ */
+function fontyourface_update_7202() {
+
+  $schema = fontyourface_7200_schema();
+  db_add_unique_key('fontyourface_tag', 'name', array('name'));
+  
 }
