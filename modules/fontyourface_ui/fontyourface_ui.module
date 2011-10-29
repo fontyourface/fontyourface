@@ -655,10 +655,10 @@ function fontyourface_ui_apply_by_font_form($form, &$form_state) {
   $fonts = fontyourface_get_fonts('enabled = 1');
 
   $form['table'] = array(
-    '#prefix' => '<table><tbody><thead><tr><th>Font</th><th>CSS Selector</th></tr></thead>',
+    '#prefix' => '<table><tbody><thead><tr><th>' . t('Font') . '</th><th>' . t('CSS Selector') . '</th><th>' . t('Operations') . '</th></tr></thead>',
     '#suffix' => '</tbody></table>',
   );
-
+  
   foreach ($fonts as $font) {
 
     $form['table']['row_' . $font->fid] = array(
@@ -676,6 +676,10 @@ function fontyourface_ui_apply_by_font_form($form, &$form_state) {
       '#size' => 50,
       '#default_value' => $font->css_selector,
       '#suffix' => '</td>',
+    );
+    
+    $form['table']['row_' . $font->fid]['disable'] = array(
+      '#markup' => '<td>' . l(t('Disable'), 'admin/appearance/fontyourface/disable/' . $font->fid, array('query' => array('destination' => 'admin/appearance/fontyourface'), 'attributes' => array('class' => 'disable-link'))) . '</td>',
     );
 
   } // foreach
@@ -765,7 +769,7 @@ function fontyourface_ui_apply_by_selector_form($form, &$form_state) {
   } // foreach
 
   $form['table'] = array(
-    '#prefix' => '<table><tbody><thead><tr><th>CSS Selector</th><th>Font</th><th>Fallbacks</th></tr></thead>',
+    '#prefix' => '<table><tbody><thead><tr><th>' . t('CSS Selector') . '</th><th>' . t('Font') . '</th><th>' . t('Fallbacks') . '</th></tr></thead>',
     '#suffix' => '</tbody></table>',
   );
 
