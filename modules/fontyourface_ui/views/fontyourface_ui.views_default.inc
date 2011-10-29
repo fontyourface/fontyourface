@@ -219,6 +219,22 @@ function fontyourface_ui_views_default_views() {
   $handler->display->display_options['sorts']['name']['id'] = 'name';
   $handler->display->display_options['sorts']['name']['table'] = 'fontyourface_font';
   $handler->display->display_options['sorts']['name']['field'] = 'name';
+  /* Contextual filter: Font: Provider */
+  $handler->display->display_options['arguments']['provider']['id'] = 'provider';
+  $handler->display->display_options['arguments']['provider']['table'] = 'fontyourface_font';
+  $handler->display->display_options['arguments']['provider']['field'] = 'provider';
+  $handler->display->display_options['arguments']['provider']['title_enable'] = 1;
+  $handler->display->display_options['arguments']['provider']['title'] = 'Browse fonts: %1';
+  $handler->display->display_options['arguments']['provider']['breadcrumb'] = '@font-your-face %1';
+  $handler->display->display_options['arguments']['provider']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['provider']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['provider']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['provider']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['provider']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['provider']['glossary'] = 0;
+  $handler->display->display_options['arguments']['provider']['limit'] = '0';
+  $handler->display->display_options['arguments']['provider']['transform_dash'] = 0;
+  $handler->display->display_options['arguments']['provider']['break_phrase'] = 0;
   /* Filter criterion: Font: Name */
   $handler->display->display_options['filters']['name']['id'] = 'name';
   $handler->display->display_options['filters']['name']['table'] = 'fontyourface_font';
@@ -276,13 +292,7 @@ function fontyourface_ui_views_default_views() {
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Browse';
   $handler->display->display_options['menu']['weight'] = '0';
-
-  /* Display: Page */
-  $handler = $view->new_display('page', 'Page', 'page_1');
-  $handler->display->display_options['path'] = 'admin/appearance/fontyourface/browse';
-  $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'Browse';
-  $handler->display->display_options['menu']['weight'] = '0';
+  
   $translatables['fontyourface_browse'] = array(
     t('Defaults'),
     t('Browse fonts'),
