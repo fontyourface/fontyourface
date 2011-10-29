@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Integrates Features for @font-your-face.
+ */
+
+/**
  * Implementation of hook_features_export_options. [component_hook]
  *
  * This hook will alert features of which specific items of this component may

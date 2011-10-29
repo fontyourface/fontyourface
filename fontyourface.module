@@ -176,7 +176,7 @@ function fontyourface_features_api() {
   return array(
     'fontyourface' => array(
       'name' => '@font-your-face',
-      'file' => drupal_get_path('module', 'fontyourface') .'/fontyourface.features.inc',
+      'file' => drupal_get_path('module', 'fontyourface') . '/fontyourface.features.inc',
       'default_hook' => 'fontyourface_features_default_font',
       'feature_source' => TRUE,
     ),
