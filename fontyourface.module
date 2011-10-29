@@ -25,39 +25,52 @@ function fontyourface_init() {
  * Load and display fonts that have been added through THEMENAME.info
  */
 function fontyourface_add_theme_info_fonts() {
-  
+
   $theme_declarations = fontyourface_parse_theme_info_file();
-  
+
   if (isset($theme_declarations)) {
+
     foreach ($theme_declarations as $font_provider => $fonts) {
+
       if (module_exists($font_provider)) {
+
         foreach ($fonts as $declaration) {
+
           $font_url_function = $font_provider . '_load_font_by_info_declaration';
 
           if (function_exists($font_url_function)) {
+
             $font = $font_url_function($declaration);
-            
+
             if (isset($font->enabled) && !$font->enabled) {
 
               // Enable the font and set the default CSS selector to <none>
               if (fontyourface_enable_font($font)) {
+
                 $font->css_selector = '<none>';
                 drupal_write_record('fontyourface_font', $font, 'fid');
                 drupal_set_message(t('Font %font has been enabled', array('%font' => $font->name)));
+
               } // if
-              
-            } 
+
+            } // if
             elseif (empty($font)) {
-              drupal_set_message(t('The %provider font that is added to the theme .info file cannot be loaded. This is probably because the import has not been run yet. !import to add fonts.', array('%provider' => $font_provider, '!import' => l(t('Run import'), 'admin/config/user-interface/fontyourface'))), 'error');
-            } //elseif
+              drupal_set_message(t('The %provider font that is added to the theme .info file cannot be loaded. This is probably because the import has not been run yet. !import to add fonts.', array('%provider' => check_plain($font_provider), '!import' => l(t('Run import'), 'admin/config/user-interface/fontyourface'))), 'error');
+            } // elseif
+
           } // if
+
         } // foreach
+
       } // if
       else {
         drupal_set_message(t('The font provider @provider is not enabled yet. Please <a href="!module_path">enable</a> it first.', array('@provider' => $font_provider, '!module_path' => url('admin/modules', array('fragment' => 'edit-modules-font-your-face')))), 'error');
       } // else
+
     } // foreach
+
   } // if
+
 } // fontyourface_add_theme_info_fonts
 
 /**
@@ -203,7 +216,7 @@ function fontyourface_add_font_tags(&$font) {
 } // fontyourface_add_tags_to_font
 
 /**
- * Runs the font import of the given provider. Triggered 
+ * Runs the font import of the given provider. Triggered
  * from the UI interface and when a provider is enabled.
  */
 function fontyourface_import_fonts($provider) {
@@ -249,7 +262,7 @@ function fontyourface_enable_font(&$font) {
 function fontyourface_disable_font(&$font) {
 
   $theme_declarations = fontyourface_parse_theme_info_file();
-  
+
   if (isset($theme_declarations[$font->provider])) {
     drupal_set_message(t('It seems that you have enabled some fonts in your the .info file of your theme. Those fonts are (re-)enabled by default. If you want to disable these fonts, you have to remove them out of your .info file first.'));
   }
@@ -280,7 +293,7 @@ function fontyourface_set_css_selector(&$font, $css_selector) {
     ->condition('fid', $font->fid)
     ->execute();
   $font->css_selector = $css_selector;
-  
+
   $selector_function = $font->provider . '_fontyourface_selector_update';
 
   if (function_exists($selector_function)) {
@@ -306,7 +319,7 @@ function fontyourface_set_css_fallbacks(&$font, $css_fallbacks) {
  * Adds or updates font, depending on whether it already exists.
  */
 function fontyourface_save_font(&$font, $revert = FALSE) {
-  
+
   $tags = array();
   if (!empty($font->tags)) {
     $tags = $font->tags;
@@ -320,13 +333,13 @@ function fontyourface_save_font(&$font, $revert = FALSE) {
     $existing_font = fontyourface_get_font($exists->fid);
 
     $font->fid = $existing_font->fid;
-    
+
     if (!$revert) {
       // Keep status, selector, and tags the same.
       $font->enabled = $existing_font->enabled;
       $font->css_selector = $existing_font->css_selector;
     }
-    
+
     fontyourface_add_font_tags($font);
     drupal_write_record('fontyourface_font', $font, 'fid');
     $tags = $font->tags;
@@ -358,7 +371,7 @@ function fontyourface_save_font(&$font, $revert = FALSE) {
 function fontyourface_add_tags_to_font($tags, $fid) {
 
   foreach ($tags as $tag) {
-    
+
     if (is_object($tag)) {
       $tag_object = $tag;
     }
@@ -554,13 +567,16 @@ function fontyourface_log($message, $arguments) {
  * Parse the info file of the currently used theme
  */
 function fontyourface_parse_theme_info_file() {
+
   $font_declarations = array();
-  
+
   $theme_default = variable_get('theme_default', 'bartik');
   $info = drupal_parse_info_file(drupal_get_path('theme', $theme_default) . '/' . $theme_default . '.info');
+
   if (isset($info['fonts'])) {
     $font_declarations = $info['fonts'];
-  }
-  
+  } // if
+
   return $font_declarations;
-}
+
+} // fontyourface_parse_theme_info_file

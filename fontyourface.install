@@ -234,10 +234,10 @@ function fontyourface_update_7201() {
   views_invalidate_cache();
 
   // Add new column to schema.
-  
+
   $schema = fontyourface_7200_schema();
   db_add_field('fontyourface_tag', 'type', $schema['fontyourface_tag']['fields']['type']);
-  
+
   // Convert existing Google Fonts tags to subsets
   $query = db_select('fontyourface_tag', 't');
   $query->innerJoin('fontyourface_tag_font', 'tf', 'tf.tid = t.tid');
@@ -252,8 +252,9 @@ function fontyourface_update_7201() {
       ->fields(array('type' => 'subset'))
       ->condition('tid', $font->tid)
       ->execute();
-  }
-}
+  } // foreach
+
+} // fontyourface_update_7201
 
 /**
  * Make the 'name' column unique to enable exportables
@@ -262,5 +263,5 @@ function fontyourface_update_7202() {
 
   $schema = fontyourface_7200_schema();
   db_add_unique_key('fontyourface_tag', 'name', array('name'));
-  
-}
+
+} // fontyourface_update_7202
