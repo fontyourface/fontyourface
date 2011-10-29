@@ -306,13 +306,14 @@ function fontyourface_set_css_fallbacks(&$font, $css_fallbacks) {
  * Adds or updates font, depending on whether it already exists.
  */
 function fontyourface_save_font(&$font, $revert = FALSE) {
-
+  
+  $tags = array();
   if (!empty($font->tags)) {
     $tags = $font->tags;
     unset($font->tags);
   }
 
-  $exists = db_query("SELECT fid FROM {fontyourface_font} WHERE url = :url AND provider = :provider", array(':url' => $font->url, ':provider' => $font->provider))->fetchObject();
+  $exists = db_query("SELECT fid FROM {fontyourface_font} WHERE name = :name", array(':name' => $font->name))->fetchObject();
 
   if ($exists) {
 
