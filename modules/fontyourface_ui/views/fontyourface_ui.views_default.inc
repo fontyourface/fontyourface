@@ -37,13 +37,14 @@ function fontyourface_ui_views_default_views() {
   $handler->display->display_options['exposed_form']['options']['autosubmit'] = 1;
   $handler->display->display_options['exposed_form']['options']['autosubmit_hide'] = 1;
   $handler->display->display_options['pager']['type'] = 'full';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '25';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '50';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
-  $handler->display->display_options['style_plugin'] = 'grid';
-  $handler->display->display_options['style_options']['columns'] = '5';
-  $handler->display->display_options['style_options']['fill_single_line'] = 1;
+  $handler->display->display_options['style_plugin'] = 'list';
+  $handler->display->display_options['style_options']['row_class'] = 'font';
+  $handler->display->display_options['style_options']['class'] = 'fonts-listing';
+  $handler->display->display_options['style_options']['wrapper_class'] = '';
   $handler->display->display_options['row_plugin'] = 'fields';
   /* Header: Global: Text area */
   $handler->display->display_options['header']['area']['id'] = 'area';
@@ -225,6 +226,7 @@ function fontyourface_ui_views_default_views() {
   $handler->display->display_options['arguments']['provider']['field'] = 'provider';
   $handler->display->display_options['arguments']['provider']['title_enable'] = 1;
   $handler->display->display_options['arguments']['provider']['title'] = 'Browse fonts: %1';
+  $handler->display->display_options['arguments']['provider']['breadcrumb_enable'] = 1;
   $handler->display->display_options['arguments']['provider']['breadcrumb'] = '@font-your-face %1';
   $handler->display->display_options['arguments']['provider']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['provider']['default_argument_skip_url'] = 0;

@@ -21,11 +21,11 @@
 
     $.post(enableUrl, {fid: fid}, function(json) {
 
-      var td = link.parents('td');
+      var font = link.parents('.font');
             
       if (json.complete == '1') {
 
-        td.find('.enabled-No')
+        font.find('.enabled-No')
           .addClass('enabled-Yes')
           .removeClass('enabled-No');
         link
@@ -37,7 +37,7 @@
 
       } // if
 
-      td.find('.fontyourface-indicator').remove();
+      font.find('.fontyourface-indicator').remove();
       $('.view-header div').html(json.status);
 
     }, 'json');
@@ -56,11 +56,11 @@
     
     $.post(disableUrl, {fid: fid}, function(json) {
 
-      var td = link.parents('td');
+      var font = link.parents('.font');
 
       if (json.complete == '1') {
 
-        td.find('.enabled-Yes')
+        font.find('.enabled-Yes')
           .addClass('enabled-No')
           .removeClass('enabled-Yes');
         link
@@ -72,7 +72,7 @@
 
       } // if
       
-      td.find('.fontyourface-indicator').remove();
+      font.find('.fontyourface-indicator').remove();
       $('.view-header div').html(json.status);
 
     }, 'json');
