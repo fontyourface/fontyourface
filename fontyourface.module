@@ -170,6 +170,20 @@ function fontyourface_get_font($fid, $clear = FALSE) {
 } // fontyourface_get_font
 
 /**
+ * Implements hook_features_api().
+ */
+function fontyourface_features_api() {
+  return array(
+    'fontyourface' => array(
+      'name' => '@font-your-face',
+      'file' => drupal_get_path('module', 'fontyourface') .'/fontyourface.features.inc',
+      'default_hook' => 'fontyourface_features_default_font',
+      'feature_source' => TRUE,
+    ),
+  );
+}
+
+/**
  * Adds tags to a font object.
  */
 function fontyourface_add_font_tags(&$font) {
@@ -267,10 +281,10 @@ function fontyourface_set_css_selector(&$font, $css_selector) {
     ->execute();
   $font->css_selector = $css_selector;
   
-  $selector_functon = $font->provider . '_fontyourface_selector_update';
+  $selector_function = $font->provider . '_fontyourface_selector_update';
 
-  if (function_exists($selector_functon)) {
-    return $selector_functon($font);
+  if (function_exists($selector_function)) {
+    return $selector_function($font);
   } // if
 
 } // fontyourface_set_css_selector
@@ -291,10 +305,12 @@ function fontyourface_set_css_fallbacks(&$font, $css_fallbacks) {
 /**
  * Adds or updates font, depending on whether it already exists.
  */
-function fontyourface_save_font(&$font) {
+function fontyourface_save_font(&$font, $revert = FALSE) {
 
-  $tags = $font->tags;
-  unset($font->tags);
+  if (!empty($font->tags)) {
+    $tags = $font->tags;
+    unset($font->tags);
+  }
 
   $exists = db_query("SELECT fid FROM {fontyourface_font} WHERE url = :url AND provider = :provider", array(':url' => $font->url, ':provider' => $font->provider))->fetchObject();
 
@@ -303,14 +319,16 @@ function fontyourface_save_font(&$font) {
     $existing_font = fontyourface_get_font($exists->fid);
 
     $font->fid = $existing_font->fid;
-
-    // Keep status, selector, and tags the same.
-
-    $font->enabled = $existing_font->enabled;
-    $font->css_selector = $existing_font->css_selector;
+    
+    if (!$revert) {
+      // Keep status, selector, and tags the same.
+      $font->enabled = $existing_font->enabled;
+      $font->css_selector = $existing_font->css_selector;
+    }
+    
     fontyourface_add_font_tags($font);
-
     drupal_write_record('fontyourface_font', $font, 'fid');
+    $tags = $font->tags;
 
   } // if
   else {
