@@ -294,7 +294,7 @@ function fontyourface_ui_views_default_views() {
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Browse';
   $handler->display->display_options['menu']['weight'] = '0';
-  
+
   $translatables['fontyourface_browse'] = array(
     t('Defaults'),
     t('Browse fonts'),

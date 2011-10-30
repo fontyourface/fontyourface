@@ -436,9 +436,9 @@ function fonts_com_project_form($form, &$form_state) {
   module_load_include('inc', 'fonts_com', 'api');
 
   $form = array();
-  
+
   $projects = fonts_com_get_projects();
-  
+
   if (count($projects) > 0) {
 
     $form['project'] = array(
@@ -450,6 +450,10 @@ function fonts_com_project_form($form, &$form_state) {
         'wrapper' => 'project-info',
       ),
     );
+    
+    if (isset($_SESSION['fonts_com_project']) && $_SESSION['fonts_com_project'] != '') {
+      $form['project']['#default_value'] = $_SESSION['fonts_com_project'];
+    } // if
 
     foreach ($projects as $project) {
 
@@ -484,6 +488,8 @@ function fonts_com_project_form($form, &$form_state) {
   );
   
   if (!empty($form_state['values']['project'])) {
+
+    $_SESSION['fonts_com_project'] = $form_state['values']['project'];
 
     $form['project_info'] += fonts_com_project_info_form($form_state['values']['project']);
 
@@ -658,6 +664,7 @@ function fonts_com_project_edit_form_submit($form, &$form_state) {
   if ($values['active']) {
 
     variable_set('fonts_com_project', $values['project_id']);
+    fonts_com_import_from_project($values['project_id']);
     fonts_com_enable_from_active_project();
 
   } // if
@@ -741,6 +748,24 @@ function fonts_com_fontyourface_disable($font) {
   return FALSE;
 
 } // fonts_com_fontyourface_enable
+
+/**
+ * Imports fonts from a given project.
+ */
+function fonts_com_import_from_project($project_id) {
+
+  module_load_include('inc', 'fonts_com', 'api');
+
+  $import_fonts = fonts_com_get_fonts_in_project($project_id);
+  
+  foreach ($import_fonts as $import_font) {
+  
+    $font = fonts_com_api_to_font($import_font);
+    fontyourface_save_font($font);
+
+  } // foreach
+
+} // fonts_com_import_from_project
 
 /**
  * Enables fonts locally based on the current active project.

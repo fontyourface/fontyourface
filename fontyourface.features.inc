@@ -6,7 +6,7 @@
  */
 
 /**
- * Implementation of hook_features_export_options. [component_hook]
+ * Implements hook_features_export_options. [component_hook]
  *
  * This hook will alert features of which specific items of this component may
  * be exported. For instances, in this case, we want to make available all the
@@ -28,7 +28,7 @@ function fontyourface_features_export_options() {
 }
 
 /**
- * Implementation of hook_features_export [component hook]
+ * Implements hook_features_export [component hook]
  *
  * This is a component hook, rather then a module hook, therefore this is the
  * callback from hook_features_api which relates to the specific component we
@@ -47,19 +47,19 @@ function fontyourface_features_export_options() {
  */
 function fontyourface_features_export($data, &$export, $module_name = '') {
 
-  // fontyourface_default_fonts integration is profided by Features.
+  // fontyourface_default_fonts integration is provided by Features.
   $export['dependencies']['features'] = 'features';
   $export['dependencies']['fontyourface'] = 'fontyourface';
 
   // Add dependencies for each font.
   $fonts = fontyourface_get_fonts('enabled = 1');
-  
+
   foreach ($fonts as $font) {
     if (in_array($font->name, $data)) {
 
       // Make the font provider required
       $export['dependencies'][$font->provider] = $font->provider;
-      
+
       $export['features']['fontyourface'][$font->name] = $font->name;
     }
   }
@@ -68,7 +68,7 @@ function fontyourface_features_export($data, &$export, $module_name = '') {
 }
 
 /**
- * Implementation of hook_features_export_render. [component hook]
+ * Implements hook_features_export_render. [component hook]
  *
  * This hook will be invoked in order to export
  * Component hook. The hook should be implemented using the name ot the
@@ -123,7 +123,7 @@ function fontyourface_features_revert($module) {
  */
 function fontyourface_features_rebuild($module) {
   $saved_fonts = module_invoke($module, 'fontyourface_features_default_font');
- 
+
   foreach ($saved_fonts as $key => $font) {
     $font = (object) $font;
     $font->tags = array();
