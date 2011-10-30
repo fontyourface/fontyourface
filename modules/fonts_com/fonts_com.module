@@ -50,7 +50,7 @@ function fonts_com_menu() {
   );
   
   $items['admin/appearance/fontyourface/browse/fonts_com'] = array(
-    'title' => 'Browse',
+    'title' => 'Browse fonts',
     'page callback' => 'fonts_com_browse',
     'description' => 'Browse fonts to enable.',
     'access arguments' => array('administer @font-your-face'),
@@ -870,6 +870,8 @@ function fonts_com_fontyourface_status() {
  * Over-rides default browse interface for Fonts.com.
  */
 function fonts_com_browse() {
+  
+  drupal_set_title(t('Browse fonts: fonts_com'));
 
   drupal_add_css(drupal_get_path('module', 'fontyourface_ui') . '/css/fontyourface_ui.css');
   drupal_add_js(drupal_get_path('module', 'fontyourface_ui') . '/js/browse.js');
@@ -892,7 +894,7 @@ function fonts_com_browse_form($form, &$form_state) {
   $filter_choices = fonts_com_filter_choices();
 
   $destination = drupal_get_destination();
-  $per_page = 25;
+  $per_page = 50;
   $count = fonts_com_get_all_fonts_count();
   $start = 1;
 
@@ -1012,15 +1014,13 @@ function fonts_com_browse_form($form, &$form_state) {
   // Display results
   
   $form['results'] = array(
-    '#prefix' => '<div class="view-content"><table class="views-view-grid cols-5"><tbody>',
-    '#suffix' => '</tbody></table></div>'
+    '#prefix' => '<div class="view-content"><ul class="fonts-listing">',
+    '#suffix' => '</ul></div>'
   );
 
   $row = 1;
 
-  while (count($browse_fonts) > 0) {
-  
-    $row_fonts = array_splice($browse_fonts, 0, 5);
+  foreach ($browse_fonts as $index => $import_font) {
 
     $class = 'row-' . $row;
 
@@ -1031,27 +1031,9 @@ function fonts_com_browse_form($form, &$form_state) {
       $class .= ' row-last';
     } // if
 
-    $form['results']['row-' . $row] = array(
-      '#prefix' => '<tr class="' . $class . '">',
-      '#suffix' => '</tr>',
-    );
-
-    foreach ($row_fonts as $index => $import_font) {
-
-      $col = $index + 1;
-      
-      $class = 'col-' . $col;
-      
-      if ($col == 1) {
-        $class .= ' col-first';
-      } // if
-      if ($col == count($row_fonts)) {
-        $class .= ' col-last';
-      } // if
-    
-      $form['results']['row-' . $row]['col-' . $col] = array(
-        '#prefix' => '<td class="' . $class . '">',
-        '#suffix' => '</td>',
+      $form['results']['row-' . $row] = array(
+        '#prefix' => '<li class="' . $class . ' font">',
+        '#suffix' => '</li>',
       );
       
       $font = fonts_com_saved_api_font($import_font);
@@ -1061,7 +1043,7 @@ function fonts_com_browse_form($form, &$form_state) {
         $enabled = 'Yes';
       } // if
 
-      $form['results']['row-' . $row]['col-' . $col]['header'] = array(
+      $form['results']['row-' . $row]['header'] = array(
         '#type' => 'markup', 
         '#markup' => '<div class="fontyourface-header"><h4>' . check_plain($font->name) . '</h4></div>',
       );
@@ -1077,17 +1059,16 @@ function fonts_com_browse_form($form, &$form_state) {
   
       } // else
 
-      $form['results']['row-' . $row]['col-' . $col]['footer'] = array(
+      $form['results']['row-' . $row]['footer'] = array(
         '#type' => 'markup', 
         '#markup' => '<div class="fontyourface-footer enabled-' . $enabled . '" data-fid="' . $font->fid . '">' . $enable_disable_link . '</div>',
       );
 
-      $form['results']['row-' . $row]['col-' . $col]['preview'] = array(
+      $form['results']['row-' . $row]['preview'] = array(
         '#type' => 'markup', 
         '#markup' => '<div class="fontyourface-preview enabled-' . $enabled . '">' . fontyourface_preview($font, fontyourface_short_preview_text($font), 40) . '</div>',
       );
 
-    } // foreach
     
     $row++;
 
