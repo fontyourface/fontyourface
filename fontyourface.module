@@ -41,23 +41,14 @@ function fontyourface_add_theme_info_fonts() {
 
               // Enable the font and set the default CSS selector to <none>
               if (fontyourface_enable_font($font)) {
-                
                 $font->css_selector = '<none>';
                 drupal_write_record('fontyourface_font', $font, 'fid');
                 drupal_set_message(t('Font %font has been enabled', array('%font' => $font->name)));
-                
               } // if
               
             } 
             elseif (empty($font)) {
-              
-              if (fontyourface_count_fonts($font_provider) > 0) {
-                drupal_set_message(t('The font %font that is added to the theme .info file cannot be loaded. Make sure the font exists in the %provider font list.', array('%font' => $declaration, '%provider' => $font_provider)), 'error');
-              }
-              else {
-                drupal_set_message(t('The %provider font that is added to the theme .info file cannot be loaded. This is probably because the import has not been run yet. !import to add fonts.', array('%provider' => $font_provider, '!import' => l(t('Run import'), 'admin/config/user-interface/fontyourface'))), 'error');
-              }
-            
+              drupal_set_message(t('The %provider font that is added to the theme .info file cannot be loaded. This is probably because the import has not been run yet. !import to add fonts.', array('%provider' => $font_provider, '!import' => l(t('Run import'), 'admin/config/user-interface/fontyourface'))), 'error');
             } //elseif
           } // if
         } // foreach
@@ -68,29 +59,6 @@ function fontyourface_add_theme_info_fonts() {
     } // foreach
   } // if
 } // fontyourface_add_theme_info_fonts
-
-/**
- * Returns the amount of fonts that exists in the database
- *
- * $provider can be used to filter on provider (eg 'google_fonts_api')
- * @status can be used to filter on status (NULL / TRUE / FALSE)
- */
-function fontyourface_count_fonts($provider = NULL, $status = NULL) {
-  
-  $query = db_select('fontyourface_font', 'fonts');
-  $query->fields('fonts');
-  
-  if (!empty($provider)) {
-    $query->condition('provider', $provider);
-  }
-  if (!empty($status)) {
-    $query->condition('status', (int) $status);
-  }
-  
-  $count = $query->execute()->rowCount();
-  
-  return $count;
-}
 
 /**
  * Implements template_preprocess_page().
