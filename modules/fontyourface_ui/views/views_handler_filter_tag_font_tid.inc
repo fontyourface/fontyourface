@@ -13,7 +13,7 @@ class views_handler_filter_tag_font_tid extends views_handler_filter_many_to_one
 
   function has_extra_options() {
     return TRUE;
-  }
+  } // has_extra_options
 
   function get_value_options() { }
 
@@ -22,6 +22,7 @@ class views_handler_filter_tag_font_tid extends views_handler_filter_many_to_one
     $options = parent::option_definition();
 
     $options['type'] = array('default' => 'textfield');
+    $options['tag_type'] = array('default' => '*');
 
     return $options;
 
@@ -34,6 +35,23 @@ class views_handler_filter_tag_font_tid extends views_handler_filter_many_to_one
       '#title' => t('Selection type'),
       '#options' => array('select' => t('Dropdown'), 'textfield' => t('Autocomplete')),
       '#default_value' => $this->options['type'],
+    );
+
+    $type_options = array(
+      '*' =>  '-- Any --'
+    );
+    $type_results = db_query('SELECT DISTINCT type FROM {fontyourface_tag}');
+
+    foreach ($type_results as $type_result) {
+      $type_options[$type_result->type] = $type_result->type;
+    } // foreach    
+    
+    $form['tag_type'] = array(
+      '#type' => 'radios',
+      '#title' => t('Tag Type'),
+      '#options' => $type_options,
+      '#description' => t('Limit which type of tags to show options.'),
+      '#default_value' => $this->options['tag_type'],
     );
 
   } // extra_options_form
@@ -73,7 +91,16 @@ class views_handler_filter_tag_font_tid extends views_handler_filter_many_to_one
 
       $options = array();
 
-      $result = db_query("SELECT t.* FROM {fontyourface_tag} t ORDER BY t.name");
+      $query = db_select('fontyourface_tag', 't');
+      $query
+        ->fields('t')
+        ->orderBy('t.name');
+
+      if (isset($this->options['tag_type']) && $this->options['tag_type'] != '*') {
+        $query->condition('t.type', $this->options['tag_type']);
+      } // if
+        
+      $result = $query->execute();
 
       while ($tag = $result->fetchObject()) {
         $options[$tag->tid] = $tag->name;
