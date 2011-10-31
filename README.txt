@@ -17,9 +17,8 @@
 - Open the .info file of your theme (eg bartik.info if your theme is Bartik)
 - Add fonts like this:
 
-fonts[google_fonts_api][] = "Abril Fatface 400"
-fonts[google_fonts_api][] = "Vast Shadow"
-fonts[fontsquirrel][] = "1942 Report"
+fonts[google_fonts_api][] = "Contrail One&subset=latin#regular"
+fonts[fontdeck][] = "Tanger+Serif+Medium+Ultra+Light"
 
 - The use your stylesheet to enable fonts. Example: 
   h1#site-title { font-family: "1942 Report", serif; }

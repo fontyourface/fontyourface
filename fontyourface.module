@@ -22,6 +22,16 @@ function fontyourface_init() {
 }
 
 /**
+ * Load a font from the database using its URL
+ */
+function fontyourface_load_font_by_url($url) {
+  if ($font = db_query('SELECT * FROM {fontyourface_font} WHERE url LIKE :url', array(':url' => $url))->fetchObject()) {
+    return $font;
+  }
+  return array();
+}
+
+/**
  * Load and display fonts that have been added through THEMENAME.info
  */
 function fontyourface_add_theme_info_fonts() {
@@ -35,12 +45,14 @@ function fontyourface_add_theme_info_fonts() {
       if (module_exists($font_provider)) {
 
         foreach ($fonts as $declaration) {
-
-          $font_url_function = $font_provider . '_load_font_by_info_declaration';
-
-          if (function_exists($font_url_function)) {
-
-            $font = $font_url_function($declaration);
+          
+          $info_function = $font_provider . '_fontyourface_info';
+          
+          if (function_exists($info_function)) {
+            
+            $provider_info = $info_function();
+            $font_url = $provider_info['base_path'] . trim($declaration);
+            $font = fontyourface_load_font_by_url($font_url);
 
             if (isset($font->enabled) && !$font->enabled) {
 
@@ -55,20 +67,20 @@ function fontyourface_add_theme_info_fonts() {
 
             } // if
             elseif (empty($font)) {
-              
+
               if (fontyourface_count_fonts($font_provider) > 0) {
-                
-                drupal_set_message(t('The font %font that is added to the theme .info file cannot be loaded. Make sure the font exists in the %provider font list.', array('%font' => $declaration, '%provider' => $font_provider)), 'error');
-                
+
+                drupal_set_message(t('The font declaration %declaration that is added to the theme .info file cannot be loaded. Make sure the font exists in the %provider font list.', array('%declaration' => $declaration, '%provider' => $font_provider)), 'error');
+
               } //if
               else {
-                
-                drupal_set_message(t('The %provider font that is added to the theme .info file cannot be loaded. This is probably because the import has not been run yet. !import to add fonts.', array('%provider' => $font_provider, '!import' => l(t('Run import'), 'admin/config/user-interface/fontyourface'))), 'error');
-                
-              } // else
-              
-            } // elseif
 
+                drupal_set_message(t('The %provider font that is added to the theme .info file cannot be loaded. This is probably because the import has not been run yet. !import to add fonts.', array('%provider' => $font_provider, '!import' => l(t('Run import'), 'admin/config/user-interface/fontyourface'))), 'error');
+
+              } // else
+
+            } // elseif
+            
           } // if
 
         } // foreach

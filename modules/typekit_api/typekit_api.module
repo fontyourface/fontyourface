@@ -10,23 +10,12 @@ function typekit_api_fontyourface_info() {
   return array(
     'name' => 'Typekit',
     'url' => 'http://typekit.com/',
+    'base_path' => 'http://typekit.com/fonts/',
   );
 
   return $info;
 
 } // typekit_api_fontyourface_info
-
-/**
- * Implements hook_load_font_by_info_declaration().
- * Allows adding fonts using THEMENAME.info
- */
-function typekit_api_load_font_by_info_declaration($declaration) {
-  
-  $font = db_query('SELECT * FROM {fontyourface_font} WHERE provider = :provider AND name LIKE :name', array(':provider' => 'typekit_api', ':name' => $declaration . '%'))->fetchObject();
-
-  return $font;
-  
-} // hook_load_font_by_info_declaration
 
 /**
  * Implements hook_fontyourface_import().

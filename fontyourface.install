@@ -257,11 +257,11 @@ function fontyourface_update_7201() {
 } // fontyourface_update_7201
 
 /**
- * Make the 'name' column unique to enable exportables
+ * Make the 'url' column unique to enable exportables
  */
 function fontyourface_update_7202() {
 
   $schema = fontyourface_7200_schema();
-  db_add_unique_key('fontyourface_tag', 'name', array('name'));
+  db_add_unique_key('fontyourface_font', 'url', array('url'));
 
 } // fontyourface_update_7202

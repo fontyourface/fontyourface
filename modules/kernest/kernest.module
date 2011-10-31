@@ -13,18 +13,6 @@ function kernest_fontyourface_info() {
 } // kernest_fontyourface_info
 
 /**
- * Implements hook_load_font_by_info_declaration().
- * Allows adding fonts using THEMENAME.info
- */
-function kernest_load_font_by_info_declaration($declaration) {
-  
-  $font = db_query('SELECT * FROM {fontyourface_font} WHERE provider = :provider AND name LIKE :name', array(':provider' => 'kernest', ':name' => $declaration . '%'))->fetchObject();
-
-  return $font;
-  
-} // hook_load_font_by_info_declaration
-
-/**
  * Implements hook_fontyourface_import().
  */
 function kernest_fontyourface_import() {

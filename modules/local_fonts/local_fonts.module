@@ -8,6 +8,7 @@ function local_fonts_fontyourface_info() {
   return array(
     'name' => t('Local Fonts'),
     'url' => 'http://drupal.org/project/fontyourface#local',
+    'base_path' => 'public://fontyourface/local_fonts/',
   );
 
 } // local_fonts_fontyourface_info

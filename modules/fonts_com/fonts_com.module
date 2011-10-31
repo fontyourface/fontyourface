@@ -70,6 +70,7 @@ function fonts_com_fontyourface_info() {
   return array(
     'name' => 'Fonts.com',
     'url' => 'http://webfonts.fonts.com/',
+    'base_path' => 'http://webfonts.fonts.com/en-US/Project/ChooseFonts?ViewDetails=T&ViewFontID=',
   );
 
   return $info;
