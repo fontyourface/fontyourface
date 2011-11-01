@@ -802,12 +802,19 @@ function fonts_com_enable_from_active_project() {
   // Enables all fonts in active project.
 
   if (count($urls_to_enable) > 0) {
-
-    db_update('fontyourface_font')
-      ->fields(array('enabled' => 1))
-      ->condition('provider', 'fonts_com')
-      ->condition('url', $urls_to_enable, 'IN')
+  
+    $font_results = db_select('fontyourface_font', 'f')
+      ->fields('f')
+      ->condition('f.provider', 'fonts_com')
+      ->condition('f.url', $urls_to_enable, 'IN')
       ->execute();
+      
+    foreach ($font_results as $font_result) {
+
+      fontyourface_add_font_tags($font_result);
+      fontyourface_enable_font($font_result);
+
+    } // foreach
 
   } // if
 
@@ -907,29 +914,44 @@ function fonts_com_browse_form($form, &$form_state) {
 
   $filters = array();
   
-  if (isset($_GET['name']) && $_GET['name'] != '') {
-    $filters['wfsKeyword'] = $_GET['name'];
-  } // if
-
-  if (isset($_GET['language']) && $_GET['language'] != '') {
-    $filters['wfsLangId'] = $_GET['language'];
-  } // if
+  $filter_map = array(
+    'name' => 'wfsKeyword',
+    'language' => 'wfsLangId',
+    'classification' => 'wfsClassId',
+    'designer' => 'wfsDesignerId',
+    'foundry' => 'wfsFountryId',
+  );
   
-  if (isset($_GET['classification']) && $_GET['classification'] != '') {
-    $filters['wfsClassId'] = $_GET['classification'];
-  } // if
-
-  if (isset($_GET['designer']) && $_GET['designer'] != '') {
-    $filters['wfsDesignerId'] = $_GET['designer'];
-  } // if
+  $filter_defaults = array();
   
-  if (isset($_GET['foundry']) && $_GET['foundry'] != '') {
-    $filters['wfsFountryId'] = $_GET['foundry'];
-  } // if
+  foreach ($filter_map as $key => $value) {
+  
+    $filter_defaults[$key] = '';
+  
+    if (isset($_GET[$key]) && $_GET[$key] != '' && $_GET['op'] != t('Reset')) {
+      $filter_defaults[$key] = $_GET[$key];
+    } // if
+    if (!empty($form_state['values'][$key])) {
+      $filter_defaults[$key] = $form_state['values'][$key];
+    } // if
+    if ($filter_defaults[$key] != '') {
+      $filters[$value] = $filter_defaults[$key];
+    } // if
+  
+  } // foreach
 
   $browse_fonts = fonts_com_get_all_fonts($start, $per_page, $filters);
 
   // Create filters
+  
+  $ajax = array(
+    'callback' => 'fonts_com_browse_ajax_callback',
+    'wrapper' => 'fonts-com-view-results',
+    'progress' => array(
+      'type' => 'throbber',
+      'message' => NULL,
+    ),
+  );
 
   $form['#attached']['css'] = array(
     drupal_get_path('module', 'fonts_com') . '/css/browse.css',
@@ -944,7 +966,8 @@ function fonts_com_browse_form($form, &$form_state) {
     '#type' => 'textfield',
     '#title' => 'Name',
     '#size' => 30,
-    '#default_value' => (isset($_GET['name']) && $_GET['name'] != '') ? $_GET['name'] : '',
+    '#default_value' => $filter_defaults['name'],
+    '#ajax' => $ajax,
   );
   
   $language_options = array(
@@ -959,9 +982,10 @@ function fonts_com_browse_form($form, &$form_state) {
     '#type' => 'select',
     '#title' => t('Language'),
     '#options' => $language_options,
-    '#default_value' => (isset($_GET['language']) && $_GET['language'] != '') ? $_GET['language'] : '',
+    '#default_value' => $filter_defaults['language'],
+    '#ajax' => $ajax,
   );
-  
+
   $designer_options = array(
     '' => '- Any -',
   );
@@ -974,7 +998,8 @@ function fonts_com_browse_form($form, &$form_state) {
     '#type' => 'select',
     '#title' => t('Designer'),
     '#options' => $designer_options,
-    '#default_value' => (isset($_GET['designer']) && $_GET['designer'] != '') ? $_GET['designer'] : '',
+    '#default_value' => $filter_defaults['designer'],
+    '#ajax' => $ajax,
   );
   
   $foundry_options = array(
@@ -989,7 +1014,8 @@ function fonts_com_browse_form($form, &$form_state) {
     '#type' => 'select',
     '#title' => t('Foundry'),
     '#options' => $foundry_options,
-    '#default_value' => (isset($_GET['foundry']) && $_GET['foundry'] != '') ? $_GET['foundry'] : '',
+    '#default_value' => $filter_defaults['foundry'],
+    '#ajax' => $ajax,
   );
 
   $classification_options = array(
@@ -1004,18 +1030,19 @@ function fonts_com_browse_form($form, &$form_state) {
     '#type' => 'select',
     '#title' => t('Classification'),
     '#options' => $classification_options,
-    '#default_value' => (isset($_GET['classification']) && $_GET['classification'] != '') ? $_GET['classification'] : '',
+    '#default_value' => $filter_defaults['classification'],
+    '#ajax' => $ajax,
   );
 
-  $form['filters']['submit'] = array(
+  $form['filters']['reset'] = array(
     '#type' => 'submit',
-    '#value' => 'Submit',
+    '#value' => t('Reset'),
   );
-  
+
   // Display results
   
   $form['results'] = array(
-    '#prefix' => '<div class="view-content"><ul class="fonts-listing">',
+    '#prefix' => '<div class="view-content" id="fonts-com-view-results"><ul class="fonts-listing">',
     '#suffix' => '</ul></div>'
   );
 
@@ -1086,6 +1113,15 @@ function fonts_com_browse_form($form, &$form_state) {
   return $form;
 
 } // fonts_com_browse_form
+
+/**
+ * Handles AJAX callback for project change.
+ */
+function fonts_com_browse_ajax_callback($form, $form_state) {
+
+  return $form['results'];
+
+} // fonts_com_browse_ajax_callback
 
 /**
  * Translates API font to @font-your-face format.
