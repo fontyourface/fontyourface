@@ -135,17 +135,40 @@ function fontyourface_ui_views_pre_render(&$view) {
     } // if
 
     $selected_provider = arg(4);
+    
+    // Work around overlay bug with redirects.
+
+    if ($selected_provider == '') {
+      fontyourface_ui_browse_page();
+    } // if
 
     $has_fonts = db_query_range("SELECT fid FROM {fontyourface_font} WHERE provider = :provider", 0, 1, array(':provider' => $selected_provider))->fetchObject();
 
+    $function = $selected_provider . '_fontyourface_info';
+
+    if (function_exists($function)) {
+      $info = $function();
+    } // if
+    else {
+      $info = FALSE;
+    } // else
+    
+    if ($info) {
+    
+      drupal_set_title(t('Browse fonts: @provider', array('@provider' => $info['name'])));
+  
+      $breadcrumb = drupal_get_breadcrumb();
+      $breadcrumb[] = $info['name'];
+      
+      drupal_set_breadcrumb($breadcrumb);
+
+    } // if
+    
     if (!$has_fonts) {
 
-      $function = $selected_provider . '_fontyourface_info';
-      
-      if (function_exists($function)) {
-        $info = $function();
+      if ($info) {
         drupal_set_message(t('@provider currently has no fonts. This is probably because the import has not been run yet. !import to add fonts.', array('@provider' => $info['name'], '!import' => l(t('Run import'), 'admin/config/user-interface/fontyourface'))), 'error');
-      }
+      } // if
 
     } // if
 

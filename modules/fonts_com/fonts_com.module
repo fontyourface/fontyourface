@@ -878,8 +878,12 @@ function fonts_com_fontyourface_status() {
  * Over-rides default browse interface for Fonts.com.
  */
 function fonts_com_browse() {
-  
-  drupal_set_title(t('Browse fonts: fonts_com'));
+
+  drupal_set_title(t('Browse fonts: Fonts.com'));
+
+  $breadcrumb = drupal_get_breadcrumb();
+  $breadcrumb[] = 'Fonts.com';
+  drupal_set_breadcrumb($breadcrumb);
 
   drupal_add_css(drupal_get_path('module', 'fontyourface_ui') . '/css/fontyourface_ui.css');
   drupal_add_js(drupal_get_path('module', 'fontyourface_ui') . '/js/browse.js');

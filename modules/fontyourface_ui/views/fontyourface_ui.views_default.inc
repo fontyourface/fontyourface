@@ -224,9 +224,7 @@ function fontyourface_ui_views_default_views() {
   $handler->display->display_options['arguments']['provider']['id'] = 'provider';
   $handler->display->display_options['arguments']['provider']['table'] = 'fontyourface_font';
   $handler->display->display_options['arguments']['provider']['field'] = 'provider';
-  $handler->display->display_options['arguments']['provider']['title_enable'] = 1;
   $handler->display->display_options['arguments']['provider']['title'] = 'Browse fonts: %1';
-  $handler->display->display_options['arguments']['provider']['breadcrumb_enable'] = 1;
   $handler->display->display_options['arguments']['provider']['breadcrumb'] = '@font-your-face %1';
   $handler->display->display_options['arguments']['provider']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['provider']['default_argument_skip_url'] = 0;
@@ -294,7 +292,6 @@ function fontyourface_ui_views_default_views() {
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Browse';
   $handler->display->display_options['menu']['weight'] = '0';
-
   $translatables['fontyourface_browse'] = array(
     t('Defaults'),
     t('Browse fonts'),
@@ -315,9 +312,11 @@ function fontyourface_ui_views_default_views() {
     t('<div class="fontyourface-header"><h4>[name]</h4> [name_1]</div>'),
     t('<div class="fontyourface-footer enabled-[enabled]" data-fid="[fid]">[enable_disable_link]</div>'),
     t('<div class="fontyourface-preview enabled-[enabled]">[preview]</div>'),
+    t('All'),
+    t('Browse fonts: %1'),
+    t('@font-your-face %1'),
     t('Name'),
     t('Tags'),
-    t('Provider'),
     t('Foundry'),
     t('License'),
     t('Page'),
