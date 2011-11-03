@@ -360,7 +360,7 @@ function fonts_com_get_project_by_id($project_id) {
 /**
  * Update.
  */
-function fonts_com_save_project($project) {
+function fonts_com_save_project(&$project) {
 
   $path = '/rest/json/Projects/';
   $method = 'POST';
@@ -375,6 +375,18 @@ function fonts_com_save_project($project) {
   $response = drupal_http_request(FONTS_COM_API_BASE_URL . $path, array('headers' => fonts_com_api_headers($path), 'method' => $method, 'data' => 'wfsproject_name=' . $project->ProjectName));
 
   if ($response->code == 200) {
+
+    $data = json_decode($response->data);
+
+    $projects = fonts_com_unknown_to_array($data->Projects->Project);
+
+    foreach ($projects as $response_project) {
+    
+      if ($response_project->ProjectName == $project->ProjectName) {
+        $project->ProjectKey = $response_project->ProjectKey;
+      } // if
+    
+    } // foreach
 
     return TRUE;
 

@@ -662,22 +662,22 @@ function fonts_com_project_edit_form_submit($form, &$form_state) {
 
   } // else
 
-  if ($values['active']) {
-
-    variable_set('fonts_com_project', $values['project_id']);
-    fonts_com_import_from_project($values['project_id']);
-    fonts_com_enable_from_active_project();
-
-  } // if
-  else if ($values['active'] === 0 && $values['project'] == variable_get('fonts_com_project', '')) {
-
-    variable_set('fonts_com_project', '');
-
-  } // else if
-
   if (fonts_com_save_project($project)) {
 
     drupal_set_message(t('Project <i>@project</i> saved.', array('@project' => $project->ProjectName)));
+
+    if ($values['active']) {
+
+      variable_set('fonts_com_project', $project->ProjectKey);
+      fonts_com_import_from_project($project->ProjectKey);
+      fonts_com_enable_from_active_project();
+  
+    } // if
+    else if ($values['active'] === 0 && $values['project'] == variable_get('fonts_com_project', '')) {
+  
+      variable_set('fonts_com_project', '');
+  
+    } // else if
 
     $new_domains = array();
 
