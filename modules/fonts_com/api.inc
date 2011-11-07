@@ -104,7 +104,9 @@ function fonts_com_get_all_fonts_count() {
  */
 function fonts_com_get_key_for_account($email, $password) {
 
-  $key = FALSE;
+  $key = fonts_com_get_existing_key_for_account();
+
+  if ($key) return $key;
 
   $path = '/rest/json/Accounts/?wfsemail=' . $email;
 
@@ -141,6 +143,35 @@ function fonts_com_get_key_for_account($email, $password) {
   return $key;
 
 } // fonts_com_get_key_for_account
+
+/**
+ * Gets auth key for a given account.
+ */
+function fonts_com_get_existing_key_for_account($email, $password) {
+
+  $path = '/rest/json/GetToken/?wfsemail=' . $email;
+
+  $response = drupal_http_request(FONTS_COM_API_BASE_URL . $path, array('headers' => array('AppKey' => FONTS_COM_API_APP_KEY, 'Password' => $password)));
+
+  if ($response->code == 200) {
+
+    $data = json_decode($response->data);
+
+    if (
+      isset($data->Accounts) &&
+      isset($data->Accounts->Account) &&
+      isset($data->Accounts->Account->AuthorizationKey)
+    ) {
+
+      return $data->Accounts->Account->AuthorizationKey;
+
+    } // if
+
+  } // if
+  
+  return FALSE;
+
+} // fonts_com_get_existing_key_for_account
 
 /**
  * Creates a new account.
@@ -613,6 +644,59 @@ function fonts_get_filter_choices($filter) {
   return $choices;
 
 } // fonts_get_filter_choices
+
+/**
+ * Gets choices for all filter given current values.
+ */
+function fonts_get_all_filter_choices($current_filters) {
+
+  $path = '/rest/json/AllFilterValues/?' . drupal_http_build_query($current_filters);
+
+  $response = drupal_http_request(
+    FONTS_COM_API_BASE_URL . $path,
+    array(
+      'headers' => fonts_com_api_headers($path),
+    )
+  );
+
+  if ($response->code == 200) {
+
+    $data = json_decode($response->data);
+
+    if (isset($data->FilterValues) && isset($data->FilterValues->FilterValue)) {
+
+      $choices = fonts_com_unknown_to_array($data->FilterValues->FilterValue);
+      $choices_by_filter = array();
+
+      foreach ($choices as $choice) {
+      
+        if (!isset($choices_by_filter[$choice->FilterType])) {
+          $choices_by_filter[$choice->FilterType] = array();
+        } // if
+        
+        $choices_by_filter[$choice->FilterType][] = $choice;
+      
+      } // foreach
+      
+      return $choices_by_filter;
+
+    } // if
+    else {
+
+      drupal_set_message(t('There was an error getting filter choices from Fonts.com.'), 'error');
+      fontyourface_log('Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)));
+  
+    } // else
+
+  } // if
+  else {
+
+    drupal_set_message(t('There was an error getting filter choices from Fonts.com.'), 'error');
+    fontyourface_log('Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)));
+
+  } // else
+
+} // fonts_get_all_filter_choices
 
 /**
  * Publishes changes.

@@ -209,34 +209,7 @@ function fonts_com_preprocess_page(&$vars) {
         
         foreach ($preview_fonts as $font) {
 
-          $metadata = unserialize($font->metadata);
-
-          $font_css = '@font-face {' . "\n";
-          $font_css .= "  font-family: " . $font->css_family . ";" . "\n";
-          $font_css .= '  src: url("' . $metadata['details']->EOTURL . '");' . "\n";
-
-          $combined_sources = array();
-
-          $combined_sources[] = 'url("' . $metadata['details']->TTFURL . '") format("truetype")';
-          $combined_sources[] = 'url("' . $metadata['details']->WOFFURL . '") format("woff")';
-
-          if (preg_match('#origId=([^&]+)&#i', $metadata['details']->SVGURL, $svg_match)) {
-            $combined_sources[] = 'url("' . $metadata['details']->SVGURL . '#' . $svg_match[1] . '") format("svg")';
-          } // if
-
-          $font_css .= '  src: ' . implode(', ', $combined_sources) . ';' . "\n";
-
-          if ($font->css_style != '') {
-            $font_css .= '  font-style: ' . $font->css_style . ';' . "\n";
-          } // if
-
-          if ($font->css_weight != '') {
-            $font_css .= '  font-weight: ' . $font->css_weight . ';' . "\n";
-          } // if
-
-          $font_css .= '}' . "\n";
-
-          $css .= $font_css . "\n\n";
+          $css .= fonts_com_font_inline_css($font) . "\n\n";
 
         } // foreach
 
@@ -254,6 +227,42 @@ function fonts_com_preprocess_page(&$vars) {
   } // if
 
 } // fonts_com_preprocess_page
+
+/**
+ * Returns CSS for a given font.
+ */
+function fonts_com_font_inline_css($font) {
+
+  $metadata = unserialize($font->metadata);
+
+  $font_css = '@font-face {' . "\n";
+  $font_css .= "  font-family: " . $font->css_family . ";" . "\n";
+  $font_css .= '  src: url("' . $metadata['details']->EOTURL . '");' . "\n";
+
+  $combined_sources = array();
+
+  $combined_sources[] = 'url("' . $metadata['details']->TTFURL . '") format("truetype")';
+  $combined_sources[] = 'url("' . $metadata['details']->WOFFURL . '") format("woff")';
+
+  if (preg_match('#origId=([^&]+)&#i', $metadata['details']->SVGURL, $svg_match)) {
+    $combined_sources[] = 'url("' . $metadata['details']->SVGURL . '#' . $svg_match[1] . '") format("svg")';
+  } // if
+
+  $font_css .= '  src: ' . implode(', ', $combined_sources) . ';' . "\n";
+
+  if ($font->css_style != '') {
+    $font_css .= '  font-style: ' . $font->css_style . ';' . "\n";
+  } // if
+
+  if ($font->css_weight != '') {
+    $font_css .= '  font-weight: ' . $font->css_weight . ';' . "\n";
+  } // if
+
+  $font_css .= '}' . "\n";
+  
+  return $font_css;
+
+} // fonts_com_font_inline_css
 
 /**
  * Implements hook_fontyourface_preview().
@@ -336,7 +345,6 @@ function fonts_com_setup_form($form, &$form_state) {
     'fonts_com_pass_pass' => array(
       '#type' => 'password',
       '#title' => t('Password'),
-      '#description' => t('Warning: if you have previously used a key, it will be invalidated as a new key is created.'),
     ),
     'fonts_com_pass_save' => array(
       '#type' => 'submit',
@@ -899,11 +907,19 @@ function fonts_com_browse() {
  */
 function fonts_com_browse_form($form, &$form_state) {
 
+  // Map internal filter names to Fonts.com keys.
+
+  $filter_map = array(
+    'name' => 'wfsKeyword',
+    'language' => 'wfsLangId',
+    'classification' => 'wfsClassId',
+    'designer' => 'wfsDesignerId',
+    'foundry' => 'wfsFountryId',
+  );
+
   $form_state['method'] = 'get';
 
   module_load_include('inc', 'fonts_com', 'api');
-
-  $filter_choices = fonts_com_filter_choices();
 
   $destination = drupal_get_destination();
   $per_page = 50;
@@ -917,15 +933,7 @@ function fonts_com_browse_form($form, &$form_state) {
   // Make API request
 
   $filters = array();
-  
-  $filter_map = array(
-    'name' => 'wfsKeyword',
-    'language' => 'wfsLangId',
-    'classification' => 'wfsClassId',
-    'designer' => 'wfsDesignerId',
-    'foundry' => 'wfsFountryId',
-  );
-  
+
   $filter_defaults = array();
   
   foreach ($filter_map as $key => $value) {
@@ -943,6 +951,13 @@ function fonts_com_browse_form($form, &$form_state) {
     } // if
   
   } // foreach
+  
+  if (count($filters) > 0) {
+    $filter_choices = fonts_com_filter_choices($filters);
+  } // if
+  else {
+    $filter_choices = fonts_com_filter_choices();
+  } // else
 
   $browse_fonts = fonts_com_get_all_fonts($start, $per_page, $filters);
 
@@ -950,7 +965,7 @@ function fonts_com_browse_form($form, &$form_state) {
   
   $ajax = array(
     'callback' => 'fonts_com_browse_ajax_callback',
-    'wrapper' => 'fonts-com-view-results',
+    'wrapper' => 'fonts-com-browse-wrapper',
     'progress' => array(
       'type' => 'throbber',
       'message' => NULL,
@@ -961,12 +976,17 @@ function fonts_com_browse_form($form, &$form_state) {
     drupal_get_path('module', 'fonts_com') . '/css/browse.css',
   );
 
-  $form['filters'] = array(
+  $form['wrapper'] = array(
+    '#prefix' => '<div id="fonts-com-browse-wrapper">',
+    '#suffix' => '</div>',
+  );
+
+  $form['wrapper']['filters'] = array(
     '#prefix' => '<div class="views-filter">',
     '#suffix' => '</div>',
   );
   
-  $form['filters']['name'] = array(
+  $form['wrapper']['filters']['name'] = array(
     '#type' => 'textfield',
     '#title' => 'Name',
     '#size' => 30,
@@ -982,7 +1002,7 @@ function fonts_com_browse_form($form, &$form_state) {
     $language_options[$language->ValueID] = $language->ValueName;
   } // foreach
 
-  $form['filters']['language'] = array(
+  $form['wrapper']['filters']['language'] = array(
     '#type' => 'select',
     '#title' => t('Language'),
     '#options' => $language_options,
@@ -998,7 +1018,7 @@ function fonts_com_browse_form($form, &$form_state) {
     $designer_options[$designer->ValueID] = $designer->ValueName;
   } // foreach
 
-  $form['filters']['designer'] = array(
+  $form['wrapper']['filters']['designer'] = array(
     '#type' => 'select',
     '#title' => t('Designer'),
     '#options' => $designer_options,
@@ -1014,7 +1034,7 @@ function fonts_com_browse_form($form, &$form_state) {
     $foundry_options[$foundry->ValueID] = $foundry->ValueName;
   } // foreach
 
-  $form['filters']['foundry'] = array(
+  $form['wrapper']['filters']['foundry'] = array(
     '#type' => 'select',
     '#title' => t('Foundry'),
     '#options' => $foundry_options,
@@ -1030,7 +1050,7 @@ function fonts_com_browse_form($form, &$form_state) {
     $classification_options[$classification->ValueID] = $classification->ValueName;
   } // foreach
 
-  $form['filters']['classification'] = array(
+  $form['wrapper']['filters']['classification'] = array(
     '#type' => 'select',
     '#title' => t('Classification'),
     '#options' => $classification_options,
@@ -1038,19 +1058,20 @@ function fonts_com_browse_form($form, &$form_state) {
     '#ajax' => $ajax,
   );
 
-  $form['filters']['reset'] = array(
+  $form['wrapper']['filters']['reset'] = array(
     '#type' => 'submit',
     '#value' => t('Reset'),
   );
 
   // Display results
   
-  $form['results'] = array(
+  $form['wrapper']['results'] = array(
     '#prefix' => '<div class="view-content" id="fonts-com-view-results"><ul class="fonts-listing">',
     '#suffix' => '</ul></div>'
   );
 
   $row = 1;
+  $css = '';
 
   foreach ($browse_fonts as $index => $import_font) {
 
@@ -1063,53 +1084,58 @@ function fonts_com_browse_form($form, &$form_state) {
       $class .= ' row-last';
     } // if
 
-      $form['results']['row-' . $row] = array(
-        '#prefix' => '<li class="' . $class . ' font">',
-        '#suffix' => '</li>',
-      );
-      
-      $font = fonts_com_saved_api_font($import_font);
-      $enabled = 'No';
-      
-      if ($font->enabled) {
-        $enabled = 'Yes';
-      } // if
-
-      $form['results']['row-' . $row]['header'] = array(
-        '#type' => 'markup', 
-        '#markup' => '<div class="fontyourface-header"><h4>' . check_plain($font->name) . '</h4></div>',
-      );
-
-      if ($font->enabled) {
-
-        $enable_disable_link = l(t('Disable'), 'admin/appearance/fontyourface/disable/' . $font->fid . '?' . drupal_http_build_query($destination), array('attributes' => array('class' => 'disable-link')));
-
-      } // if
-      else {
-  
-        $enable_disable_link = l(t('Enable'), 'admin/appearance/fontyourface/enable/' . $font->fid . '?' . drupal_http_build_query($destination), array('attributes' => array('class' => 'enable-link')));
-  
-      } // else
-
-      $form['results']['row-' . $row]['footer'] = array(
-        '#type' => 'markup', 
-        '#markup' => '<div class="fontyourface-footer enabled-' . $enabled . '" data-fid="' . $font->fid . '">' . $enable_disable_link . '</div>',
-      );
-
-      $form['results']['row-' . $row]['preview'] = array(
-        '#type' => 'markup', 
-        '#markup' => '<div class="fontyourface-preview enabled-' . $enabled . '">' . fontyourface_preview($font, fontyourface_short_preview_text($font), 40) . '</div>',
-      );
-
+    $form['wrapper']['results']['row-' . $row] = array(
+      '#prefix' => '<li class="' . $class . ' font">',
+      '#suffix' => '</li>',
+    );
     
+    $font = fonts_com_saved_api_font($import_font);
+    $css .= fonts_com_font_inline_css($font) . "\n\n";
+
+    $enabled = 'No';
+    
+    if ($font->enabled) {
+      $enabled = 'Yes';
+    } // if
+
+    $form['wrapper']['results']['row-' . $row]['header'] = array(
+      '#type' => 'markup', 
+      '#markup' => '<div class="fontyourface-header"><h4>' . check_plain($font->name) . '</h4></div>',
+    );
+
+    if ($font->enabled) {
+
+      $enable_disable_link = l(t('Disable'), 'admin/appearance/fontyourface/disable/' . $font->fid . '?' . drupal_http_build_query($destination), array('attributes' => array('class' => 'disable-link')));
+
+    } // if
+    else {
+
+      $enable_disable_link = l(t('Enable'), 'admin/appearance/fontyourface/enable/' . $font->fid . '?' . drupal_http_build_query($destination), array('attributes' => array('class' => 'enable-link')));
+
+    } // else
+
+    $form['wrapper']['results']['row-' . $row]['footer'] = array(
+      '#type' => 'markup', 
+      '#markup' => '<div class="fontyourface-footer enabled-' . $enabled . '" data-fid="' . $font->fid . '">' . $enable_disable_link . '</div>',
+    );
+
+    $form['wrapper']['results']['row-' . $row]['preview'] = array(
+      '#type' => 'markup', 
+      '#markup' => '<div class="fontyourface-preview enabled-' . $enabled . '">' . fontyourface_preview($font, fontyourface_short_preview_text($font), 40) . '</div>',
+    );
+
     $row++;
 
-  } // while
+  } // foreach
+
+  // Make sure JS loads on AJAX requests.
+  
+  fonts_com_ajax_css_registry($css);
 
   $page = pager_default_initialize($count, $per_page);
   $pager = theme('pager');
 
-  $form['pager'] = array(
+  $form['wrapper']['pager'] = array(
     '#type' => 'markup',
     '#markup' => $pager,
   );
@@ -1118,12 +1144,50 @@ function fonts_com_browse_form($form, &$form_state) {
 
 } // fonts_com_browse_form
 
+function fonts_com_ajax_css_registry($css = FALSE) {
+
+  static $css_registry;
+  
+  if ($css !== FALSE) {
+    $css_registry = $css;
+  } // if
+
+  return $css_registry;
+
+} // fonts_com_ajax_css_registry
+
+/**
+ * Implements hook_ajax_render_alter().
+ * Adds inline CSS for fonts loaded via AJAX.
+ */
+function fonts_com_ajax_render_alter(&$commands) {
+
+  $css = fonts_com_ajax_css_registry();
+  
+  $styles = array(
+    '#type' => 'styles',
+    '#items' => array(
+      array(
+        'type' => 'inline',
+        'data' => $css,
+        'media' => 'all',
+        'preprocess' => TRUE,
+      ),
+    ),
+  );
+  
+  $rendered = drupal_render($styles);
+
+  $commands[] = ajax_command_prepend('head', $rendered);
+
+} // fonts_com_ajax_render_alter
+
 /**
  * Handles AJAX callback for project change.
  */
 function fonts_com_browse_ajax_callback($form, $form_state) {
 
-  return $form['results'];
+  return $form['wrapper'];
 
 } // fonts_com_browse_ajax_callback
 
@@ -1179,25 +1243,74 @@ function fonts_com_saved_api_font($import_font) {
 /**
  * Returns filter choices, refreshed periodically.
  */
-function fonts_com_filter_choices() {
+function fonts_com_filter_choices($current_filters = FALSE) {
 
-  $choices =  variable_get('fonts_com_filter_choices', array());
+  if (!$current_filters) {
 
-  if (!isset($choices['updated']) || REQUEST_TIME - $choices['updated'] > 60 * 60) {
+    $choices =  variable_get('fonts_com_filter_choices', array());
   
-    $choices['filters'] = array(
-      'Designer' => fonts_get_filter_choices('Designer'),
-      'Foundry' => fonts_get_filter_choices('Foundry'),
-      'Classification' => fonts_get_filter_choices('Classification'),
-      'Language' => fonts_get_filter_choices('Language'),
-    );
-
-    $choices['updated'] = REQUEST_TIME;
-
-    variable_set('fonts_com_filter_choices', $choices);
-
+    if (!isset($choices['updated']) || REQUEST_TIME - $choices['updated'] > 4 * 60 * 60) {
+    
+      module_load_include('inc', 'fonts_com', 'api');
+    
+      $choices['filters'] = array(
+        'Designer' => fonts_get_filter_choices('Designer'),
+        'Foundry' => fonts_get_filter_choices('Foundry'),
+        'Classification' => fonts_get_filter_choices('Classification'),
+        'Language' => fonts_get_filter_choices('Language'),
+      );
+  
+      $choices['updated'] = REQUEST_TIME;
+  
+      variable_set('fonts_com_filter_choices', $choices);
+  
+    } // if
+  
+    return $choices['filters'];
+  
   } // if
+  else {
+    
+    // Fonts.com doesn't use consistant names in the API. :|
+  
+    $filter_map = array(
+      'wfsLangId' => 'wfslanguageid',
+      'wfsClassId' => 'wfsclassificationid',
+      'wfsDesignerId' => 'wfsdesignerid',
+      'wfsFountryId' => 'wfsfoundryid',
+    );
+    
+    $filters = array();
+    
+    foreach ($current_filters as $key => $value) {
 
-  return $choices['filters'];
+      if (isset($filter_map[$key])) {
+        $filters[$filter_map[$key]] = $value;
+      } // if
+
+    } // foreach
+
+    if (count($filters) > 0) {
+
+      module_load_include('inc', 'fonts_com', 'api');
+
+      $options = fonts_get_all_filter_choices($filters);
+
+      return $options + array(
+        'Designer' => array(),
+        'Foundry' => array(),
+        'Classification' => array(),
+        'Language' => array(),
+      );
+
+    } // if
+    else {
+
+      return fonts_com_filter_choices();
+
+    } // else
+
+  } // else
+
 
 } // fonts_com_filter_choices
