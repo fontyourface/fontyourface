@@ -675,10 +675,10 @@ function fontyourface_ui_browse_page() {
  */
 function fontyourface_ui_apply_by_font_form($form, &$form_state) {
 
-  $fonts = fontyourface_get_fonts('enabled = 1');
+  $fonts = fontyourface_get_fonts('enabled = 1 OR provider = \'local_fonts\'');
 
   $form['table'] = array(
-    '#prefix' => '<table><tbody><thead><tr><th>' . t('Font') . '</th><th>' . t('CSS Selector') . '</th><th>' . t('Operations') . '</th></tr></thead>',
+    '#prefix' => '<table><tbody><thead><tr><th>' . t('Font') . '</th><th>' . t('Provider') . '</th><th>' . t('CSS Selector') . '</th><th>' . t('Operations') . '</th></tr></thead>',
     '#suffix' => '</tbody></table>',
   );
   
@@ -692,6 +692,10 @@ function fontyourface_ui_apply_by_font_form($form, &$form_state) {
     $form['table']['row_' . $font->fid]['name'] = array(
       '#markup' => '<td>' . $font->name . '</td>',
     );
+    
+    $form['table']['row_' . $font->fid]['provider'] = array(
+      '#markup' => '<td>' . $font->provider . '</td>',
+    );
 
     $form['table']['row_' . $font->fid]['css_selector[' . $font->fid . ']'] = array(
       '#prefix' => '<td class="css-selector" data-font-family="' . check_plain($font->css_family) . '">',
@@ -701,8 +705,12 @@ function fontyourface_ui_apply_by_font_form($form, &$form_state) {
       '#suffix' => '</td>',
     );
     
+    $actions = l(t('Disable'), 'admin/appearance/fontyourface/disable/' . $font->fid, array('query' => array('destination' => 'admin/appearance/fontyourface'), 'attributes' => array('class' => 'disable-link')));
+    if($font->provider == 'local_fonts' && !$font->enabled) {
+      $actions = l(t('Delete'), 'admin/appearance/fontyourface/local_fonts/delete/' . $font->fid, array('query' => array('destination' => 'admin/appearance/fontyourface'), 'attributes' => array('class' => 'disable-link')));
+    }
     $form['table']['row_' . $font->fid]['disable'] = array(
-      '#markup' => '<td>' . l(t('Disable'), 'admin/appearance/fontyourface/disable/' . $font->fid, array('query' => array('destination' => 'admin/appearance/fontyourface'), 'attributes' => array('class' => 'disable-link'))) . '</td>',
+      '#markup' => '<td>' . $actions . '</td>',
     );
 
   } // foreach

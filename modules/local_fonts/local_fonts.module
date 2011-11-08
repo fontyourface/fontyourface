@@ -172,7 +172,7 @@ function local_fonts_add_form_validate($form, &$form_state) {
   // Ensure a font family with the same results does not exist in the database.
 
   $values = $form_state['values'];
-  $font_path = strtr(preg_replace('#[^a-zA-Z0-9]+#', ' ', $values['css_family']), ' ', '_');
+  $font_path = strtr(preg_replace('#[^a-zA-Z0-9]+#', ' ', $values['css_family']), ' ', '_') . '-' . $values['css_style'] . '-' . $values['css_weight'];
   $font_style = $values['css_style'];
   $font_weight = $values['css_weight'];
   $local_fonts_directory = dirname($_SERVER['SCRIPT_FILENAME']) . '/' . file_stream_wrapper_get_instance_by_scheme('public')->getDirectoryPath() . '/fontyourface/local_fonts';
