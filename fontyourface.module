@@ -448,9 +448,14 @@ function fontyourface_save_tag(&$tag) {
   $exists = db_query("SELECT tid FROM {fontyourface_tag} WHERE name = :name", array(':name' => $tag->name))->fetchObject();
 
   if ($exists) {
+    // Check that existing tag is lowercase
+    if (!ctype_lower($tag->name)) {
+      $tag->name = drupal_strtolower($tag->name);
+    }
     $tag->tid = $exists->tid;
   } // if
   else {
+    $tag->name = drupal_strtolower($tag->name);
     drupal_write_record('fontyourface_tag', $tag);
   } // else
 
