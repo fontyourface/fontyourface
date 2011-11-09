@@ -88,7 +88,7 @@
         width: 20px;
       }
   
-        .view-fontyourface-browse td:hover div.fontyourface-header a {
+        .view-fontyourface-browse li:hover div.fontyourface-header a {
           display: block;
         }
   
