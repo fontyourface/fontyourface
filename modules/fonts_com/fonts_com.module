@@ -121,7 +121,8 @@ function fonts_com_import_process(&$context) {
 
   } // if
 
-  $import_fonts = fonts_com_get_all_fonts($context['sandbox']['progress'], $per_page);
+  $import_results = fonts_com_get_all_fonts($context['sandbox']['progress'], $per_page);
+  $import_fonts = $import_results['fonts'];
   
   foreach ($import_fonts as $import_font) {
   
@@ -915,6 +916,8 @@ function fonts_com_browse_form($form, &$form_state) {
     'classification' => 'wfsClassId',
     'designer' => 'wfsDesignerId',
     'foundry' => 'wfsFountryId',
+    'alpha' => 'wfsAlphabet',
+    'free' => 'wfsfree',
   );
 
   $form_state['method'] = 'get';
@@ -923,7 +926,6 @@ function fonts_com_browse_form($form, &$form_state) {
 
   $destination = drupal_get_destination();
   $per_page = 50;
-  $count = fonts_com_get_all_fonts_count();
   $start = 1;
 
   if (isset($_GET['page'])) {
@@ -943,7 +945,7 @@ function fonts_com_browse_form($form, &$form_state) {
     if (isset($_GET[$key]) && $_GET[$key] != '' && $_GET['op'] != t('Reset')) {
       $filter_defaults[$key] = $_GET[$key];
     } // if
-    if (!empty($form_state['values'][$key])) {
+    if (isset($form_state['values'][$key]) && $form_state['values'][$key] != '') {
       $filter_defaults[$key] = $form_state['values'][$key];
     } // if
     if ($filter_defaults[$key] != '') {
@@ -951,7 +953,7 @@ function fonts_com_browse_form($form, &$form_state) {
     } // if
   
   } // foreach
-  
+
   if (count($filters) > 0) {
     $filter_choices = fonts_com_filter_choices($filters);
   } // if
@@ -959,10 +961,12 @@ function fonts_com_browse_form($form, &$form_state) {
     $filter_choices = fonts_com_filter_choices();
   } // else
 
-  $browse_fonts = fonts_com_get_all_fonts($start, $per_page, $filters);
+  $browse_font_results = fonts_com_get_all_fonts($start, $per_page, $filters);
+  $browse_fonts = $browse_font_results['fonts'];
+  $count = $browse_font_results['count'];
 
   // Create filters
-  
+
   $ajax = array(
     'callback' => 'fonts_com_browse_ajax_callback',
     'wrapper' => 'fonts-com-browse-wrapper',
@@ -1058,13 +1062,45 @@ function fonts_com_browse_form($form, &$form_state) {
     '#ajax' => $ajax,
   );
 
+  $alpha_options = array(
+    '' => '- Any -',
+  );
+
+  foreach ($filter_choices['Alpha'] as $alpha) {
+    $alpha_options[$alpha->ValueID] = $alpha->ValueName;
+  } // foreach
+
+  $form['wrapper']['filters']['alpha'] = array(
+    '#type' => 'select',
+    '#title' => t('Alpha'),
+    '#options' => $alpha_options,
+    '#default_value' => $filter_defaults['alpha'],
+    '#ajax' => $ajax,
+  );
+  
+  $free_options = array(
+    '' => '- Any -',
+  );
+
+  foreach ($filter_choices['FreeOrPaid'] as $free) {
+    $free_options[$free->ValueID] = $free->ValueName;
+  } // foreach
+
+  $form['wrapper']['filters']['free'] = array(
+    '#type' => 'select',
+    '#title' => t('Free or Paid'),
+    '#options' => $free_options,
+    '#default_value' => $filter_defaults['free'],
+    '#ajax' => $ajax,
+  );
+
   $form['wrapper']['filters']['reset'] = array(
     '#type' => 'submit',
     '#value' => t('Reset'),
   );
 
   // Display results
-  
+
   $form['wrapper']['results'] = array(
     '#prefix' => '<div class="view-content" id="fonts-com-view-results"><ul class="fonts-listing">',
     '#suffix' => '</ul></div>'
@@ -1133,7 +1169,29 @@ function fonts_com_browse_form($form, &$form_state) {
   fonts_com_ajax_css_registry($css);
 
   $page = pager_default_initialize($count, $per_page);
+    
+  if (isset($form_state['values'])) {
+
+    /**
+     * Make pager work with AJAX. This is a bit of a hack until core
+     * supports AJAX pagers.
+     */ 
+
+    $temp_get = $_GET;
+    $_GET = $form_state['values'];  
+    $_GET['q'] = 'admin/appearance/fontyourface/browse/fonts_com';
+
+  } // if
+    
   $pager = theme('pager');
+  
+  if (isset($form_state['values'])) {
+  
+    // Revert AJAX temporary pager hack.
+
+    $_GET = $temp_get;
+
+  } // if
 
   $form['wrapper']['pager'] = array(
     '#type' => 'markup',
@@ -1252,14 +1310,18 @@ function fonts_com_filter_choices($current_filters = FALSE) {
     if (!isset($choices['updated']) || REQUEST_TIME - $choices['updated'] > 4 * 60 * 60) {
     
       module_load_include('inc', 'fonts_com', 'api');
+
+      $options = fonts_get_all_filter_choices(array('wfsalphachar' => ''));
     
-      $choices['filters'] = array(
-        'Designer' => fonts_get_filter_choices('Designer'),
-        'Foundry' => fonts_get_filter_choices('Foundry'),
-        'Classification' => fonts_get_filter_choices('Classification'),
-        'Language' => fonts_get_filter_choices('Language'),
+      $choices['filters'] = $options + array(
+        'Designer' => array(),
+        'Foundry' => array(),
+        'Classification' => array(),
+        'Language' => array(),
+        'Alpha' => array(),
+        'FreeOrPaid' => array(),
       );
-  
+
       $choices['updated'] = REQUEST_TIME;
   
       variable_set('fonts_com_filter_choices', $choices);
@@ -1270,18 +1332,20 @@ function fonts_com_filter_choices($current_filters = FALSE) {
   
   } // if
   else {
-    
+
     // Fonts.com doesn't use consistant names in the API. :|
-  
+
     $filter_map = array(
       'wfsLangId' => 'wfslanguageid',
       'wfsClassId' => 'wfsclassificationid',
       'wfsDesignerId' => 'wfsdesignerid',
       'wfsFountryId' => 'wfsfoundryid',
+      'wfsAlphabet' => 'wfsalphachar',
+      'wfsfree' => 'wfsfreeorpaid',
     );
-    
+
     $filters = array();
-    
+
     foreach ($current_filters as $key => $value) {
 
       if (isset($filter_map[$key])) {
@@ -1301,6 +1365,8 @@ function fonts_com_filter_choices($current_filters = FALSE) {
         'Foundry' => array(),
         'Classification' => array(),
         'Language' => array(),
+        'Alpha' => array(),
+        'FreeOrPaid' => array(),
       );
 
     } // if

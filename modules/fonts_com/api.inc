@@ -47,7 +47,23 @@ function fonts_com_get_fonts_in_project($project_id) {
  */
 function fonts_com_get_all_fonts($start = 0, $limit = 100, $filters = array()) {
 
-  $fonts = array();
+  $result = array(
+    'fonts' => array(),
+    'count' => FALSE,
+  );
+
+  if (
+    (isset($filters['wfsfree'])) &&
+    ($filters['wfsfree'] == 0) 
+  ) {
+    $filters['wfsfree'] = 'true';
+  } // if
+  if (
+    (isset($filters['wfsfree'])) &&
+    ($filters['wfsfree'] == -1) 
+  ) {
+    $filters['wfsfree'] = 'false';
+  } // if
 
   $query = array(
     'wfspstart' => $start,
@@ -61,8 +77,10 @@ function fonts_com_get_all_fonts($start = 0, $limit = 100, $filters = array()) {
   if ($response->code == 200) {
 
     $data = json_decode($response->data);
+        
     $font = $data->AllFonts->Font;
-    $fonts = fonts_com_unknown_to_array($font);
+    $result['fonts'] = fonts_com_unknown_to_array($font);
+    $result['count'] = intval($data->AllFonts->TotalRecords);
 
   } // if
   else {
@@ -72,7 +90,7 @@ function fonts_com_get_all_fonts($start = 0, $limit = 100, $filters = array()) {
 
   } // else
 
-  return $fonts;
+  return $result;
 
 } // fonts_com_get_all_fonts
 
