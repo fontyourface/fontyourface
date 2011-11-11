@@ -48,7 +48,7 @@ function fonts_com_menu() {
     'access arguments' => array('administer @font-your-face'),
     'type' => MENU_CALLBACK,
   );
-  
+
   $items['admin/appearance/fontyourface/browse/fonts_com'] = array(
     'title' => 'Browse fonts',
     'page callback' => 'fonts_com_browse',
@@ -925,7 +925,7 @@ function fonts_com_browse_form($form, &$form_state) {
   module_load_include('inc', 'fonts_com', 'api');
 
   $destination = drupal_get_destination();
-  $per_page = 50;
+  $per_page = 20;
   $start = 1;
 
   if (isset($_GET['page'])) {
@@ -1125,7 +1125,7 @@ function fonts_com_browse_form($form, &$form_state) {
       '#suffix' => '</li>',
     );
     
-    $font = fonts_com_saved_api_font($import_font);
+    $font = fonts_com_saved_api_font($import_font);    
     $css .= fonts_com_font_inline_css($font) . "\n\n";
 
     $enabled = 'No';
@@ -1136,7 +1136,7 @@ function fonts_com_browse_form($form, &$form_state) {
 
     $form['wrapper']['results']['row-' . $row]['header'] = array(
       '#type' => 'markup', 
-      '#markup' => '<div class="fontyourface-header"><h4>' . check_plain($font->name) . '</h4></div>',
+      '#markup' => '<div class="fontyourface-header"><h4>' . check_plain($font->name . ' ' . $import_font->FontLanguage) . '</h4></div>',
     );
 
     if ($font->enabled) {
@@ -1165,11 +1165,11 @@ function fonts_com_browse_form($form, &$form_state) {
   } // foreach
 
   // Make sure JS loads on AJAX requests.
-  
+
   fonts_com_ajax_css_registry($css);
 
   $page = pager_default_initialize($count, $per_page);
-    
+
   if (isset($form_state['values'])) {
 
     /**
@@ -1182,13 +1182,12 @@ function fonts_com_browse_form($form, &$form_state) {
     $_GET['q'] = 'admin/appearance/fontyourface/browse/fonts_com';
 
   } // if
-    
-  $pager = theme('pager');
-  
-  if (isset($form_state['values'])) {
-  
-    // Revert AJAX temporary pager hack.
 
+  $pager = theme('pager');
+
+  if (isset($form_state['values'])) {
+
+    // Revert AJAX temporary pager hack.
     $_GET = $temp_get;
 
   } // if

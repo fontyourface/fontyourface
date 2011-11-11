@@ -77,7 +77,7 @@ function fonts_com_get_all_fonts($start = 0, $limit = 100, $filters = array()) {
   if ($response->code == 200) {
 
     $data = json_decode($response->data);
-        
+
     $font = $data->AllFonts->Font;
     $result['fonts'] = fonts_com_unknown_to_array($font);
     $result['count'] = intval($data->AllFonts->TotalRecords);
