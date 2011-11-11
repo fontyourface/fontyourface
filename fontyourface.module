@@ -373,7 +373,7 @@ function fontyourface_save_font(&$font, $revert = FALSE) {
     unset($font->tags);
   }
 
-  $exists = db_query("SELECT fid FROM {fontyourface_font} WHERE name = :name", array(':name' => $font->name))->fetchObject();
+  $exists = db_query("SELECT fid FROM {fontyourface_font} WHERE url = :url", array(':url' => $font->url))->fetchObject();
 
   if ($exists) {
 
