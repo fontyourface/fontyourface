@@ -224,7 +224,9 @@ function fontyourface_ui_views_default_views() {
   $handler->display->display_options['arguments']['provider']['id'] = 'provider';
   $handler->display->display_options['arguments']['provider']['table'] = 'fontyourface_font';
   $handler->display->display_options['arguments']['provider']['field'] = 'provider';
+  $handler->display->display_options['arguments']['provider']['title_enable'] = 1;
   $handler->display->display_options['arguments']['provider']['title'] = 'Browse fonts: %1';
+  $handler->display->display_options['arguments']['provider']['breadcrumb_enable'] = 1;
   $handler->display->display_options['arguments']['provider']['breadcrumb'] = '@font-your-face %1';
   $handler->display->display_options['arguments']['provider']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['provider']['default_argument_skip_url'] = 0;
@@ -296,6 +298,7 @@ function fontyourface_ui_views_default_views() {
 
   /* Display: Google Fonts */
   $handler = $view->new_display('page', 'Google Fonts', 'page_2');
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Font: Name */
   $handler->display->display_options['filters']['name']['id'] = 'name';
@@ -364,6 +367,13 @@ function fontyourface_ui_views_default_views() {
   $handler->display->display_options['filters']['license']['expose']['identifier'] = 'license';
   $handler->display->display_options['filters']['license']['expose']['required'] = 0;
   $handler->display->display_options['filters']['license']['expose']['multiple'] = FALSE;
+  /* Filter criterion: Font: Provider */
+  $handler->display->display_options['filters']['provider']['id'] = 'provider';
+  $handler->display->display_options['filters']['provider']['table'] = 'fontyourface_font';
+  $handler->display->display_options['filters']['provider']['field'] = 'provider';
+  $handler->display->display_options['filters']['provider']['value'] = array(
+    'google_fonts_api' => 'google_fonts_api',
+  );
   $handler->display->display_options['path'] = 'admin/appearance/fontyourface/browse/google_fonts_api';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Google Fonts';
