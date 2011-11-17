@@ -137,7 +137,7 @@ function fontyourface_7200_schema() {
       'enabled' => array('enabled'),
     ),
     'unique keys' => array(
-      'name' => array('name'),
+      'url' => array('url'),
     ),
     'primary key' => array('fid'),
   );
