@@ -850,10 +850,10 @@ function fonts_com_fontyourface_selector_update($font) {
 function fonts_com_fontyourface_short_preview_text($font) {
 
   $metadata = unserialize($font->metadata);
-  
+    
   if (strpos($metadata['details']->FontLanguage, 'Latin') === FALSE) {
 
-    return substr($metadata['details']->FontPreviewTextLong, 0, 4);
+    return drupal_substr($metadata['details']->FontPreviewTextLong, 0, 4);
 
   } // if
 
@@ -962,6 +962,7 @@ function fonts_com_browse_form($form, &$form_state) {
   } // else
 
   $browse_font_results = fonts_com_get_all_fonts($start, $per_page, $filters);
+
   $browse_fonts = $browse_font_results['fonts'];
   $count = $browse_font_results['count'];
 
@@ -1136,7 +1137,7 @@ function fonts_com_browse_form($form, &$form_state) {
 
     $form['wrapper']['results']['row-' . $row]['header'] = array(
       '#type' => 'markup', 
-      '#markup' => '<div class="fontyourface-header"><h4>' . check_plain($font->name . ' ' . $import_font->FontLanguage) . '</h4></div>',
+      '#markup' => '<div class="fontyourface-header"><h4>' . check_plain($font->name) . '<br />' . check_plain($import_font->FontLanguage) . '</h4></div>',
     );
 
     if ($font->enabled) {
@@ -1310,7 +1311,7 @@ function fonts_com_filter_choices($current_filters = FALSE) {
     
       module_load_include('inc', 'fonts_com', 'api');
 
-      $options = fonts_get_all_filter_choices(array('wfsalphachar' => ''));
+      $options = fonts_get_all_filter_choices(array('wfsfreeorpaid' => '-1'));
     
       $choices['filters'] = $options + array(
         'Designer' => array(),
