@@ -1095,6 +1095,11 @@ function fonts_com_browse_form($form, &$form_state) {
     '#ajax' => $ajax,
   );
 
+  $form['wrapper']['filters']['filter'] = array(
+    '#type' => 'submit',
+    '#value' => t('Filter'),
+  );
+
   $form['wrapper']['filters']['reset'] = array(
     '#type' => 'submit',
     '#value' => t('Reset'),
@@ -1377,6 +1382,5 @@ function fonts_com_filter_choices($current_filters = FALSE) {
     } // else
 
   } // else
-
 
 } // fonts_com_filter_choices

@@ -20,7 +20,7 @@
     position: relative;
     top: 3px;
   }
-  
+
     .view-fontyourface-browse ul.tabs li a {
       background: #a6a7a2;
       border-color: #a6a7a2;
@@ -35,20 +35,19 @@
       -moz-border-radius: 8px 8px 0 0;
       -webkit-border-radius: 8px 8px 0 0;
     }
-    
+
       .view-fontyourface-browse ul.tabs li a:hover {
         color: #fff;
       }
-    
+
       .view-fontyourface-browse ul.tabs li a.active {
         background: #fff;
         border-color: #c9cAc4;
       }
-      
+
         .view-fontyourface-browse ul.tabs li a.active:hover {
           color: #000;
         }
-
 
 .view-fontyourface-browse ul.fonts-listing {
   margin: 0;
@@ -64,20 +63,26 @@
   float: left;
   margin: 8px;
 }
-  
+
     .view-fontyourface-browse div.fontyourface-header {
       position: relative;
     }
-  
+
       .view-fontyourface-browse div.fontyourface-header h4 {
-        height: 20px;
+        height: 40px;
         left: 20px;
-        margin-bottom: 10px;
+        margin: 0 10px 10px 0;
+        overflow: hidden;
         padding: 0 25px 0 0;
         position: absolute;
         top: 5px;
       }
-  
+
+        .view-fontyourface-browse li:hover div.fontyourface-header h4 {
+          background: #fff;
+          height: auto;
+        }
+
       .view-fontyourface-browse div.fontyourface-header a {
         background: transparent url(gear-select.png) no-repeat 2px 0;
         display: none;
@@ -87,15 +92,15 @@
         top: 15px;
         width: 20px;
       }
-  
+
         .view-fontyourface-browse li:hover div.fontyourface-header a {
           display: block;
         }
-  
+
         .view-fontyourface-browse div.fontyourface-header a:hover {
           background-position-y: -18px;
         }
-  
+
         .view-fontyourface-browse div.fontyourface-header a span {
           display: none;
         }
@@ -121,7 +126,6 @@
       -webkit-border-radius: 0 0 8px 8px;
       -moz-border-radius: 0 0 8px 8px;
       border-radius: 0 0 8px 8px;
-    
       border-bottom: 1px solid #ccc;
       border-left: 1px solid #ccc;
       border-right: 1px solid #ccc;
@@ -134,8 +138,7 @@
       position: absolute;
       width: 150px;
     }
-    
-  
+
       .view-fontyourface-browse div.fontyourface-footer .fontyourface-indicator {
         background: url(indicator.gif);
         display: inline-block;
@@ -149,11 +152,11 @@
   .view-fontyourface-browse div.enabled-No {
     background: #fff;
   }
-  
+
     .view-fontyourface-browse div.fontyourface-footer.enabled-No a {
       background: #eee;
     }
-    
+
       .view-fontyourface-browse div.fontyourface-footer.enabled-No a:active {
         background: #ddd;
       }
@@ -161,11 +164,11 @@
   .view-fontyourface-browse div.enabled-Yes {
     background: #dfd;
   }
-  
+
     .view-fontyourface-browse div.fontyourface-footer.enabled-Yes a {
       background: #bdb;
     }
-    
+
       .view-fontyourface-browse div.fontyourface-footer.enabled-Yes a:active {
         background: #aca;
       }

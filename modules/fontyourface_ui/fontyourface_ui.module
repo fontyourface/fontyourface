@@ -15,7 +15,7 @@ function fontyourface_ui_menu() {
     'access arguments' => array('administer @font-your-face'),
     'type' => MENU_NORMAL_ITEM,
   );
-  
+
   $items['admin/config/user-interface/fontyourface/general'] = array(
     'title' => 'General',
     'description' => 'Manage settings for how font providers work. (Apply site fonts ' . l(t('under themes'), 'admin/appearance/fontyourface') . '.)',
