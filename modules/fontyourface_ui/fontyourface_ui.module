@@ -842,6 +842,7 @@ function fontyourface_ui_apply_by_selector_form($form, &$form_state) {
     $form['table']['row_' . $selector->fid]['css_fallbacks[' . $selector->fid . ']'] = array(
       '#prefix' => '<td>',
       '#type' => 'textfield',
+      '#description' => t('Example: !example', array('!example' => '<i>Helvetica, Arial, sans-serif</i>')),
       '#size' => 50,
       '#default_value' => $selector->css_fallbacks,
       '#suffix' => '</td>',
@@ -869,6 +870,7 @@ function fontyourface_ui_apply_by_selector_form($form, &$form_state) {
   $form['table']['row_new']['css_fallbacks[new]'] = array(
     '#prefix' => '<td>',
     '#type' => 'textfield',
+    '#description' => t('Example: !example', array('!example' => '<i>Helvetica, Arial, sans-serif</i>')),
     '#size' => 50,
     '#suffix' => '</td>',
   );
