@@ -889,6 +889,9 @@ function fontyourface_ui_apply_by_selector_form_submit($form, &$form_state) {
 
   $updated = array();
 
+  $selector_per_fid = array();
+  $fallbacks_per_fid = array();
+
   foreach ($form_state['input']['fid'] as $old_fid => $new_fid) {
   
     $css_selector = $form_state['input']['css_selector'][$old_fid];
@@ -896,48 +899,54 @@ function fontyourface_ui_apply_by_selector_form_submit($form, &$form_state) {
 
     $old_fid_int = intval($old_fid);
     $new_fid_int = intval($new_fid);
-
-    if ($old_fid_int > 0) {
-
-      $old_font = fontyourface_get_font($old_fid_int);
-
-      if ($old_font) {
-
-        if ($old_font->css_selector == $css_selector && $old_fid_int != $new_fid_int) {
-          fontyourface_set_css_selector($old_font, '');
-          $updated[$css_selector] = $css_selector;
-        } // if
-
-        if ($old_font->css_fallbacks == $css_fallbacks && $old_fid_int != $new_fid_int) {
-          fontyourface_set_css_fallbacks($old_font, '');
-        } // if
-
-      } // if
-
+    
+    if (!isset($selector_per_fid[$old_fid_int])) {
+      $selector_per_fid[$old_fid_int] = array();
+      $fallbacks_per_fid[$old_fid_int] = array();
     } // if
+    
+    if (!isset($selector_per_fid[$new_fid_int])) {
+      $selector_per_fid[$new_fid_int] = array();
+      $fallbacks_per_fid[$new_fid_int] = array();
+    } // if
+    
+    $selector_per_fid[$new_fid_int][] = $css_selector;
+    $fallbacks_per_fid[$new_fid_int][] = $css_fallbacks;
 
-    if ($new_fid_int > 0) {
+  } // foreach
+  
+  unset($selector_per_fid[0]);
+  unset($fallbacks_per_fid[0]);
 
-      $new_font = fontyourface_get_font($new_fid_int);
+  foreach ($selector_per_fid as $fid => $selector) {
 
-      if ($new_font) {
+    $full_selectors = array_unique($selector);
 
-        if ($new_font->css_selector != $css_selector) {
-          fontyourface_set_css_selector($new_font, $css_selector);
-          $updated[$css_selector] = $css_selector;
-        } // if
+    $font = fontyourface_get_font($fid);
+    $full_selector = implode(', ', $full_selectors);
 
-        if ($new_font->css_fallbacks != $css_fallbacks) {
-          fontyourface_set_css_fallbacks($new_font, $css_fallbacks);
-          $updated[$css_selector] = $css_selector;
-        } // if
+    if ($font && $font->css_selector != $full_selector) {
 
-      } // if
+      fontyourface_set_css_selector($font, $full_selector);
+      $updated[$full_selector] = $full_selector;
 
     } // if
 
   } // foreach
-  
+
+  foreach ($fallbacks_per_fid as $fid => $fallbacks) {
+
+    $full_fallbacks = array_unique($fallbacks);
+
+    $font = fontyourface_get_font($fid);
+    $full_fallback = implode(', ', $full_fallbacks);
+
+    if ($font && $font->css_fallbacks != $full_fallback) {
+      fontyourface_set_css_fallbacks($font, $full_fallback);
+    } // if
+
+  } // foreach
+
   if (count($updated)) {
     drupal_set_message(t('Updated') . ' <i>' . implode('</i>, <i>', $updated) . '</i>.');
   } // if
