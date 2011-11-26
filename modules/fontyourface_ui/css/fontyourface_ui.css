@@ -82,6 +82,10 @@
           background: #fff;
           height: auto;
         }
+        
+        .view-fontyourface-browse li:hover div.fontyourface-header.enabled-yes h4 {
+          background: #dfd;
+        }
 
       .view-fontyourface-browse div.fontyourface-header a {
         background: transparent url(gear-select.png) no-repeat 2px 0;
@@ -149,26 +153,26 @@
         width: 16px;
       }
 
-  .view-fontyourface-browse div.enabled-No {
+  .view-fontyourface-browse div.enabled-no {
     background: #fff;
   }
 
-    .view-fontyourface-browse div.fontyourface-footer.enabled-No a {
+    .view-fontyourface-browse div.fontyourface-footer.enabled-no a {
       background: #eee;
     }
 
-      .view-fontyourface-browse div.fontyourface-footer.enabled-No a:active {
+      .view-fontyourface-browse div.fontyourface-footer.enabled-no a:active {
         background: #ddd;
       }
 
-  .view-fontyourface-browse div.enabled-Yes {
+  .view-fontyourface-browse div.enabled-yes {
     background: #dfd;
   }
 
-    .view-fontyourface-browse div.fontyourface-footer.enabled-Yes a {
+    .view-fontyourface-browse div.fontyourface-footer.enabled-yes a {
       background: #bdb;
     }
 
-      .view-fontyourface-browse div.fontyourface-footer.enabled-Yes a:active {
+      .view-fontyourface-browse div.fontyourface-footer.enabled-yes a:active {
         background: #aca;
       }

@@ -361,6 +361,13 @@ function fontyourface_ui_views_data() {
         'handler' => 'views_handler_field_fontyourface_enable_disable',
       ),
     ),
+    'enabled_yes_no' => array(
+      'field' => array(
+        'title' => t('Enabled Yes/No'),
+        'help' => t('For use in class or ID names.'),
+        'handler' => 'views_handler_field_fontyourface_enabled_yes_no',
+      ),
+    ),
   );
 
   $data['fontyourface_tag_font'] = array(
@@ -505,6 +512,9 @@ function fontyourface_ui_views_handlers() {
         'parent' => 'views_handler_field',
       ),
       'views_handler_field_fontyourface_enable_disable' => array(
+        'parent' => 'views_handler_field',
+      ),
+      'views_handler_field_fontyourface_enabled_yes_no' => array(
         'parent' => 'views_handler_field',
       ),
       'views_handler_filter_fontyourface_provider' => array(

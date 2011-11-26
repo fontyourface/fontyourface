@@ -25,9 +25,9 @@
             
       if (json.complete == '1') {
 
-        font.find('.enabled-No')
-          .addClass('enabled-Yes')
-          .removeClass('enabled-No');
+        font.find('.enabled-no')
+          .addClass('enabled-yes')
+          .removeClass('enabled-no');
         link
           .text(Drupal.t('Disable'))
           .addClass('disable-link')
@@ -60,9 +60,9 @@
 
       if (json.complete == '1') {
 
-        font.find('.enabled-Yes')
-          .addClass('enabled-No')
-          .removeClass('enabled-Yes');
+        font.find('.enabled-yes')
+          .addClass('enabled-no')
+          .removeClass('enabled-yes');
         link
           .text(Drupal.t('Enable'))
           .addClass('enable-link')

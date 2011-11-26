@@ -1134,10 +1134,10 @@ function fonts_com_browse_form($form, &$form_state) {
     $font = fonts_com_saved_api_font($import_font);    
     $css .= fonts_com_font_inline_css($font) . "\n\n";
 
-    $enabled = 'No';
+    $enabled = 'no';
     
     if ($font->enabled) {
-      $enabled = 'Yes';
+      $enabled = 'yes';
     } // if
 
     $form['wrapper']['results']['row-' . $row]['header'] = array(
