@@ -102,6 +102,21 @@ function google_fonts_api_preprocess_page(&$vars) {
       $url = $base . implode('|', $families) . '&subset=' . implode(',', $subsets);
 
       fontyourface_add_css_in_preprocess($vars, $url, 'remote');
+      
+      if (module_exists('google_webfont_loader_api')) {
+
+        foreach ($families as $family) {
+
+          $font_info = array(
+            'name' => 'Google ' . $family,
+            'google_families' => array($family),
+          );
+
+          _google_webfont_loader_api_load_font($font_info);
+
+        } // foreach
+
+      } // if
 
     } // if
 
