@@ -44,8 +44,8 @@ class views_handler_filter_tag_font_tid extends views_handler_filter_many_to_one
 
     foreach ($type_results as $type_result) {
       $type_options[$type_result->type] = $type_result->type;
-    } // foreach    
-    
+    } // foreach
+
     $form['tag_type'] = array(
       '#type' => 'radios',
       '#title' => t('Tag Type'),
@@ -99,7 +99,7 @@ class views_handler_filter_tag_font_tid extends views_handler_filter_many_to_one
       if (isset($this->options['tag_type']) && $this->options['tag_type'] != '*') {
         $query->condition('t.type', $this->options['tag_type']);
       } // if
-        
+
       $result = $query->execute();
 
       while ($tag = $result->fetchObject()) {

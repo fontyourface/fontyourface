@@ -54,13 +54,13 @@ function fonts_com_get_all_fonts($start = 0, $limit = 100, $filters = array()) {
 
   if (
     (isset($filters['wfsfree'])) &&
-    ($filters['wfsfree'] == 0) 
+    ($filters['wfsfree'] == 0)
   ) {
     $filters['wfsfree'] = 'true';
   } // if
   if (
     (isset($filters['wfsfree'])) &&
-    ($filters['wfsfree'] == -1) 
+    ($filters['wfsfree'] == -1)
   ) {
     $filters['wfsfree'] = 'false';
   } // if
@@ -122,7 +122,7 @@ function fonts_com_get_all_fonts_count() {
  */
 function fonts_com_get_key_for_account($email, $password) {
 
-  $key = fonts_com_get_existing_key_for_account();
+  $key = fonts_com_get_existing_key_for_account($email, $password);
 
   if ($key) return $key;
 
@@ -186,7 +186,7 @@ function fonts_com_get_existing_key_for_account($email, $password) {
     } // if
 
   } // if
-  
+
   return FALSE;
 
 } // fonts_com_get_existing_key_for_account
@@ -430,11 +430,11 @@ function fonts_com_save_project(&$project) {
     $projects = fonts_com_unknown_to_array($data->Projects->Project);
 
     foreach ($projects as $response_project) {
-    
+
       if ($response_project->ProjectName == $project->ProjectName) {
         $project->ProjectKey = $response_project->ProjectKey;
       } // if
-    
+
     } // foreach
 
     return TRUE;
@@ -687,15 +687,15 @@ function fonts_get_all_filter_choices($current_filters) {
       $choices_by_filter = array();
 
       foreach ($choices as $choice) {
-      
+
         if (!isset($choices_by_filter[$choice->FilterType])) {
           $choices_by_filter[$choice->FilterType] = array();
         } // if
-        
+
         $choices_by_filter[$choice->FilterType][] = $choice;
-      
+
       } // foreach
-      
+
       return $choices_by_filter;
 
     } // if
@@ -703,7 +703,7 @@ function fonts_get_all_filter_choices($current_filters) {
 
       drupal_set_message(t('There was an error getting filter choices from Fonts.com.'), 'error');
       fontyourface_log('Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)));
-  
+
     } // else
 
   } // if

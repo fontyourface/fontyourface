@@ -152,6 +152,17 @@ function fonts_com_import_finished($success, $results, $operations) {
 } // fonts_com_import_finished
 
 /**
+ * Returns count of fonts available via API.
+ */
+function fonts_com_fontyourface_count() {
+
+  module_load_include('inc', 'fonts_com', 'api');
+  
+  return fonts_com_get_all_fonts_count();
+
+} // fonts_com_fontyourface_count
+
+/**
  * Implements template_preprocess_page().
  */
 function fonts_com_preprocess_page(&$vars) {
@@ -657,21 +668,29 @@ function fonts_com_project_edit_form_submit($form, &$form_state) {
   module_load_include('inc', 'fonts_com', 'api');
 
   $values = $form_state['values'];
+  $save_needed = FALSE;
 
   if (isset($values['project_id']) && $values['project_id'] != '*new*') {
 
     $project = fonts_com_get_project_by_id($values['project_id']);
-    $project->ProjectName = $values['project_name'];
+
+    if ($project->ProjectName != $values['project_name']) {
+
+      $project->ProjectName = $values['project_name'];
+      $save_needed = TRUE;
+  
+    } // if
 
   } // if
   else {
 
     $project = new StdClass;
     $project->ProjectName = $values['project_name'];
+    $save_needed = TRUE;
 
   } // else
 
-  if (fonts_com_save_project($project)) {
+  if (!$save_needed || fonts_com_save_project($project)) {
 
     drupal_set_message(t('Project <i>@project</i> saved.', array('@project' => $project->ProjectName)));
 
@@ -726,7 +745,7 @@ function fonts_com_fontyourface_enable($font) {
 
     $metadata['project_id'] = $project;
     $font->metadata = serialize($metadata);
-    fontyourface_save_font($font);
+    fontyourface_save_font($font, TRUE);
     return TRUE;
 
   } // elseif
@@ -793,34 +812,56 @@ function fonts_com_enable_from_active_project() {
 
   // Gets all fonts in active project.
 
-  $urls_to_enable = array();
+  $fids_to_enable = array();
   $project_id = variable_get('fonts_com_project', '');
+  $selectors_by_font_id = array();
   
   if ($project_id != '') {
 
-    $fonts = fonts_com_get_fonts_in_project($project_id);
+    $import_fonts = fonts_com_get_fonts_in_project($project_id);
 
-    foreach ($fonts as $font) {
+    foreach ($import_fonts as $import_font) {
 
-      $urls_to_enable[] = 'http://webfonts.fonts.com/en-US/Project/ChooseFonts?ViewDetails=T&ViewFontID=' . $font->FontID . '&AddFontToPalette=T';
+      $font = fonts_com_saved_api_font($import_font);      
+      $fids_to_enable[] = intval($font->fid);
 
+    } // foreach
+
+    $selectors = fonts_get_selectors_in_project($project_id);
+    
+    foreach ($selectors as $selector) {
+      $selectors_by_font_id[$selector->SelectorFontID] = $selector->SelectorTag;
     } // foreach
 
   } // if
 
   // Enables all fonts in active project.
 
-  if (count($urls_to_enable) > 0) {
-  
+  if (count($fids_to_enable) > 0) {
+
     $font_results = db_select('fontyourface_font', 'f')
       ->fields('f')
       ->condition('f.provider', 'fonts_com')
-      ->condition('f.url', $urls_to_enable, 'IN')
+      ->condition('f.fid', $fids_to_enable, 'IN')
       ->execute();
-      
+
     foreach ($font_results as $font_result) {
 
-      fontyourface_add_font_tags($font_result);
+      /**
+       * Note: this relies on fonts_com_fontyourface_enable() saving the font
+       * to save the imported selector.
+       */
+
+      $metadata = unserialize($font_result->metadata);
+      $font_id = $metadata['details']->FontID;
+
+      if (isset($selectors_by_font_id[$font_id])) {
+        $font_result->css_selector = $selectors_by_font_id[$font_id];
+      } // if
+      else {
+        $font_result->css_selector = '';
+      } // else
+
       fontyourface_enable_font($font_result);
 
     } // foreach
@@ -926,7 +967,7 @@ function fonts_com_browse_form($form, &$form_state) {
 
   $destination = drupal_get_destination();
   $per_page = 20;
-  $start = 1;
+  $start = 0;
 
   if (isset($_GET['page'])) {
     $start += intval($_GET['page']) * $per_page;
@@ -1142,7 +1183,7 @@ function fonts_com_browse_form($form, &$form_state) {
 
     $form['wrapper']['results']['row-' . $row]['header'] = array(
       '#type' => 'markup', 
-      '#markup' => '<div class="fontyourface-header"><h4>' . check_plain($font->name) . '<br />' . check_plain($import_font->FontLanguage) . '</h4></div>',
+      '#markup' => '<div class="fontyourface-header"><h4>' . check_plain($font->name) . '<br />' . check_plain($import_font->FontLanguage) . '</h4><a href="/en/admin/appearance/fontyourface/edit/' . $font->fid . '?destination=admin/appearance/fontyourface/browse/fonts_com"><span>' . t('Edit') . '</span></a></div>',
     );
 
     if ($font->enabled) {
@@ -1275,7 +1316,11 @@ function fonts_com_api_to_font($import_font) {
   $font->css_family = "'" . $import_font->FontCSSName . "'";
   $font->css_style = '';
   $font->css_weight = '';
-  $font->foundry = $import_font->FontFoundryName;
+
+  if (isset($import_font->FontFoundryName)) {
+    $font->foundry = $import_font->FontFoundryName;
+  } // if
+
   $font->tags = array();
   
   return $font;

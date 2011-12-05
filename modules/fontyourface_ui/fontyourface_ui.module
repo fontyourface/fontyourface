@@ -559,12 +559,23 @@ function fontyourface_ui_settings_form($form, &$form_state) {
     $info_function = $module . '_fontyourface_info';
     $status_function = $module. '_fontyourface_status';
     $import_function = $module. '_fontyourface_import';
+    $count_function = $module. '_fontyourface_count';
 
     $provider = $info_function();
+    
+    if (function_exists($count_function)) {
 
-    $count = db_query("SELECT COUNT(fid) AS total FROM {fontyourface_font} WHERE provider = :provider", array(':provider' => $module))->fetchObject();
+      $count = $count_function();
 
-    $status = t('@provider is enabled with @count fonts.', array('@provider' => $provider['name'], '@count' => $count->total));
+    } // if
+    else {
+
+      $count = db_query("SELECT COUNT(fid) AS total FROM {fontyourface_font} WHERE provider = :provider", array(':provider' => $module))->fetchField();
+
+    } // else
+    
+    $tokens = array('@provider' => $provider['name'], '@count' => $count);
+    $status = t('@provider is enabled with @count fonts.', $tokens);
 
     if (function_exists($status_function)) {
       $status .= ' ' . $status_function();
@@ -578,11 +589,12 @@ function fontyourface_ui_settings_form($form, &$form_state) {
         '#markup' => $status . ' ',
       ),
     );
-    
+
     if (function_exists($import_function)) {
-      
-      $button_text = ($count->total> 0) ? t('Update @provider fonts', array('@provider' => $provider['name'])): 
-                                          t('Import @provider fonts', array('@provider' => $provider['name']));
+
+      $button_text = ($count > 0) ? 
+        t('Update @provider fonts', $tokens): 
+        t('Import @provider fonts', $tokens);
       
       $form['providers'][$module . '_import']['import'] = array(
         '#type' => 'submit',
