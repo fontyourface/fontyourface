@@ -1183,7 +1183,7 @@ function fonts_com_browse_form($form, &$form_state) {
 
     $form['wrapper']['results']['row-' . $row]['header'] = array(
       '#type' => 'markup', 
-      '#markup' => '<div class="fontyourface-header"><h4>' . check_plain($font->name) . '<br />' . check_plain($import_font->FontLanguage) . '</h4><a href="/en/admin/appearance/fontyourface/edit/' . $font->fid . '?destination=admin/appearance/fontyourface/browse/fonts_com"><span>' . t('Edit') . '</span></a></div>',
+      '#markup' => '<div class="fontyourface-header"><h4>' . check_plain($font->name) . '<br />' . check_plain($import_font->FontLanguage) . '</h4>' . l('<span>' . t('Edit') . '</span>', 'admin/appearance/fontyourface/edit/' . $font->fid, array('html' => TRUE, 'query' => array('destination' => 'admin/appearance/fontyourface/browse/fonts_com'))) . '</div>',
     );
 
     if ($font->enabled) {
