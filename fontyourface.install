@@ -133,6 +133,9 @@ function fontyourface_6200_schema() {
     'indexes' => array(
       'enabled' => array('enabled'),
     ),
+    'unique keys' => array(
+      'url' => array('url'),
+    ),
     'primary key' => array('fid'),
   );
 
@@ -276,3 +279,12 @@ function fontyourface_update_6200() {
   return $return;
 
 } // fontyourface_update_6200
+
+/**
+ * Make the 'url' column unique to enable exportables
+ */
+function fontyourface_update_6201() {
+
+  db_add_unique_key('fontyourface_font', 'url', array('url'));
+
+} // fontyourface_update_6201
