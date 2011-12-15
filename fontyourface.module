@@ -494,13 +494,12 @@ function fontyourface_settings_form_submit($form, &$form_state) {
 function fontyourface_preprocess_page(&$vars) {
 
   $fonts = fontyourface_font_registry();
+  $css = '';
 
   $destination = dirname($_SERVER['SCRIPT_FILENAME']) . '/' . file_directory_path() . '/fontyourface/font.css';
   $destination_directory = dirname($destination);
 
   if (file_check_directory($destination_directory,  FILE_CREATE_DIRECTORY)) {
-
-    $css = '';
 
     if (strpos($_GET['q'], 'admin/build/themes/fontyourface/edit/') === 0) {
 
