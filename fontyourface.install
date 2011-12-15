@@ -285,6 +285,7 @@ function fontyourface_update_6200() {
  */
 function fontyourface_update_6201() {
 
-  db_add_unique_key('fontyourface_font', 'url', array('url'));
+  $ret = array();
+  db_add_unique_key($ret, 'fontyourface_font', 'url', array('url'));
 
 } // fontyourface_update_6201
