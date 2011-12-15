@@ -826,6 +826,26 @@ function fontyourface_add_font_tags(&$font) {
 } // fontyourface_add_tags_to_font
 
 /**
+ * Runs the font import of the given provider. Triggered
+ * from the UI interface and when a provider is enabled.
+ */
+function fontyourface_import_fonts($provider) {
+
+  if (module_exists($provider)) {
+
+    $info_function = $provider . '_fontyourface_info';
+    $provider_info = $info_function();
+
+    $import_function = $provider . '_fontyourface_import';
+    if ($import_function()) {
+      drupal_set_message(t('@provider import complete.', array('@provider' => $provider_info['name'])));
+    }
+
+  } // if
+
+} // fontyourface_import_fonts
+
+/**
  * Enables a single font.
  */
 function fontyourface_enable_font(&$font) {
