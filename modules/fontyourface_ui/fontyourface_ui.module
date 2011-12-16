@@ -1058,10 +1058,10 @@ function fontyourface_ui_admin_edit_form($form, &$form_state, $fid) {
   } // if
 
   $view = '';
-  $view_function = $font->provider . '_fontyourface_view';
+  $view_function = $font->provider . '_fontyourface_preview';
 
   if (function_exists($view_function)) {
-    $view = $view_function($font, variable_get('fontyourface_sample_text', 'The quick brown fox jumps over the lazy dog'));
+    $view = $view_function($font, variable_get('fontyourface_sample_text', 'The quick brown fox jumps over the lazy dog'), 'all');
   } // if
 
   $form += array(

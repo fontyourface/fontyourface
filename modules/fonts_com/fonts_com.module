@@ -851,9 +851,12 @@ function fonts_com_enable_from_active_project() {
        * Note: this relies on fonts_com_fontyourface_enable() saving the font
        * to save the imported selector.
        */
-
+       
       $metadata = unserialize($font_result->metadata);
       $font_id = $metadata['details']->FontID;
+
+      dpm($metadata, '$metadata');
+
 
       if (isset($selectors_by_font_id[$font_id])) {
         $font_result->css_selector = $selectors_by_font_id[$font_id];
@@ -908,7 +911,6 @@ function fonts_com_fontyourface_short_preview_text($font) {
 function fonts_com_fontyourface_status() {
 
   $project_id = variable_get('fonts_com_project', '');
-  // drupal_set_message('Warning: Because Fonts.com has so many fonts, the import may take several minutes.', 'warning');
 
   if ($project_id) {
 
