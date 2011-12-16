@@ -855,9 +855,6 @@ function fonts_com_enable_from_active_project() {
       $metadata = unserialize($font_result->metadata);
       $font_id = $metadata['details']->FontID;
 
-      dpm($metadata, '$metadata');
-
-
       if (isset($selectors_by_font_id[$font_id])) {
         $font_result->css_selector = $selectors_by_font_id[$font_id];
       } // if
