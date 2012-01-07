@@ -654,15 +654,21 @@ function fontyourface_ui_apply_page() {
       '#markup' => '<div id="fontyourface-apply-tabs"><ul>' .
       '<li><a href="#apply-by-font">' . t('By Font') . '</a></li>' .
       '<li><a href="#apply-by-selector">' . t('By CSS Selector'). '</a></li>' .
+      '<li><a href="#apply-in-theme">' . t('In Theme'). '</a></li>' .
       '</ul>' .
       '<div id="apply-by-font">',
     ),
     'by_font' => drupal_get_form('fontyourface_ui_apply_by_font_form'),
-    'between' => array(
+    'between_font_and_selector' => array(
       '#markup' => '</div>' .
       '<div id="apply-by-selector">',
     ),
     'by_selector' => drupal_get_form('fontyourface_ui_apply_by_selector_form'),
+    'between_selector_and_theme' => array(
+      '#markup' => '</div>' .
+      '<div id="apply-in-theme">',
+    ),
+    'in_theme' => fontyourface_ui_theme_instructions(),
     'footer' => array(
       '#markup' => '</div></div>' .
       '<div>' . l('Browse to enable more fonts.', 'admin/appearance/fontyourface/browse') . '</div>',
@@ -969,6 +975,36 @@ function fontyourface_ui_apply_by_selector_form_submit($form, &$form_state) {
   } // else
 
 } // fontyourface_ui_apply_by_font_form_submit
+
+/**
+ * Provides instructions for placing fonts in theme.
+ */
+function fontyourface_ui_theme_instructions() {
+
+  $info_declarations = array();
+
+  $fonts = fontyourface_get_fonts();
+
+  foreach ($fonts as $font) {
+
+    $provider_base_path = fontyourface_provider_info($font, 'base_path');
+    $path = str_replace($provider_base_path, '', $font->url);
+    $info_declarations[] = 'fonts[' . $font->provider . '][] = "' . $path . '"';
+
+  } // foreach
+
+  $instructions = array(
+    'text' => array(
+      '#markup' => '<p>' . t('!fyf can be used to load fonts in a Drupal theme. To add fonts to your Drupal theme, simply copy and paste the text below into your theme.info file. Until Drupal themes can declare dependencies on modules, you will also need to inform users of the need to enable !fyf.', array('!fyf' => '@font-your-face')) . '</p>',
+    ),
+    'info' => array(
+      '#markup' => '<div><textarea rows="10" cols="100">' . implode("\n", $info_declarations) . '</textarea></div>',
+    ),
+  );
+
+  return $instructions;
+
+} // fontyourface_ui_theme_instructions
 
 /**
  * Provides title for edit form.

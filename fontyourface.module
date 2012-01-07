@@ -32,7 +32,7 @@ function fontyourface_load_font_by_url($url) {
 }
 
 /**
- * Load and display fonts that have been added through THEMENAME.info
+ * Load and display fonts that have been added through THEMENAME.info.
  */
 function fontyourface_add_theme_info_fonts() {
 
@@ -95,6 +95,31 @@ function fontyourface_add_theme_info_fonts() {
   } // if
 
 } // fontyourface_add_theme_info_fonts
+
+/**
+ * Returns info about the font provider for a given font.
+ * 
+ * $font = Object: the full $font object.
+ * $info_part = String: if this is given, we only return a string instead of an array.
+ */
+function fontyourface_provider_info($font, $info_part = NULL) {
+
+  $provider_info = array();
+  
+  if (!empty($font->provider)) {
+
+    $font_provider = $font->provider;
+    $info_function = $font_provider . '_fontyourface_info';
+
+    if (function_exists($info_function)) {
+      $provider_info = $info_function();
+    } // if
+
+  } // if
+  
+  return empty($info_part) ? $provider_info : $provider_info[$info_part];
+
+} // fontyourface_provider_info
 
 /**
  * Returns the amount of fonts that exists in the database
@@ -228,6 +253,8 @@ function fontyourface_get_font($fid, $clear = FALSE) {
   return $fonts[$fid];
 
 } // fontyourface_get_font
+
+
 
 /**
  * Implements hook_features_api().
