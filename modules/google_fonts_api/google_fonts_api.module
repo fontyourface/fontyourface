@@ -100,8 +100,6 @@ function google_fonts_api_preprocess_page(&$vars) {
       } // if
 
       $url = $base . implode('|', $families) . '&subset=' . implode(',', $subsets);
-
-      fontyourface_add_css_in_preprocess($vars, $url, 'remote');
       
       if (module_exists('google_webfont_loader_api')) {
 
@@ -117,6 +115,9 @@ function google_fonts_api_preprocess_page(&$vars) {
         } // foreach
 
       } // if
+      else {
+        fontyourface_add_css_in_preprocess($vars, $url, 'remote');
+      } // else
 
     } // if
 
