@@ -516,10 +516,11 @@ function fonts_com_set_font_selector($project_id, $font_id, $selector) {
   foreach ($project_selectors as $project_selector) {
 
     if ($project_selector->SelectorTag == $selector) {
-
       $selector_id = $project_selector->SelectorID;
-
     } // if
+    elseif ($project_selector->SelectorFontID == $font_id) {
+      fonts_com_delete_selector_in_product($project_id, $project_selector->SelectorID);
+    } // elseif
 
   } // foreach
 
@@ -554,6 +555,37 @@ function fonts_com_set_font_selector($project_id, $font_id, $selector) {
   return FALSE;
 
 } // fonts_com_set_font_selector
+
+/**
+ * Removes selector from a project.
+ */
+function fonts_com_delete_selector_in_product($project_id, $selector_id) {
+
+  $path = '/rest/json/Selectors/?wfspid=' . $project_id . '&wfsselector_id=' . $selector_id . '&wfsnopublish=1';
+
+  $response = drupal_http_request(
+    FONTS_COM_API_BASE_URL . $path,
+    array(
+      'headers' => fonts_com_api_headers($path),
+      'method' => 'DELETE',
+    )
+  );
+
+  if ($response->code == 200) {
+
+    return TRUE;
+
+  } // if
+  else {
+
+    drupal_set_message(t('There was an error removing a CSS selector on Fonts.com.'), 'error');
+    fontyourface_log('Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)));
+
+  } // else
+
+  return FALSE;
+
+} // fonts_com_delete_selector_in_product
 
 /**
  * Adds selector to project.
