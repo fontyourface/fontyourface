@@ -983,7 +983,7 @@ function fontyourface_ui_theme_instructions() {
 
   $info_declarations = array();
 
-  $fonts = fontyourface_get_fonts();
+  $fonts = fontyourface_get_fonts('enabled = 1');
 
   foreach ($fonts as $font) {
 
