@@ -746,6 +746,8 @@ function fonts_get_all_filter_choices($current_filters) {
 
   } // else
 
+  return array();
+
 } // fonts_get_all_filter_choices
 
 /**
