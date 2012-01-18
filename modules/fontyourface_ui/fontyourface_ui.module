@@ -728,6 +728,7 @@ function fontyourface_ui_apply_by_font_form($form, &$form_state) {
     $form['table']['row_' . $font->fid]['css_selector[' . $font->fid . ']'] = array(
       '#prefix' => '<td class="css-selector" data-font-family="' . check_plain($font->css_family) . '">',
       '#type' => 'textfield',
+      '#maxlength' => 1024,
       '#size' => 50,
       '#default_value' => $font->css_selector,
       '#suffix' => '</td>',
