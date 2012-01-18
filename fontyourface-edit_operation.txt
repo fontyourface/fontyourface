@@ -1,0 +1,43 @@
+From 2bda6c77ec81208b5f2fc0d5424263a96c4a57f7 Mon Sep 17 00:00:00 2001
+From: Bryson Caldwell <bryson@whthat.com>
+Date: Mon, 16 Jan 2012 21:03:50 -0700
+Subject: [PATCH] Issue #1399802: Edit link added to operations and font name
+ in by Font apply view.
+
+---
+ modules/fontyourface_ui/fontyourface_ui.module |    6 ++++--
+ 1 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/modules/fontyourface_ui/fontyourface_ui.module b/modules/fontyourface_ui/fontyourface_ui.module
+index 7192de2..03acfb0 100644
+--- a/modules/fontyourface_ui/fontyourface_ui.module
++++ b/modules/fontyourface_ui/fontyourface_ui.module
+@@ -717,8 +717,9 @@ function fontyourface_ui_apply_by_font_form($form, &$form_state) {
+       '#suffix' => '</tr>',
+     );
+ 
++	$editname = l(t($font->name), 'admin/appearance/fontyourface/edit/' . $font->fid, array('query' => array('destination' => 'admin/appearance/fontyourface'), 'attributes' => array('class' => 'edit-link')));
+     $form['table']['row_' . $font->fid]['name'] = array(
+-      '#markup' => '<td>' . $font->name . '</td>',
++      '#markup' => '<td>' . $editname . '</td>',
+     );
+     
+     $form['table']['row_' . $font->fid]['provider'] = array(
+@@ -733,12 +734,13 @@ function fontyourface_ui_apply_by_font_form($form, &$form_state) {
+       '#suffix' => '</td>',
+     );
+     
++	$actionsedit = l(t('Edit'), 'admin/appearance/fontyourface/edit/' . $font->fid, array('query' => array('destination' => 'admin/appearance/fontyourface'), 'attributes' => array('class' => 'edit-link')));
+     $actions = l(t('Disable'), 'admin/appearance/fontyourface/disable/' . $font->fid, array('query' => array('destination' => 'admin/appearance/fontyourface'), 'attributes' => array('class' => 'disable-link')));
+     if($font->provider == 'local_fonts' && !$font->enabled) {
+       $actions = l(t('Delete'), 'admin/appearance/fontyourface/local_fonts/delete/' . $font->fid, array('query' => array('destination' => 'admin/appearance/fontyourface'), 'attributes' => array('class' => 'disable-link')));
+     }
+     $form['table']['row_' . $font->fid]['disable'] = array(
+-      '#markup' => '<td>' . $actions . '</td>',
++      '#markup' => '<td>' . $actionsedit . " - " . $actions . '</td>',
+     );
+ 
+   } // foreach
+-- 
+1.7.8.msysgit.0
+
