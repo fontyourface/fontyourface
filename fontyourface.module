@@ -171,7 +171,7 @@ function fontyourface_preprocess_page(&$vars) {
 
       $font_css = fontyourface_font_css($font);
 
-      if ($font_css != '' && $font->css_selector != '') {
+      if ($font_css != '' && $font->css_selector != '' && $font->css_selector != '<none>') {
         $css .= $font->css_selector . ' { ' . $font_css . ' }' . "\n";
       } // if
 
