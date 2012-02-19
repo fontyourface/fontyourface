@@ -61,14 +61,8 @@ function fontyourface_add_theme_info_fonts() {
 
             if (isset($font->enabled) && !$font->enabled) {
 
-              // Enable the font and set the default CSS selector to <none>
-              if (fontyourface_enable_font($font)) {
-
-                $font->css_selector = '<none>';
-                drupal_write_record('fontyourface_font', $font, 'fid');
-                drupal_set_message(t('Font %font has been enabled', array('%font' => $font->name)));
-
-              } // if
+              $font->css_selector = '<none>';                
+              fontyourface_font_registry($font);
 
             } // if
             elseif (empty($font)) {
@@ -339,12 +333,6 @@ function fontyourface_enable_font(&$font) {
  * Disables a single font.
  */
 function fontyourface_disable_font(&$font) {
-
-  $theme_declarations = fontyourface_parse_theme_info_file();
-
-  if (isset($theme_declarations[$font->provider])) {
-    drupal_set_message(t('It seems that you have enabled some fonts in your the .info file of your theme. Those fonts are (re-)enabled by default. If you want to disable these fonts, you have to remove them out of your .info file first.'));
-  }
 
   db_update('fontyourface_font')
     ->fields(array('enabled' => 0))
