@@ -118,7 +118,10 @@ function fontyourface_ui_views_api() {
  */
 function fontyourface_ui_views_pre_render(&$view) {
 
-  if ($view->name == 'fontyourface_browse') {
+  if (
+    ($view->name == 'fontyourface_browse') ||
+    ($view->name == 'google_fonts_api_browse')
+  ) {
 
     $view->display_handler->handlers['header']['area']->options['format'] = 'full_html';
     $view->display_handler->handlers['header']['area']->options['content'] = '<div><p>' . fontyourface_ui_enabled_count() . '</p></div>' . fontyourface_ui_browse_tabs();

@@ -176,6 +176,18 @@ function google_fonts_api_fontyourface_import() {
 } // google_fonts_api_fontyourface_import
 
 /**
+ * Implements hook_views_api().
+ */
+function google_fonts_api_views_api() {
+
+  return array(
+    'api' => 2,
+    'path' => drupal_get_path('module', 'google_fonts_api') . '/views',
+  );
+
+} // google_fonts_api_views_api
+
+/**
  * Converts the Google Fonts API JSON results to a generic Fonts object array
  *
  * @param $json_font_list: Array of Font objects
