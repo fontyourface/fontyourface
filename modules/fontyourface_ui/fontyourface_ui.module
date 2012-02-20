@@ -992,7 +992,16 @@ function fontyourface_ui_theme_instructions() {
 
     $provider_base_path = fontyourface_provider_info($font, 'base_path');
     $path = str_replace($provider_base_path, '', $font->url);
-    $info_declarations[] = 'fonts[' . $font->provider . '][] = "' . $path . '"';
+
+    if ($font->provider == 'local_fonts') {
+
+      $info_declarations[] = '; ' . t("Local font '@font' can not be included in a theme.info file,", array('@font' => $font->name));
+      $info_declarations[] = '; ' . t('because it can not be loaded via URL.');
+
+    } // if
+    else {
+      $info_declarations[] = 'fonts[' . $font->provider . '][] = "' . $path . '"';
+    } // else
 
   } // foreach
 
