@@ -681,6 +681,8 @@ function fontyourface_ajax_render_alter(&$commands) {
 
   // Add AJAX command to prepend the CSS to <head>.
 
-  $commands[] = ajax_command_prepend('head', $vars['styles']);
+  if (isset($vars['styles'])) {
+    $commands[] = ajax_command_prepend('head', $vars['styles']);
+  } // if
 
 } // fontyourface_ajax_render_alter
