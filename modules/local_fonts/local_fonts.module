@@ -474,7 +474,16 @@ function local_fonts_preprocess_page(&$vars) {
 
       if ($used_font->provider == 'local_fonts') {
         $metadata = unserialize($used_font->metadata);
-        fontyourface_add_css_in_preprocess($vars, $metadata['path'], FALSE);
+        if (module_exists('google_webfont_loader_api')) {
+          $font_info = array(
+            'custom_families' => array($used_font->css_family),
+            'custom_style_css' => array($metadata['path']),
+          );
+          _google_webfont_loader_api_load_font($font_info);
+        }
+        else {
+          fontyourface_add_css_in_preprocess($vars, $metadata['path'], FALSE);
+        }
       } // if
 
     } // foreach

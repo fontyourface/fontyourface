@@ -65,7 +65,17 @@ function fontsquirrel_preprocess_page(&$vars) {
 
       if ($used_font->provider == 'fontsquirrel') {
         $metadata = unserialize($used_font->metadata);
-        $paths[] = $metadata['path'];
+        if (module_exists('google_webfont_loader_api') && !empty($used_font->css_family)) {
+          $font_info = array(
+            'custom_families' => array($used_font->css_family),
+            'custom_style_css' => array('fontyourface/fontsquirrel/' . $metadata['path'] . '-fontfacekit/stylesheet.css'),
+          );
+          _google_webfont_loader_api_load_font($font_info);
+        }
+        else {
+          $paths[] = $metadata['path'];
+        }
+
       } // if
 
     } // foreach
