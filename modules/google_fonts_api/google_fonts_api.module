@@ -180,10 +180,14 @@ function google_fonts_api_fontyourface_import() {
  */
 function google_fonts_api_views_api() {
 
-  return array(
-    'api' => 2,
-    'path' => drupal_get_path('module', 'google_fonts_api') . '/views',
-  );
+  if (module_exists('fontyourface_ui')) {
+
+    return array(
+      'api' => 2,
+      'path' => drupal_get_path('module', 'google_fonts_api') . '/views',
+    );
+
+  } // if
 
 } // google_fonts_api_views_api
 
