@@ -274,10 +274,11 @@ function local_fonts_add_form_submit($form, &$form_state) {
 
             if ($format == 'eot') {
 
-              // EOT goes on its own line and doesn't take a format.
-              // Because IE is a "special needs" browser.
+              // EOT gets special treatment to trick IE
+              // into working right.
 
               $src .= '  src: url("' . $file->filename . '");' . "\n";
+              $combined_sources[] = 'url("' . $file->filename . '?#iefix") format("embedded-opentype")';
 
             } // if
             elseif ($format == 'svg') {
@@ -317,7 +318,7 @@ function local_fonts_add_form_submit($form, &$form_state) {
 
       // Add a fake local font name first to prevent name conflicts with local fonts.
 
-      $src .= '  src: local("ƒøñ†¥øü®ƒåçé"), ' . implode(', ', $combined_sources) . ';' . "\n";
+      $src .= '  src: ' . implode(', ', $combined_sources) . ';' . "\n";
 
     } // if
 
