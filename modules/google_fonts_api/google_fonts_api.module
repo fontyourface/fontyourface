@@ -90,7 +90,7 @@ function google_fonts_api_preprocess_page(&$vars) {
       $families = array();
 
       foreach ($paths as $family => $variants) {
-        $families[] = $family . ':' . implode(',', $variants);
+        $families[] = urlencode($family) . ':' . implode(',', $variants);
       } // foreach
 
       $base = 'http://fonts.googleapis.com/css?family=';
