@@ -265,3 +265,12 @@ function fontyourface_update_7202() {
   db_add_unique_key('fontyourface_font', 'url', array('url'));
 
 } // fontyourface_update_7202
+
+/**
+ * Remove single quotes from CSS selectors
+ */
+function fontyourface_update_7203() {
+
+  db_query("UPDATE {fontyourface_font} SET css_family = REPLACE(css_family, '\'', '');");
+
+} // fontyourface_update_7203

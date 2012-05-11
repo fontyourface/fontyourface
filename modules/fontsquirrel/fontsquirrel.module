@@ -112,7 +112,7 @@ function fontsquirrel_fontyourface_enable($font) {
 
       if (is_array($decoded) && is_object($decoded[0])) {
 
-        $font->css_family = "'" . $decoded[0]->{'fontface_name'} . "'";
+        $font->css_family = $decoded[0]->{'fontface_name'};
         fontyourface_save_font($font);
 
       } // if

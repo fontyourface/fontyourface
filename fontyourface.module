@@ -61,7 +61,7 @@ function fontyourface_add_theme_info_fonts() {
 
             if (!empty($font)) {
 
-              $font->css_selector = '<none>';                
+              $font->css_selector = '<none>';
               fontyourface_font_registry($font);
 
             } // if
@@ -97,14 +97,14 @@ function fontyourface_add_theme_info_fonts() {
 
 /**
  * Returns info about the font provider for a given font.
- * 
+ *
  * $font = Object: the full $font object.
  * $info_part = String: if this is given, we only return a string instead of an array.
  */
 function fontyourface_provider_info($font, $info_part = NULL) {
 
   $provider_info = array();
-  
+
   if (!empty($font->provider)) {
 
     $font_provider = $font->provider;
@@ -115,7 +115,7 @@ function fontyourface_provider_info($font, $info_part = NULL) {
     } // if
 
   } // if
-  
+
   return empty($info_part) ? $provider_info : $provider_info[$info_part];
 
 } // fontyourface_provider_info
@@ -541,7 +541,7 @@ function fontyourface_font_css($font) {
   $css = array();
 
   if ($font->css_family) {
-    $css[] = 'font-family: ' . $font->css_family . ';';
+    $css[] = 'font-family: \'' . $font->css_family . '\';';
   } // if
 
   if ($font->css_style) {
