@@ -36,7 +36,7 @@ function fontyourface_ui_menu() {
     'title' => 'Enabled fonts',
     'description' => 'Apply fonts with CSS selectors.',
     'access arguments' => array('administer @font-your-face'),
-    'type' => MENU_LOCAL_TASK,
+    'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => 10,
   );
 
@@ -45,7 +45,7 @@ function fontyourface_ui_menu() {
     'page callback' => 'fontyourface_ui_browse_page',
     'description' => 'Browse fonts to enable.',
     'access arguments' => array('administer @font-your-face'),
-    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'type' => MENU_LOCAL_TASK,
     'weight' => 0,
   );
 
