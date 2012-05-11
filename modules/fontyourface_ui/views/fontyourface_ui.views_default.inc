@@ -24,7 +24,7 @@ function fontyourface_ui_views_default_views() {
 
   /* Display: Defaults */
   $handler = $view->new_display('default', 'Defaults', 'default');
-  $handler->display->display_options['title'] = 'Browse fonts';
+  $handler->display->display_options['title'] = 'Browse all fonts';
   $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['access']['perm'] = 'administer @font-your-face';
@@ -224,7 +224,6 @@ function fontyourface_ui_views_default_views() {
   $handler->display->display_options['arguments']['provider']['field'] = 'provider';
   $handler->display->display_options['arguments']['provider']['title_enable'] = 1;
   $handler->display->display_options['arguments']['provider']['title'] = 'Browse all fonts: %1';
-  $handler->display->display_options['arguments']['provider']['breadcrumb'] = '%1';
   $handler->display->display_options['arguments']['provider']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['provider']['default_argument_skip_url'] = 0;
   $handler->display->display_options['arguments']['provider']['summary']['number_of_records'] = '0';
@@ -294,7 +293,7 @@ function fontyourface_ui_views_default_views() {
   $handler->display->display_options['menu']['weight'] = '0';
   $translatables['fontyourface_browse'] = array(
     t('Defaults'),
-    t('Browse fonts'),
+    t('Browse all fonts'),
     t('more'),
     t('Apply'),
     t('Reset'),
@@ -313,7 +312,6 @@ function fontyourface_ui_views_default_views() {
     t('<div class="fontyourface-preview enabled-[enabled_yes_no]">[preview]</div>'),
     t('All'),
     t('Browse all fonts: %1'),
-    t('%1'),
     t('Name'),
     t('Tag'),
     t('Foundry'),
