@@ -33,19 +33,19 @@ function fontyourface_ui_menu() {
   );
 
   $items['admin/appearance/fontyourface/apply'] = array(
-    'title' => 'Apply',
+    'title' => 'Enabled fonts',
     'description' => 'Apply fonts with CSS selectors.',
     'access arguments' => array('administer @font-your-face'),
-    'type' => MENU_DEFAULT_LOCAL_TASK,
-    'weight' => -10,
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 10,
   );
 
   $items['admin/appearance/fontyourface/browse'] = array(
-    'title' => 'Browse',
+    'title' => 'Browse all fonts',
     'page callback' => 'fontyourface_ui_browse_page',
     'description' => 'Browse fonts to enable.',
     'access arguments' => array('administer @font-your-face'),
-    'type' => MENU_LOCAL_TASK,
+    'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => 0,
   );
 
