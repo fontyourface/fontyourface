@@ -658,7 +658,7 @@ function fontyourface_ui_apply_page() {
   $fonts = fontyourface_get_fonts('enabled = 1');
 
   if (count($fonts) == 0) {
-    drupal_set_message('Enable some fonts before applying fonts.');
+    drupal_set_message('No fonts enabled yet.', 'error');
     drupal_goto('admin/appearance/fontyourface/browse');
   } // if
 
