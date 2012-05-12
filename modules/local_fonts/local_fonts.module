@@ -333,7 +333,7 @@ function local_fonts_add_form_submit($form, &$form_state) {
     $local_font = new stdClass;
     $local_font->name = $font_family . ' ' . $font_style . ' ' . $font_weight;
     $local_font->url = 'http://localhost/#' . md5($local_font->name);
-    $local_font->css_family = "'" . $font_family . "'";
+    $local_font->css_family = $font_family;
     $local_font->css_style = $font_style;
     $local_font->css_weight = $font_weight;
     $local_font->provider = 'local_fonts';
