@@ -658,8 +658,9 @@ function fontyourface_ui_apply_page() {
   $fonts = fontyourface_get_fonts('enabled = 1');
 
   if (count($fonts) == 0) {
-    drupal_set_message('No fonts enabled yet.', 'error');
-    drupal_goto('admin/appearance/fontyourface/browse');
+    drupal_set_message(t('No fonts enabled yet, please !enable first.', array(
+      '!enable' => l(t('enable some fonts'), 'admin/appearance/fontyourface/browse'))
+    ), 'error');
   } // if
 
   drupal_add_css(drupal_get_path('module', 'fontyourface_ui') . '/css/fontyourface_ui.css');
