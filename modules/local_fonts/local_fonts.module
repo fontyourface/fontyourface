@@ -229,7 +229,7 @@ function local_fonts_add_form_submit($form, &$form_state) {
 	if($stream_wrappers['public']) {
 		$scheme = 'public';
 	}
-	
+
   $values = $form_state['values'];
   $font_path = strtr(preg_replace('#[^a-zA-Z0-9]+#', ' ', $values['css_family']), ' ', '_') . '-' . $values['css_style'] . '-' . $values['css_weight'];
   $font_family = $values['css_family'];
@@ -237,7 +237,7 @@ function local_fonts_add_form_submit($form, &$form_state) {
   $font_weight = $values['css_weight'];
   $local_fonts_directory = dirname($_SERVER['SCRIPT_FILENAME']) . '/' . file_stream_wrapper_get_instance_by_scheme('public')->getDirectoryPath() . '/fontyourface/local_fonts';
   $destination_directory = $local_fonts_directory . '/' . $font_path;
-  
+
 	$validators['file_validate_extensions'][] = 'eot ttf svg woff css';
 
   $files = $_FILES['files']['name'];
@@ -250,7 +250,7 @@ function local_fonts_add_form_submit($form, &$form_state) {
     (file_prepare_directory($destination_directory, FILE_CREATE_DIRECTORY))
   ) {
 
-  	$destination_directory = $scheme . '://' . 'fontyourface/local_fonts/' . $font_path; 
+  	$destination_directory = $scheme . '://' . 'fontyourface/local_fonts/' . $font_path;
   	$destination_css_file = $destination_directory . '/stylesheet.css';
 
     foreach ($files as $key => $filename) {
@@ -329,7 +329,7 @@ function local_fonts_add_form_submit($form, &$form_state) {
     $generated_css .= '  font-weight: ' . $font_weight . ';' . "\n";
     $generated_css .= '}' . "\n";
     $css_file = file_unmanaged_save_data($generated_css, $destination_css_file, FILE_EXISTS_REPLACE);
-    
+
     $local_font = new stdClass;
     $local_font->name = $font_family . ' ' . $font_style . ' ' . $font_weight;
     $local_font->url = 'http://localhost/#' . md5($local_font->name);
@@ -342,7 +342,7 @@ function local_fonts_add_form_submit($form, &$form_state) {
 
     fontyourface_save_font($local_font);
 
-    drupal_set_message(t('@font added.', array('@font' => $font_family)));
+    drupal_set_message(t('@font added. Make sure to enable it before you can use it.', array('@font' => $font_family)));
 
   } // if
 
