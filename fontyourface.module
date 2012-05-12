@@ -173,7 +173,10 @@ function fontyourface_preprocess_page(&$vars) {
 
     } // foreach
 
-    file_unmanaged_save_data($css, $destination, FILE_EXISTS_REPLACE);
+    // Only overwrite the CSS when it differs.
+    if ($css != file_get_contents($destination)) {
+      file_unmanaged_save_data($css, $destination, FILE_EXISTS_REPLACE);
+    }
 
   } // if
 
