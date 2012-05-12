@@ -93,11 +93,13 @@ function local_fonts_add_form($form, $form_state) {
     '#type' => 'fieldset',
     '#title' => t('Font Information'),
     '#collapsible' => FALSE,
+    '#description' => t('If you want to use this font on text that can have mark-up, make sure to add all used variants (like regular, bold, italic and bold/italic).'),
   );
 
   $form['local_fonts']['information']['css_family'] = array(
     '#type' => 'textfield',
     '#title' => t('CSS Font Family'),
+    '#description' => t('Add the plain Font Family name here, eg <em>My Special Font</em>, without the style or weight.'),
     '#required' => TRUE,
   );
 
