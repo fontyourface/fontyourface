@@ -1464,7 +1464,7 @@ function fontyourface_ui_admin_disable_ajax() {
 
   } // if
   else {
-    drupal_set_message('Font not found. Could not enable.', 'error');
+    drupal_set_message('Font not found. Could not disable.', 'error');
   } // else
 
   $output['status'] = theme_status_messages(array()) . '<p>' . fontyourface_ui_enabled_count() . '</p>';
