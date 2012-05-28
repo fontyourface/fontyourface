@@ -544,7 +544,15 @@ function fontyourface_font_css($font) {
   $css = array();
 
   if ($font->css_family) {
-    $css[] = 'font-family: \'' . $font->css_family . '\';';
+
+    $family_list = "'" . $font->css_family . "'";
+
+    if ($font->css_fallbacks) {
+      $family_list .= ', ' . $font->css_fallbacks;
+    } // if
+
+    $css[] = 'font-family: ' . $family_list . ';';
+
   } // if
 
   if ($font->css_style) {
