@@ -54,7 +54,7 @@ function local_fonts_form_alter(&$form, &$form_state, $form_id) {
     );
 
   } // if
-  elseif ($form_id == 'fontyourface_admin_edit_form') {
+  elseif ($form_id == 'fontyourface_ui_admin_edit_form') {
 
     // Add delete button.
 
