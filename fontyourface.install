@@ -279,3 +279,13 @@ function fontyourface_update_7203() {
   db_query("UPDATE {fontyourface_font} SET css_family = REPLACE(css_family, '\'', '');");
 
 } // fontyourface_update_7203
+
+/**
+ * Implements hook_uninstall().
+ */
+function fontyourface_uninstall() {
+
+  variable_del('fontyourface_detailed_logging');
+  variable_del('fontyourface_css_md5');  
+  
+} // fontyourface_uninstall
