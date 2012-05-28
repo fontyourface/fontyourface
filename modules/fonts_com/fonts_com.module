@@ -163,9 +163,9 @@ function fonts_com_fontyourface_count() {
 } // fonts_com_fontyourface_count
 
 /**
- * Implements template_preprocess_page().
+ * Implements template_preprocess_html().
  */
-function fonts_com_preprocess_page(&$vars) {
+function fonts_com_preprocess_html(&$vars) {
 
   if (!empty($vars['fontyourface'])) {
 
@@ -238,7 +238,7 @@ function fonts_com_preprocess_page(&$vars) {
 
   } // if
 
-} // fonts_com_preprocess_page
+} // fonts_com_preprocess_html
 
 /**
  * Returns CSS for a given font.

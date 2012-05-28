@@ -174,9 +174,9 @@ function fontdeck_fontyourface_preview($font, $text = NULL, $size = 18) {
 } // fontdeck_fontyourface_preview
 
 /**
- * Implements template_preprocess_page().
+ * Implements template_preprocess_html().
  */
-function fontdeck_preprocess_page(&$vars) {
+function fontdeck_preprocess_html(&$vars) {
 
   $project = variable_get('fontdeck_project', '');
   $domain = preg_replace('#^www.#', '', $_SERVER['HTTP_HOST']);
@@ -207,4 +207,4 @@ function fontdeck_preprocess_page(&$vars) {
 
   } // if
 
-} // fontdeck_preprocess_page
+} // fontdeck_preprocess_html

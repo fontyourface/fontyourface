@@ -52,10 +52,9 @@ function google_fonts_api_fontyourface_preview($font, $text = NULL, $size = 18) 
 } // google_fonts_api_fontyourface_preview
 
 /**
- * Implements template_preprocess_page().
+ * Implements template_preprocess_html().
  */
-function google_fonts_api_preprocess_page(&$vars) {
-
+function google_fonts_api_preprocess_html(&$vars) {
   if (!empty($vars['fontyourface'])) {
 
     $paths = array();
@@ -123,7 +122,7 @@ function google_fonts_api_preprocess_page(&$vars) {
 
   } // if
 
-} // google_fonts_api_preprocess_page
+} // google_fonts_api_preprocess_html
 
 /**
  * Implements hook_fontyourface_import().
