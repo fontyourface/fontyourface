@@ -205,7 +205,7 @@ function fontyourface_rewrite_css($css) {
 
   // Write CSS.
 
-  $destination = file_build_uri('fontyourface/font.css');
+  $destination = file_stream_wrapper_uri_normalize('public://fontyourface/font.css');
   $destination_directory = dirname($destination);
 
   if (file_prepare_directory($destination_directory, FILE_CREATE_DIRECTORY)) {
@@ -213,7 +213,7 @@ function fontyourface_rewrite_css($css) {
     // Only overwrite the CSS when it differs.
     if ($css != file_get_contents($destination)) {
       file_unmanaged_save_data($css, $destination, FILE_EXISTS_REPLACE);
-    }
+    } // if
 
   } // if
   
