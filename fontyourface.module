@@ -209,12 +209,7 @@ function fontyourface_rewrite_css($css) {
   $destination_directory = dirname($destination);
 
   if (file_prepare_directory($destination_directory, FILE_CREATE_DIRECTORY)) {
-
-    // Only overwrite the CSS when it differs.
-    if ($css != file_get_contents($destination)) {
-      file_unmanaged_save_data($css, $destination, FILE_EXISTS_REPLACE);
-    } // if
-
+    file_unmanaged_save_data($css, $destination, FILE_EXISTS_REPLACE);
   } // if
   
 } // fontyourface_rewrite_css
