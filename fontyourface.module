@@ -570,7 +570,7 @@ function fontyourface_font_css($font) {
   if ($font->css_family) {
 
     // Enclose font family definition in single quotes if not already enclosed.
-    if ($a[0] === "'") {
+    if ($font->css_family[0] === "'") {
       $family_list = $font->css_family;
     } // if
     else {
