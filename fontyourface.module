@@ -569,7 +569,13 @@ function fontyourface_font_css($font) {
 
   if ($font->css_family) {
 
-    $family_list = "'" . $font->css_family . "'";
+    // Enclose font family definition in single quotes if not already enclosed.
+    if ($a[0] === "'") {
+      $family_list = $font->css_family;
+    } // if
+    else {
+      $family_list = "'" . $font->css_family . "'";
+    } // else
 
     if ($font->css_fallbacks) {
       $family_list .= ', ' . $font->css_fallbacks;
