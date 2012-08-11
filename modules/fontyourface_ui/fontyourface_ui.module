@@ -735,7 +735,7 @@ function fontyourface_ui_apply_by_font_form($form, &$form_state) {
       '#suffix' => '</tr>',
     );
 
-    $editname = l(t($font->name), 'admin/appearance/fontyourface/edit/' . $font->fid, array('query' => array('destination' => 'admin/appearance/fontyourface'), 'attributes' => array('class' => 'edit-link')));
+    $editname = l($font->name, 'admin/appearance/fontyourface/edit/' . $font->fid, array('query' => array('destination' => 'admin/appearance/fontyourface'), 'attributes' => array('class' => 'edit-link')));
     $form['table']['row_' . $font->fid]['name'] = array(
       '#markup' => '<td>' . $editname . '</td>',
     );
