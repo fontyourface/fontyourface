@@ -72,9 +72,14 @@ function fontyourface_add_theme_info_fonts() {
                 drupal_set_message(t('The font declaration %declaration that is added to the theme .info file cannot be loaded. Make sure the font exists in the %provider font list.', array('%declaration' => $declaration, '%provider' => $font_provider)), 'error');
 
               } //if
-              else {
+              elseif (module_exists('fontyourface_ui')) {
 
                 drupal_set_message(t('The %provider font that is added to the theme .info file cannot be loaded. This is probably because the import has not been run yet. !import to add fonts.', array('%provider' => check_plain($font_provider), '!import' => l(t('Run import'), 'admin/config/user-interface/fontyourface'))), 'error');
+
+              } // elseif
+              else {
+
+                drupal_set_message(t('The %provider font that is added to the theme .info file cannot be loaded. This is probably because the import has not been run yet. Enable !module module and run import to add fonts.', array('%provider' => check_plain($font_provider), '!module' => l('@font-your-face UI', 'admin/modules', array('fragment' => 'edit-modules-font-your-face')))), 'error');
 
               } // else
 
