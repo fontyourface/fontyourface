@@ -544,7 +544,7 @@ function fontyourface_short_preview_text($font) {
     return $function($font);
   } // if
 
-  return 'AaGg';
+  return variable_get('fontyourface_short_preview_text', 'AaGg');
 
 } // fontyourface_short_preview_text
 

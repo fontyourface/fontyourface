@@ -898,7 +898,7 @@ function fonts_com_fontyourface_short_preview_text($font) {
 
   } // if
 
-  return 'AaGg';
+  return variable_get('fontyourface_short_preview_text', 'AaGg');
 
 } // fonts_com_fontyourface_short_preview_text
 
