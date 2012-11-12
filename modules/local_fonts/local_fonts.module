@@ -455,29 +455,24 @@ function local_fonts_delete_font($font) {
 /**
  * Implements hook_fontyourface_preview().
  */
-function local_fonts_fontyourface_preview($font) {
-
-  return '<span style="' . fontyourface_font_css($font) . ' font-size: 24px;">' . $font->name . '</span>';
-
-} // local_fonts_fontyourface_preview
-
-/**
- * Implements hook_fontyourface_view().
- */
-function local_fonts_fontyourface_view($font, $text) {
-
+function local_fonts_fontyourface_preview($font, $text = NULL, $size = 18) {
   $output = '';
-  $sizes = array(32, 24, 18, 14, 12, 10);
-
-  foreach ($sizes as $size) {
-
-    $output .= '<div style="' . fontyourface_font_css($font) . ' font-size: ' . $size . 'px; line-height: ' . $size . 'px;">' . $text . '</div>';
-
-  } // foreach
-
+  if ($text == NULL) {
+    $text = $font->name;
+  }
+  if ($size == 'all') {
+    // Display variety of sizes.
+    $sizes = array(32, 24, 18, 14, 12, 10);
+    foreach ($sizes as $size) {
+      $output .= '<div style="' . fontyourface_font_css($font) . ' font-size: ' . $size . 'px; line-height: ' . $size . 'px;">' . $text . '</div>';
+    }
+  }
+  else {
+    // Display single size.
+    $output = '<span style="' . fontyourface_font_css($font) . ' font-size: ' . $size . 'px; line-height: ' . $size . 'px;">' . $text . '</span>';
+  }
   return $output;
-
-} // local_fonts_fontyourface_view
+}
 
 /**
  * Implements template_preprocess_html().
