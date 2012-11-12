@@ -22,6 +22,14 @@ function typekit_api_enable() {
 function typekit_api_disable() {
 
   fontyourface_provider_disable('typekit_api');
-  variable_del('typekit_api_token');
 
 } // typekit_api_disable
+
+/**
+ * Implements hook_uninstall().
+ */
+function typekit_api_uninstall() {
+
+  variable_del('typekit_api_token');
+
+} // typekit_api_uninstall
