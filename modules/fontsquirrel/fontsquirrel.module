@@ -229,7 +229,6 @@ function fontsquirrel_fontyourface_enable($font) {
  */
 function fontsquirrel_fontyourface_import() {
 
-  $logging = variable_get('fontyourface_detailed_logging', FALSE);
   $families = array();
 
   $api_result = drupal_http_request('http://www.fontsquirrel.com/api/fontlist/all');
@@ -281,10 +280,7 @@ function fontsquirrel_fontyourface_import() {
   else {
 
     drupal_set_message(t('There was an error downloading font list from Font Squirrel.'), 'error');
-
-    if ($logging) {
-      watchdog('@font-your-face', 'Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)), WATCHDOG_INFO);
-    } // if
+    fontyourface_log('Invalid drupal_http_request response: @response', array('@response' => print_r($response, TRUE)));
 
   } // else
 
