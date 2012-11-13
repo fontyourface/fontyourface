@@ -8,7 +8,7 @@
 /**
  * Helper function - hardcodes the list of available fonts and their variants.
  *
- * Updated 16-Oct-2012.
+ * Updated 13-Nov-2012.
  */
 function edge_fonts_list() {
   return array(
@@ -1319,8 +1319,8 @@ function edge_fonts_list() {
     'geo' => array(
       'fontname' => 'Geo',
       'variants' => array(
-        'i4' => 'Oblique',
         'n4' => 'Regular',
+        'i4' => 'Oblique',
       ),
     ),
     'geostar' => array(
@@ -2300,6 +2300,14 @@ function edge_fonts_list() {
       'fontname' => 'Numans',
       'variants' => array(
         'n4' => 'Regular',
+      ),
+    ),
+    'nunito' => array(
+      'fontname' => 'Nunito',
+      'variants' => array(
+        'n3' => 'Light',
+        'n4' => 'Regular',
+        'n7' => 'Bold',
       ),
     ),
     'old-standard' => array(
