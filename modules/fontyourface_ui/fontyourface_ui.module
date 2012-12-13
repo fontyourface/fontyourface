@@ -774,7 +774,14 @@ function fontyourface_ui_apply_by_font_form($form, &$form_state) {
     $actionsedit = l(t('Edit'), 'admin/appearance/fontyourface/edit/' . $font->fid, array('query' => array('destination' => 'admin/appearance/fontyourface'), 'attributes' => array('class' => 'edit-link')));
     $actions = l(t('Disable'), 'admin/appearance/fontyourface/disable/' . $font->fid, array('query' => array('destination' => 'admin/appearance/fontyourface'), 'attributes' => array('class' => 'disable-link')));
     if($font->provider == 'local_fonts' && !$font->enabled) {
-      $actions = l(t('Delete'), 'admin/appearance/fontyourface/local_fonts/delete/' . $font->fid, array('query' => array('destination' => 'admin/appearance/fontyourface'), 'attributes' => array('class' => 'disable-link')));
+      $actions = l(t('Enable'), 'admin/appearance/fontyourface/enable/' . $font->fid, array('query' => array('destination' => 'admin/appearance/fontyourface'), 'attributes' => array('class' => 'enable-link')));
+      $actions .= ' - ';
+      $actions .= l(t('Delete'), 'admin/appearance/fontyourface/local_fonts/delete/' . $font->fid, array('query' => array('destination' => 'admin/appearance/fontyourface'), 'attributes' => array('class' => 'disable-link')));
+      $form['table']['row_' . $font->fid]['css_selector[' . $font->fid . ']'] = array(
+        '#prefix' => '<td>',
+        '#markup' => t('Font disabled'),
+        '#suffix' => '</td>',
+      );
     }
     $form['table']['row_' . $font->fid]['disable'] = array(
       '#markup' => '<td>' . $actionsedit . " - " . $actions . '</td>',
