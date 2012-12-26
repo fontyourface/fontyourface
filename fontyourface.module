@@ -259,7 +259,7 @@ function fontyourface_get_fonts($where = "enabled = 1 AND css_selector != ''", $
 
   while ($result = $results->fetchObject()) {
     fontyourface_add_font_tags($result);
-    $fonts[] = $result;
+    $fonts[$result->fid] = $result;
   } // while
 
   return $fonts;
