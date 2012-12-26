@@ -774,7 +774,7 @@ function fonts_com_api_headers($path) {
   $fonts_com_token = variable_get('fonts_com_token', '');
 
   if (empty($fonts_com_token)) {
-    return;
+    return array();
   } // if
 
   list($public_key, $private_key) = explode('--', $fonts_com_token);
