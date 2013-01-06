@@ -485,13 +485,11 @@ function fontyourface_add_tags_to_font($tags, $fid) {
 
     fontyourface_save_tag($tag_object);
 
-    $tag_font = new StdClass;
-    $tag_font->tid = $tag_object->tid;
-    $tag_font->fid = $fid;
+    db_merge('fontyourface_tag_font')
+      ->key(array('tid' => $tag_object->tid, 'fid' => $fid))
+      ->execute();
 
-    drupal_write_record('fontyourface_tag_font', $tag_font);
-
-  } // forach
+  } // foreach
 
 } // fontyourface_add_tags_to_font
 
