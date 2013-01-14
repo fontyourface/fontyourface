@@ -1125,7 +1125,7 @@ function fontyourface_ui_admin_edit_form($form, &$form_state, $fid) {
 
     $form['details'] += array(
       'foundry' => array(
-        '#value' => '<div class="foundry">' . t('Foundry: !foundry', array('!foundry' => $foundry_markup)) . '</div>',
+        '#markup' => '<div class="foundry">' . t('Foundry: !foundry', array('!foundry' => $foundry_markup)) . '</div>',
       ),
     );
 
@@ -1142,7 +1142,7 @@ function fontyourface_ui_admin_edit_form($form, &$form_state, $fid) {
 
     $form['details'] += array(
       'license' => array(
-        '#value' => '<div class="license">' . t('License: !license', array('!license' => $license_markup)) . '</div>',
+        '#markup' => '<div class="license">' . t('License: !license', array('!license' => $license_markup)) . '</div>',
       ),
     );
 
@@ -1185,7 +1185,7 @@ function fontyourface_ui_admin_edit_form($form, &$form_state, $fid) {
 
     $form += array(
       'font-family' => array(
-        '#value' => '<div>' . t('To apply in your own CSS, use:') . '</div><div><code>font-family: ' . check_plain($font->css_family) . ';</code></div>',
+        '#markup' => '<div>' . t('To apply in your own CSS, use:') . '</div><div><code>font-family: ' . check_plain($font->css_family) . ';</code></div>',
       ),
     );
 
