@@ -89,7 +89,7 @@ function google_fonts_api_preprocess_page(&$vars) {
         $base = 'https://fonts.googleapis.com/css?family=';
       } // if
 
-      $url = $base . implode('|', $families) . '&subset=' . implode(',', $subsets);
+      $url = $base . implode('|', $families) . '&amp;subset=' . implode(',', $subsets);
 
       fontyourface_add_css_in_preprocess($vars, $url, 'remote');
 
