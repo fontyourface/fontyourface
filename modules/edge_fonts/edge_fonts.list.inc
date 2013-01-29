@@ -193,7 +193,7 @@ function edge_fonts_list() {
       'variants' => array(
         'n4' => array(
           'name' => 'Regular',
-          'license' => 'http://typekit.com/eulas/000000000000000000012506',
+          'license' => 'http://typekit.com/eulas/0000000000000000000131bf',
         ),
       ),
     ),
@@ -867,7 +867,7 @@ function edge_fonts_list() {
       'variants' => array(
         'n4' => array(
           'name' => 'Regular',
-          'license' => 'http://typekit.com/eulas/000000000000000000012507',
+          'license' => 'http://typekit.com/eulas/0000000000000000000131c0',
         ),
       ),
     ),
@@ -1357,11 +1357,11 @@ function edge_fonts_list() {
       'variants' => array(
         'n4' => array(
           'name' => 'Regular',
-          'license' => 'http://typekit.com/eulas/000000000000000000012db7',
+          'license' => 'http://typekit.com/eulas/000000000000000000013101',
         ),
         'i4' => array(
           'name' => 'Italic',
-          'license' => 'http://typekit.com/eulas/000000000000000000012db6',
+          'license' => 'http://typekit.com/eulas/000000000000000000013102',
         ),
       ),
     ),
@@ -2263,7 +2263,7 @@ function edge_fonts_list() {
       'variants' => array(
         'n4' => array(
           'name' => 'Regular',
-          'license' => 'http://typekit.com/eulas/000000000000000000012508',
+          'license' => 'http://typekit.com/eulas/0000000000000000000131c1',
         ),
       ),
     ),
@@ -2393,7 +2393,7 @@ function edge_fonts_list() {
       'variants' => array(
         'n4' => array(
           'name' => 'Regular',
-          'license' => 'http://typekit.com/eulas/000000000000000000012509',
+          'license' => 'http://typekit.com/eulas/0000000000000000000131c2',
         ),
       ),
     ),
@@ -2598,7 +2598,7 @@ function edge_fonts_list() {
       'variants' => array(
         'n4' => array(
           'name' => 'Regular',
-          'license' => 'http://typekit.com/eulas/00000000000000000001250a',
+          'license' => 'http://typekit.com/eulas/0000000000000000000131c3',
         ),
       ),
     ),
@@ -2652,7 +2652,7 @@ function edge_fonts_list() {
       'variants' => array(
         'n4' => array(
           'name' => 'Regular',
-          'license' => 'http://typekit.com/eulas/00000000000000000001250b',
+          'license' => 'http://typekit.com/eulas/0000000000000000000131c4',
         ),
       ),
     ),
@@ -2715,15 +2715,6 @@ function edge_fonts_list() {
         'n4' => array(
           'name' => 'Regular',
           'license' => 'http://typekit.com/eulas/000000000000000000012491',
-        ),
-      ),
-    ),
-    'irish-growler' => array(
-      'name' => 'Irish Growler',
-      'variants' => array(
-        'n4' => array(
-          'name' => 'Regular',
-          'license' => 'http://typekit.com/eulas/000000000000000000012492',
         ),
       ),
     ),
@@ -4769,7 +4760,7 @@ function edge_fonts_list() {
       'variants' => array(
         'n1' => array(
           'name' => 'Thin',
-          'license' => 'http://typekit.com/eulas/000000000000000000012845',
+          'license' => 'http://typekit.com/eulas/00000000000000000001328e',
         ),
       ),
     ),
@@ -5009,7 +5000,7 @@ function edge_fonts_list() {
       'variants' => array(
         'n7' => array(
           'name' => 'Bold',
-          'license' => 'http://typekit.com/eulas/00000000000000000001250c',
+          'license' => 'http://typekit.com/eulas/0000000000000000000131c5',
         ),
       ),
     ),
@@ -5129,7 +5120,7 @@ function edge_fonts_list() {
       'variants' => array(
         'n4' => array(
           'name' => 'Boy',
-          'license' => 'http://typekit.com/eulas/00000000000000000001250d',
+          'license' => 'http://typekit.com/eulas/0000000000000000000131c6',
         ),
       ),
     ),
@@ -5254,27 +5245,31 @@ function edge_fonts_list() {
       'variants' => array(
         'n2' => array(
           'name' => 'Extra Light',
-          'license' => 'http://typekit.com/eulas/000000000000000000012e69',
+          'license' => 'http://typekit.com/eulas/000000000000000000013295',
         ),
         'n3' => array(
           'name' => 'Light',
-          'license' => 'http://typekit.com/eulas/000000000000000000012e6a',
+          'license' => 'http://typekit.com/eulas/000000000000000000013296',
         ),
         'n4' => array(
           'name' => 'Regular',
-          'license' => 'http://typekit.com/eulas/000000000000000000012e6b',
+          'license' => 'http://typekit.com/eulas/000000000000000000013297',
+        ),
+        'n5' => array(
+          'name' => 'Medium',
+          'license' => 'http://typekit.com/eulas/000000000000000000013294',
         ),
         'n6' => array(
           'name' => 'Semibold',
-          'license' => 'http://typekit.com/eulas/000000000000000000012e6c',
+          'license' => 'http://typekit.com/eulas/000000000000000000013298',
         ),
         'n7' => array(
           'name' => 'Bold',
-          'license' => 'http://typekit.com/eulas/000000000000000000012e68',
+          'license' => 'http://typekit.com/eulas/000000000000000000013299',
         ),
         'n9' => array(
           'name' => 'Black',
-          'license' => 'http://typekit.com/eulas/000000000000000000012e67',
+          'license' => 'http://typekit.com/eulas/00000000000000000001329a',
         ),
       ),
     ),
@@ -5283,51 +5278,51 @@ function edge_fonts_list() {
       'variants' => array(
         'n2' => array(
           'name' => 'Extra Light',
-          'license' => 'http://typekit.com/eulas/000000000000000000012e71',
+          'license' => 'http://typekit.com/eulas/000000000000000000013180',
         ),
         'i2' => array(
           'name' => 'Extra Light Italic',
-          'license' => 'http://typekit.com/eulas/000000000000000000012e72',
+          'license' => 'http://typekit.com/eulas/000000000000000000013181',
         ),
         'n3' => array(
           'name' => 'Light',
-          'license' => 'http://typekit.com/eulas/000000000000000000012e74',
+          'license' => 'http://typekit.com/eulas/000000000000000000013183',
         ),
         'i3' => array(
           'name' => 'Light Italic',
-          'license' => 'http://typekit.com/eulas/000000000000000000012e75',
+          'license' => 'http://typekit.com/eulas/000000000000000000013184',
         ),
         'n4' => array(
           'name' => 'Regular',
-          'license' => 'http://typekit.com/eulas/000000000000000000012e76',
+          'license' => 'http://typekit.com/eulas/000000000000000000013185',
         ),
         'i4' => array(
           'name' => 'Italic',
-          'license' => 'http://typekit.com/eulas/000000000000000000012e73',
+          'license' => 'http://typekit.com/eulas/000000000000000000013182',
         ),
         'n6' => array(
           'name' => 'Semibold',
-          'license' => 'http://typekit.com/eulas/000000000000000000012e77',
+          'license' => 'http://typekit.com/eulas/000000000000000000013186',
         ),
         'i6' => array(
           'name' => 'Semibold Italic',
-          'license' => 'http://typekit.com/eulas/000000000000000000012e78',
+          'license' => 'http://typekit.com/eulas/000000000000000000013187',
         ),
         'n7' => array(
           'name' => 'Bold',
-          'license' => 'http://typekit.com/eulas/000000000000000000012e6f',
+          'license' => 'http://typekit.com/eulas/00000000000000000001317e',
         ),
         'i7' => array(
           'name' => 'Bold Italic',
-          'license' => 'http://typekit.com/eulas/000000000000000000012e70',
+          'license' => 'http://typekit.com/eulas/00000000000000000001317f',
         ),
         'n9' => array(
           'name' => 'Black',
-          'license' => 'http://typekit.com/eulas/000000000000000000012e6d',
+          'license' => 'http://typekit.com/eulas/00000000000000000001317c',
         ),
         'i9' => array(
           'name' => 'Black Italic',
-          'license' => 'http://typekit.com/eulas/000000000000000000012e6e',
+          'license' => 'http://typekit.com/eulas/00000000000000000001317d',
         ),
       ),
     ),
