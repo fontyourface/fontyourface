@@ -157,11 +157,19 @@ function fontyourface_count_fonts($provider = NULL, $status = NULL) {
  */
 function fontyourface_preprocess_html(&$vars) {
 
+  // Only load fonts when the default theme is loaded.
+  if (!variable_get('fontyourface_load_everywhere', TRUE)) {
+    global $theme;
+    if ($theme != variable_get('theme_default', 'bartik')) {
+      return;
+    }
+  }
+
   $fonts = fontyourface_font_registry() + fontyourface_get_fonts();
 
   $css = fontyourface_generate_css($fonts);
   $css_md5 = md5($css);
-  
+
   if ($css_md5 != variable_get('fontyourface_css_md5', '')) {
 
     fontyourface_rewrite_css($css);
@@ -181,7 +189,7 @@ function fontyourface_preprocess_html(&$vars) {
  * Generates CSS.
  */
 function fontyourface_generate_css($fonts = FALSE) {
-  
+
   // Get font list.
 
   if (!$fonts) {
@@ -219,7 +227,7 @@ function fontyourface_rewrite_css($css) {
   if (file_prepare_directory($destination_directory, FILE_CREATE_DIRECTORY)) {
     file_unmanaged_save_data($css, $destination, FILE_EXISTS_REPLACE);
   } // if
-  
+
 } // fontyourface_rewrite_css
 
 /**
