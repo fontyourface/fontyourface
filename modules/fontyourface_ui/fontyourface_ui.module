@@ -147,7 +147,7 @@ function fontyourface_ui_views_pre_render(&$view) {
 
     if (count($providers) == 0) {
 
-      drupal_set_message(t('No font providers enabled. !enable before browsing fonts.', array('!enable' => l(t('Enable font providers'), 'admin/modules'))), 'error');
+      drupal_set_message(t('No font providers enabled. !enable before browsing fonts.', array('!enable' => l(t('Enable font provider modules'), 'admin/modules'))), 'error');
 
     } // if
 
