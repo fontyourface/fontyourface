@@ -611,7 +611,7 @@ function fontyourface_ui_settings_form($form, &$form_state) {
 
     } // else
 
-    $tokens = array('@provider' => $provider['name'], '@count' => $count);
+    $tokens = array('@provider' => $provider['name'], '@count' => (int) $count);
     $status = t('@provider is enabled with @count fonts.', $tokens);
 
     if (function_exists($status_function)) {
