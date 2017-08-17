@@ -127,7 +127,7 @@ function fontsquirrel_api_preprocess_font__teaser(array &$variables) {
   $font = $variables['elements']['#font'];
   $metadata = $font->getMetadata();
   if ($font->pid->value == 'fontsquirrel_api' && $font->isDisabled()) {
-    $variables['font_preview']['#markup'] = '<img width="160px" src="https://www.fontsquirrel.com/widgets/test_drive/' . $metadata['checksum'] . '?s=144&t=AaGg" />';
+    $variables['font_preview']['#markup'] = '<img width="160px" src="' . $metadata['teaser_image'] . '" />';
   }
 }
 
@@ -177,6 +177,7 @@ function fontsquirrel_api_fontyourface_import($font_context = []) {
       $variant_metadata['font_filename'] = $variant->filename;
       $variant_metadata['checksum'] = $variant->checksum;
       $variant_metadata['preview_image'] = str_replace('\\', '', $variant->sample_image);
+      $variant_metadata['teaser_image'] = fontsquirrel_api_get_teaser_image_link($variant->checksum);
       $variant_font = clone $font;
       $variant_font->name = $variant->family_name . ' ' . $variant->style_name;
       $variant_font->url = $font->url . '#' . $variant->fontface_name;
@@ -184,7 +185,7 @@ function fontsquirrel_api_fontyourface_import($font_context = []) {
       $variant_font->metadata = $variant_metadata;
       fontyourface_save_font($variant_font);
     }
-    $context['message'] = "Imported {$context['sandbox']['progress']} (plus variants) of {$context['sandbox']['max']}";
+    $context['message'] = "Imported {$context['sandbox']['progress']} (plus variants) of {$context['sandbox']['max']} - this is going to take a while to go ahead and take a break.";
     $context['sandbox']['progress'] = $context['sandbox']['max'] - count($context['sandbox']['fonts']);
     $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
   }
@@ -235,6 +236,29 @@ function fontsquirrel_api_get_font_family_info($font_import) {
     return FALSE;
   }
   return $data;
+}
+
+/**
+ * Get teaser image link
+ *
+ * @param string $checksum
+ *   Checksum of the font for usage from fontsquirrel.
+ *
+ * @return string
+ *   URL link to the image.
+ */
+function fontsquirrel_api_get_teaser_image_link($checksum) {
+  try {
+    $uri = 'https://www.fontsquirrel.com/fonts/ajax/test_drive/' . $checksum . '?s=144&t=AaGg';
+    $response = \Drupal::httpClient()->get($uri, ['headers' => ['Accept' => 'text/plain']]);
+    $image_xml = simplexml_load_string($response->getBody());
+    return (string) $image_xml['src'];
+  }
+  catch (RequestException $e) {
+    drupal_set_message(t('There was an error downloading font teaser image from Font Squirrel.'), 'error');
+    fontyourface_log('Invalid drupal_http_request response: @response', ['@response' => $e->getMessage()]);
+    return FALSE;
+  }
 }
 
 /**
