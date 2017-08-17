@@ -56,6 +56,7 @@ class FontYourFaceSubmoduleInstallTest extends WebTestBase {
     $this->drupalGet(Url::fromRoute('entity.font.collection'));
     $this->assertNoText('Arial');
 
+    $this->drupalPostForm(Url::fromRoute('font.settings'), ['load_all_enabled_fonts' => FALSE], t('Save configuration'));
     $this->drupalPostForm(Url::fromRoute('font.settings'), [], t('Import from websafe_fonts_test'));
     $this->assertResponse(200);
     $this->assertText(t('Finished importing fonts.'));
@@ -73,7 +74,7 @@ class FontYourFaceSubmoduleInstallTest extends WebTestBase {
     $this->assertRaw('<meta name="Websafe Font" content="Georgia" />');
     $this->assertRaw('<meta name="Websafe Font" content="Verdana" />');
 
-    // ENsure font is not loaded on front page because font is not enabled.
+    // Ensure font is not loaded on front page because font is not enabled.
     $this->drupalGet('<front>');
     $this->assertNoRaw('<meta name="Websafe Font" content="Arial" />');
   }
