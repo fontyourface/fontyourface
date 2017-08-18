@@ -56,8 +56,9 @@ class FontYourFaceSubmoduleInstallTest extends WebTestBase {
     $this->drupalGet(Url::fromRoute('entity.font.collection'));
     $this->assertNoText('Arial');
 
-    $this->drupalPostForm(Url::fromRoute('font.settings'), ['load_all_enabled_fonts' => FALSE], t('Save configuration'));
-    $this->drupalPostForm(Url::fromRoute('font.settings'), [], t('Import from websafe_fonts_test'));
+    $this->drupalGet(Url::fromRoute('font.settings'));
+    $this->drupalPostForm(NULL, [], t('Import from websafe_fonts_test'));
+    $this->assertResponse(200);
     $this->assertText(t('Finished importing fonts.'));
 
     // Assert all fonts were imported.
