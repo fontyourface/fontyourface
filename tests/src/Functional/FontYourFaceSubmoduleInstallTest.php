@@ -58,7 +58,6 @@ class FontYourFaceSubmoduleInstallTest extends WebTestBase {
 
     $this->drupalGet(Url::fromRoute('font.settings'));
     $this->drupalPostForm(NULL, [], t('Import from websafe_fonts_test'));
-    $this->assertResponse(200);
     $this->assertText(t('Finished importing fonts.'));
 
     // Assert all fonts were imported.
