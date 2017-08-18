@@ -216,7 +216,7 @@ function _fontsquirrel_api_get_fonts_from_api() {
 }
 
 /**
- * Get font family information from Font Squirrel.
+ * Gets font family information from Font Squirrel.
  *
  * @param object $font_import
  *   Initial font package data from Font Squirrel.
@@ -239,7 +239,7 @@ function fontsquirrel_api_get_font_family_info($font_import) {
 }
 
 /**
- * Get teaser image link
+ * Gets teaser image link.
  *
  * @param string $checksum
  *   Checksum of the font for usage from fontsquirrel.
